@@ -1,19 +1,15 @@
 import java.util.*;
 public class Level1 {
-    public static int squirrel (int N) {
-        int orderNumber = 1;
-        if (N > 0) { // filter of "0"
-            int factorial = N;
-            for (int i = 1; i < N; i++) { //calculation of factorial
-                factorial *= i;
+    public static int odometer (int [] oksana) {
+        int allWay = 0;
+        for (int i = 0; i < oksana.length; i++) {
+            if (i == 0) {
+                allWay += (oksana [i] * oksana [i + 1]);
             }
-            char [] charFactorial = String.valueOf(factorial).toCharArray(); // preparation for output
-            String a = ""; // the buffer
-            for (int x = 0; x < (charFactorial.length - (charFactorial.length - orderNumber)); x++) {
-                a = String.valueOf(charFactorial[x]);
+            if (i % 2 == 0 && i > 0) {
+               allWay += oksana [i] * (oksana [i + 1] - oksana [i - 1]);
             }
-            return Integer.parseInt(a); // output value of orderNumber
         }
-        return 1; // output factorial "0"
+        return allWay;
     }
 }
