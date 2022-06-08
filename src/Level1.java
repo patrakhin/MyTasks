@@ -2,7 +2,7 @@ import java.util.*;
 public class Level1 {
     public static int ConquestCampaign(int N, int M, int L, int [] battalion) {
         int [] [] square = new int[N][M];
-        for (int i = 0; i< (L*2); i++ ){ //Mark point's on map
+        for (int i = 0; i < (L*2); i++){ //Mark point's on map
             if (i %2 == 0){
                 square [battalion[i]-1][battalion[i+1]-1]= 1;
             }
@@ -14,7 +14,7 @@ public class Level1 {
             Arrays.fill(ints, 1);
         }
 
-        // in the late afternoon first  day is comparing squareEtalon and  square
+        // is comparing squaretalon and  square
         if (Arrays.deepEquals(squareEtalon,square)) {
             return countOfDays;
         }
@@ -25,19 +25,28 @@ public class Level1 {
             }
             for (int y = 0; y < squareOne.length; y++) {
                 for (int x = 0; x < squareOne[0].length; x++) {
-                    if (x == 0 && squareOne[y][x] == 1 && squareOne[y][x + 1] != 1 ) {
+                    if (x == 0 && squareOne[y][x + 1] != 1 ) {
                         squareOne[y][x + 1] = 1;
                         break;
                     }
-                    if (x > 0 && x != (squareOne[0].length - 1) && squareOne[y][x] == 1 && (squareOne[y][x + 1] == 1)) {
+                    if (x == 0 && squareOne[y][x + 1] == 1 ) {
+                        squareOne[y][x + 1] = 1;
                         continue;
                     }
-                    if (x > 0 && x != (squareOne[0].length - 1) && squareOne[y][x] == 1) {
+                    if (x > 0 && x != (squareOne[0].length - 1) && squareOne[y][x + 1] != 1 && (squareOne[y][x - 1] != 1)) {
                         squareOne[y][x + 1] = 1;
                         squareOne[y][x - 1] = 1;
                         break;
                     }
-                    if (x > 0 && x == (squareOne[0].length - 1) && squareOne[y][x] == 1 && (squareOne[y][x - 1] != 1)) {
+                    if (x > 0 && x != (squareOne[0].length - 1) && squareOne[y][x - 1] == 1 && (squareOne[y][x + 1] != 1)) {
+                        squareOne[y][x + 1] = 1;
+                        break;
+                    }
+                    if (x > 0 && x != (squareOne[0].length - 1) && squareOne[y][x - 1] != 1 && (squareOne[y][x + 1] == 1)) {
+                        squareOne[y][x - 1] = 1;
+                        break;
+                    }
+                    if (x == (squareOne[0].length - 1) && squareOne[y][x - 1] != 1) {
                         squareOne[y][x - 1] = 1;
                         break;
                     }
@@ -49,20 +58,28 @@ public class Level1 {
             }
             for (int x = 0; x < squareTwo[0].length; x++) {
                 for (int y = 0; y < squareTwo.length; y++) {
-                    if (y == 0 && squareTwo[y][x] == 1 && squareTwo[y + 1][x] != 1) {
-                        squareTwo[y + 1][x] = 1;
+                    if (y == 0 && squareTwo[y + 1][x] != 1) {
+                        squareTwo [y + 1] [x] = 1;
                         break;
                     }
-                    if (y == 0 && squareTwo[y][x] == 1 && squareTwo[y + 1][x] == 1) {
+                    if (y == 0 && squareTwo [y + 1] [x] == 1) {
                         continue;
                     }
 
-                    if (y > 0 && y != squareTwo.length - 1 && squareTwo[y][x] == 1 ) {
+                    if (y > 0 && y != squareTwo.length - 1 && squareTwo [y + 1] [x] != 1 && squareTwo [y - 1] [x] != 1  ) {
                         squareTwo[y + 1][x] = 1;
                         squareTwo[y - 1][x] = 1;
                         break;
                     }
-                    if (y > 0 && y == squareTwo.length - 1 && squareTwo[y][x] == 1 && squareTwo[y - 1][x] != 1) {
+                    if (y > 0 && y != squareTwo.length - 1 && squareTwo[y - 1][x] == 1 && squareTwo [y + 1] [x] != 1 ) {
+                        squareTwo[y + 1][x] = 1;
+                        break;
+                    }
+                    if (y > 0 && y != squareTwo.length - 1 && squareTwo[y - 1][x] != 1 && squareTwo [y + 1] [x] == 1 ) {
+                        squareTwo[y - 1][x] = 1;
+                        break;
+                    }
+                    if (y == squareTwo.length - 1 && squareTwo[y - 1][x] != 1) {
                         squareTwo[y - 1][x] = 1;
                         break;
                     }
