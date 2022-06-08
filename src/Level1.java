@@ -14,6 +14,10 @@ public class Level1 {
             Arrays.fill(ints, 1);
         }
 
+        // in the late afternoon first  day is comparing squareEtalon and  square
+        if (Arrays.deepEquals(squareEtalon,square)) {
+            return countOfDays;
+        }
         while (flag) {
             int[][] squareOne = new int[N][M];
             for (int y = 0; y < squareOne.length; y++) {
