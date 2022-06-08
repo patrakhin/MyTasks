@@ -1,16 +1,18 @@
 import java.util.*;
+
 public class Level1 {
     public static int ConquestCampaign(int N, int M, int L, int [] battalion) {
         int [] [] square = new int[N][M];
-        for (int i = 0; i< (L*2); i++ ){ //Mark point's on map
-            if (i %2 == 0){
-                square [battalion[i]-1][battalion[i+1]-1]= 1;
-            }
-        }
-        int countOfDays = 1;
+        int a = battalion [0];
+        int bi = battalion [1];
+        int c = battalion [2];
+        int d = battalion [3];
+        square[a -1][bi -1] = 1;
+        square[c -1][d -1] = 1;
+        int countOfDays = 1; // счетчик дней
         boolean flag = true;
-        int [] [] squareEtalon = new int[N][M];
-        for (int[] ints : squareEtalon) {
+        int [] [] squareSuper = new int[N][M];
+        for (int[] ints : squareSuper) {
             Arrays.fill(ints, 1);
         }
 
@@ -80,7 +82,7 @@ public class Level1 {
                 System.arraycopy(squareAllMatrix[y], 0, square[y], 0, square[0].length);
             }
             countOfDays = countOfDays + 1;
-            if (Arrays.deepEquals(squareEtalon,squareAllMatrix)) {
+            if (Arrays.deepEquals(squareSuper,squareAllMatrix)) {
                 flag = false;
             }
         }
