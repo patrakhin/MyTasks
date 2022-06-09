@@ -1,34 +1,50 @@
 import java.util.*;
 public class Level1 {
-    public static int [] MadMax(int N, int [] Tele) {
-        //arrange the array in ascending order
+    public static int [] SynchronizingTables(int N, int [] ids, int [] salary) {
+        //copy to new array and organize the list of employees
+        int [] newIds = new int[ids.length];
+        for (int i = 0; i < N; i++) {
+            newIds [i] = ids [i];
+        }
         int buffer;
         for (int j = 0; j < N; j ++) {
             int min = j;
             for (int i  = j + 1; i < N; i ++) {
-                if (Tele[min] > Tele[i]) {
+                if (newIds[min] > newIds[i]) {
                     min = i;
                 }
             }
-            buffer = Tele [j];
-            Tele [j] = Tele [min];
-            Tele [min] = buffer;
+            buffer = newIds [j];
+            newIds [j] = newIds [min];
+            newIds [min] = buffer;
         }
-        //middle array
-        int mid = 0 + ((Tele.length-1) - 0) / 2;
-        // order the array descending from the middle
-        int buffermid;
-        for (int j = mid; j < N; j ++) {
-            int max = j;
+        //copy to new array and organize the salary list
+        int [] newSalary = new int[salary.length];
+        for (int i = 0; i < N; i++) {
+            newSalary [i] = salary [i];
+        }
+        int bufferTwo;
+        for (int j = 0; j < N; j ++) {
+            int min = j;
             for (int i  = j + 1; i < N; i ++) {
-                if (Tele[max] < Tele[i]) {
-                    max = i;
+                if (newSalary[min] > newSalary[i]) {
+                    min = i;
                 }
             }
-            buffermid = Tele [j];
-            Tele [j] = Tele [max];
-            Tele [max] = buffermid;
+            bufferTwo = newSalary [j];
+            newSalary [j] = newSalary [min];
+            newSalary [min] = bufferTwo;
         }
-        return Tele;
+        //We will enter into the map of orderly employees and salaries
+        HashMap <Integer, Integer> myHashMap = new HashMap<>();
+        for (int i = 0; i < N; i++) {
+            myHashMap.put(newIds[i],newSalary[i]);
+        }
+        //Let’s unload our salary in the array according to the list of employees (which is given to us at the zadacha)
+        int [] newZarplata = new int[newSalary.length];
+        for (int j = 0; j < N; j++) {
+            newZarplata [j] = myHashMap.get(ids[j]);
+        }
+        return newZarplata;
     }
 }
