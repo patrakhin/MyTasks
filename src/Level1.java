@@ -1,73 +1,88 @@
-import  java.util.*;
+import java.util.*;
 public class Level1 {
-    public static String PatternUnlock (int N, int [] hits) {
-        int bufferConvertedNumber = 0; // buffer for converted numbers
-        ArrayList<Integer> arrayConvertedNumber = new ArrayList<>(); //array of converted pairs of numbers
-        StringBuilder stringConverted = new StringBuilder();
-        //converts an array into a string with a pair of numbers
-        for (int i = 0; i < N; i++) {
-            stringConverted.append(hits[i]);
-            for (int j = i+1; j < N; j++) {
-                stringConverted.append(hits[i + 1]);
-                bufferConvertedNumber = Integer.parseInt(String.valueOf(stringConverted)); // converted a string with a pair of numbers into a number
-                arrayConvertedNumber.add(bufferConvertedNumber); // add sequential numbers to the array
-                stringConverted = new StringBuilder();
-                if (stringConverted.toString().equals(""))
-                    break;
+    int [] WordSearch (int len, String s, String subs)   {
+        ArrayList<String> stringBroken = new ArrayList<>();
+        ArrayList<String> stringBuilt = new ArrayList<>();
+        StringBuilder buffer = new StringBuilder();
+        StringBuilder bufferBuilt = new StringBuilder();
+        StringBuilder subBuffer = new StringBuilder();
+        buffer.append(String.valueOf(s.charAt(0)));
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i) != '*' && i+1 < s.length()) {
+                buffer.append(String.valueOf(s.charAt(i)));
+                continue;
+            }
+            if (s.charAt(i) == '*') {
+                buffer.append(String.valueOf(s.charAt(i))); //без этого выбирает только слова без пробелов
+                stringBroken.add(buffer.toString());
+                buffer = new StringBuilder();
+            }
+            if (s.charAt(i) != '*' && i == s.length()-1) {
+                buffer.append(String.valueOf(s.charAt(i)));
+                stringBroken.add(buffer.toString());
+                buffer = new StringBuilder();
             }
         }
-        // create and fill in maps for straight and diagonals
-        int [] rowNumbers = new int[] {61, 16, 52, 25, 43, 34, 19, 91, 28, 82, 37, 73, 65, 56, 54, 45, 12, 21, 23, 32, 98, 89, 78, 87};
-        int [] diagonalNumbers = new  int[] {62, 26, 51, 15, 42, 24, 35, 53, 29, 92, 18, 81, 38, 83, 27, 72};
-        double rowValue = 1.0;
-        double diagonalValue = 1.414215;
-        HashMap <Integer, Double> rowMap = new HashMap<>();
-        for (int rowNumber : rowNumbers) {
-            rowMap.put(rowNumber, rowValue);
+        for (int i = 0; i < stringBroken.size(); i ++) {
+            if ((stringBroken.get(i)).length() <= len) { //если первая строка меньше ширины
+                bufferBuilt.append(stringBroken.get(i));
+                if (i < stringBroken.size() - 1 && (stringBroken.get(i+1)).length() <= len && (bufferBuilt.length() + (stringBroken.get(i + 1)).length()) <= len) { //1
+                    bufferBuilt.append(stringBroken.get(i + 1));
+                    i = (i + 1);
+                    continue;
+                }
+                if (i < stringBroken.size() - 1 && (stringBroken.get(i+1)).length() >= len && (bufferBuilt.length() + (stringBroken.get(i + 1)).length()) >= len) { //2
+                    stringBuilt.add(bufferBuilt.toString());
+                    bufferBuilt = new StringBuilder();
+                    continue;
+                }
+                if (i < stringBroken.size() - 1 && (stringBroken.get(i+1)).length() <= len && (bufferBuilt.length() + (stringBroken.get(i + 1)).length()) >= len) { //3
+                    stringBuilt.add(bufferBuilt.toString());
+                    bufferBuilt = new StringBuilder();
+                    continue;
+                }
+                if (i+1 == stringBroken.size() - 1 && (bufferBuilt.length() + (stringBroken.get(i + 1)).length()) >= len) { //4
+                    bufferBuilt.append(stringBroken.get(i + 1));
+                    stringBuilt.add(bufferBuilt.toString());
+                    bufferBuilt = new StringBuilder();
+                    continue;
+                }
+                if ((i+1) == stringBroken.size() - 1 && (bufferBuilt.length() + (stringBroken.get(i + 1)).length()) <= len) { //5
+                    bufferBuilt.append(stringBroken.get(i + 1));
+                    stringBuilt.add(bufferBuilt.toString());
+                    bufferBuilt = new StringBuilder();
+                }
+                if (i == stringBroken.size() - 1) { //6
+                    stringBuilt.add(bufferBuilt.toString());
+                    bufferBuilt = new StringBuilder();
+                }
+            }
+            if ((stringBroken.get(i)).length() >= len) {
+                bufferBuilt.append(stringBroken.get(i));
+                for (int j = 0; j < len; j++) {
+                    subBuffer.append(bufferBuilt.charAt(j)); //забираем символы в буфер на величину разбивки
+                }
+                stringBuilt.add(subBuffer.toString());
+                subBuffer = new StringBuilder();
+                for (int k = len; k < bufferBuilt.length(); k++) {
+                    subBuffer.append(bufferBuilt.charAt(k)); //забираем символы в буфер на величину разбивки
+                }
+                bufferBuilt = new StringBuilder(subBuffer.toString());
+                subBuffer = new StringBuilder();
+            }
+
+
         }
-        HashMap <Integer, Double> diagonalMap = new HashMap<>();
-        for (int diagonalNumber : diagonalNumbers) {
-            diagonalMap.put(diagonalNumber, diagonalValue);
-        }
-        //Looking for the values in the mats on the obtained array of pair numbers
-        //unload the results of the direct
-        ArrayList<Double>  resultRow = new ArrayList<>();
-        for (Integer item : arrayConvertedNumber) {
-            if (rowMap.containsKey(item)) {
-                resultRow.add(rowMap.get(item));
+
+        int [] result = new int[stringBuilt.size()];
+        for (int y = 0; y < stringBuilt.size(); y++) {
+            if ((stringBuilt.get(y)).contains(subs)) {
+                result[y] = 1;
+            }
+            if (!(stringBuilt.get(y)).contains(subs)) {
+                result [y] = 0;
             }
         }
-        //Looking for the values in the maps on the obtained array of pair numbers
-        //unload diagonal results into an array
-        ArrayList<Double> resultDiagonal = new ArrayList<>();
-        for (Integer integer : arrayConvertedNumber) {
-            if (diagonalMap.containsKey(integer)) {
-                resultDiagonal.add(diagonalMap.get(integer));
-            }
-        }
-        //comprising all the direct
-        double sumRow = 0.0;
-        for (Double value : resultRow) {
-            sumRow = sumRow + value;
-        }
-        //sum diagonals
-        double sumDiagonal = 0.0;
-        for (Double aDouble : resultDiagonal) {
-            sumDiagonal = sumDiagonal + aDouble;
-        }
-        //sum of straight and diagonal
-        double allSum = sumRow + sumDiagonal;
-        //set the accuracy of five characters after the point
-        int accurateValue = (int)(allSum * 100000);
-        //if the number is 0 - remove it
-        String cutValue = String.valueOf(accurateValue);
-        char [] conversionValue = cutValue.toCharArray();
-        StringBuilder bufferValue = new StringBuilder();
-        for (char c : conversionValue) {
-            if (c != '0') {
-                bufferValue.append(c);
-            }
-        }
-        return String.valueOf(bufferValue);
+        return result;
     }
 }
