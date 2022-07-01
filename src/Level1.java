@@ -1,32 +1,138 @@
 import java.util.*;
 public class Level1 {
-    public static int PrintingCosts (String Line) {
-        HashMap <Character, Integer> map  = new HashMap<>();
-        int count = 0;
-        map.put(' ',   0); map.put('!',    9); map.put('"',   6); map.put('#',  24); map.put('$',  29); map.put('%',  22);
-        map.put('&',  24); map.put('\'',   3 ); map.put('(',  12); map.put(')',  12); map.put('*',  17); map.put('+',  13);
-        map.put(',',   7); map.put('-',   7 ); map.put('.',   4); map.put('/',  10 ); map.put('0',  22); map.put('1',  19);
-        map.put('2',  22); map.put('3',  23); map.put('4',  21); map.put('5',  27); map.put('6',  26); map.put('7',  16);
-        map.put('8',  23); map.put('9',  26); map.put(':',   8); map.put(';',  11); map.put('<',  10); map.put('=',  14);
-        map.put('>',  10); map.put('?',  15); map.put('@',  32); map.put('A',  24); map.put('B',  29); map.put('C',  20);
-        map.put('D',  26); map.put('E',  26); map.put('F',  20); map.put('G',  25); map.put('H',  25); map.put('I',  18);
-        map.put('J',  18); map.put('K',  21); map.put('L',  16); map.put('M',  28); map.put('N',  25); map.put('O',  26);
-        map.put('P',  23); map.put('Q',  31); map.put('R',  28); map.put('S',  25); map.put('T',  16); map.put('U',  23);
-        map.put('V',  19); map.put('W',  26); map.put('X',  18); map.put('Y',  14); map.put('Z',  22); map.put('[',  18);
-        map.put('\\',  10); map.put(']',  18); map.put('^',   7); map.put('_',   8); map.put('`',   3); map.put('a',  23);
-        map.put('b',  25); map.put('c',  17); map.put('d',  25); map.put('e',  23); map.put('f',  18); map.put('g',  30);
-        map.put('h',  21); map.put('i',  15); map.put('j',  20); map.put('k',  21); map.put('l',  16); map.put('m',  22);
-        map.put('n',  18); map.put('o',  20); map.put('p',  25); map.put('q',  25); map.put('r',  13); map.put('s',  21);
-        map.put('t',  17); map.put('u',  17); map.put('v',  13); map.put('w',  19); map.put('x',  13); map.put('y',  24);
-        map.put('z',  19); map.put('{',  18); map.put('|',  12); map.put('}',  18); map.put('~',   9);
-        for (int i = 0; i < Line.length(); i++) {
-            if (map.containsKey(Line.charAt(i))) {
-                count += map.get(Line.charAt(i));
+    public static String BigMinus (String s1, String s2) {
+        int point = 9;
+        int a = 0;
+        int b = 0;
+        int c = 0;
+        int d = 0;
+        int diff = 0;
+        double s1a = 0;
+        double s2a = 0;
+        String buff ="";
+        String zeroC = "123";
+        String zeroD = "123";
+        boolean flag = false;
+        boolean banner = false;
+        StringBuilder subString = new StringBuilder(); //for cut strings
+        StringBuilder buildString1 = new StringBuilder(); //build string one
+        StringBuilder buildString2 = new StringBuilder(); //build string two
+        StringBuilder buildString1a = new StringBuilder();
+        StringBuilder buildString2a = new StringBuilder();
+        String buildString1b = "";
+        String buildString2b = "";
+        String bigMinus = "";
+        //strings <= 9 symbols
+        if (s1.length() <= point && s2.length() <= point) {
+            a = Integer.parseInt(s1);
+            b = Integer.parseInt(s2);
+            if (a >= b) {
+                c = a - b;
             }
-            if (!map.containsKey(Line.charAt(i))) {
-                count += 23;
+            else {
+                c = b - a;
+            }
+            bigMinus = String.valueOf(c);
+            return bigMinus;
+        }
+        //once string >=9 symbols and twice <= 9 symbols
+        if (s1.length() >= point && s2.length() <= point && !banner) {
+            diff = s1.length() - s2.length();
+            subString.append("0".repeat(diff));
+            banner = true;
+        }
+        if (s1.length() <= point && s2.length() >= point && !banner) {
+            buff = s1;
+            s1 = s2;
+            s2 = buff;
+            diff = s1.length() - s2.length();
+            subString.append("0".repeat(diff));
+            banner = true;
+        }
+
+        //searching the biggest string
+        if (s1.length() >= point && s2.length() >= point && !banner) {
+            buildString1.append(".");
+            buildString2.append(".");
+            for (int j = (s1.length() - point); j < s1.length(); j++) {
+                buildString1.append(s1.charAt(j)); // build right part s1 contains 9 symbols
+            }
+            for (int j = (s2.length() - point); j < s2.length(); j++) {
+                buildString2.append(s2.charAt(j)); // build right part s1 contains 9 symbols
+            }
+
+            for (int j =0 ; j < (s1.length() - point); j++) {
+                buildString1a.append(s1.charAt(j)); // build left part s1
+            }
+            for (int j =0 ; j < (s2.length() - point); j++) {
+                buildString2a.append(s2.charAt(j)); // build left part s2
+            }
+            buildString1b = buildString1a.toString() + buildString1;
+            buildString2b = buildString2a.toString() + buildString2;
+            s1a = Double.parseDouble(buildString1b);
+            s2a = Double.parseDouble(buildString2b);
+            if (s1a >= s2a) {                          //  s1 >= s2
+                diff = s1.length() - s2.length();
+                subString.append("0".repeat(Math.max(0, diff)));
+            }
+            else {
+                buff = s1;
+                s1 = s2;
+                s2 = buff;
+                diff = s1.length() - s2.length();
+                subString.append("0".repeat(Math.max(0, diff)));
             }
         }
-        return count;
+        buildString1 = new StringBuilder(); // reset
+        buildString2 = new StringBuilder(); // reset
+        subString.append(s2); // it's a second string now
+        for (int j = (s1.length() - point); j < s1.length(); j++) {
+            buildString1.append(s1.charAt(j));
+            buildString2.append(subString.charAt(j));
+        }
+        a = Integer.parseInt(buildString1.toString());
+        b = Integer.parseInt(buildString2.toString());
+        if (a >= b) {
+            c = a - b;
+        }
+        else {
+            a = a + 1000000000;
+            c = a - b;
+            flag = true;
+        }
+        if (c == 0) {
+            zeroC = "000000000";
+        }
+        a = 0; b = 0;
+        buildString1 = new StringBuilder();
+        buildString2 = new StringBuilder();
+        for (int j = 0; j < (s1.length() - point); j++) {
+            buildString1.append(s1.charAt(j));
+            buildString2.append(subString.charAt(j));
+        }
+        a = Integer.parseInt(buildString1.toString());
+        b = Integer.parseInt(buildString2.toString());
+        if (!flag) {
+            d = a - b;
+        }
+        else {
+            d = (a - 1) - b;
+        }
+        if (d == 0) {
+            zeroD = "";
+        }
+        if (d == 0 && c != 0) {
+            bigMinus = zeroD + Integer.toString(c);
+        }
+        if (d == 0 && c == 0) {
+            bigMinus = "0";
+        }
+        if (d != 0 && c == 0) {
+            bigMinus = String.valueOf(d) + zeroC;
+        }
+        if (d != 0 && c != 0) {
+            bigMinus = String.valueOf(d) + String.valueOf(c);
+        }
+        return bigMinus;
     }
 }
