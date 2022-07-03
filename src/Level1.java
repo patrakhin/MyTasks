@@ -2,9 +2,9 @@ import java.util.*;
 public class Level1 {
     public static String MassVote (int N, int [] Votes) {
         int maxNumber;
-        int indexNumberMax = 0; //потом добавь 1 т.к. это номера участников а они с нуля не начинаются :) - индекс самого большого числа
-        int maxNumberCount = 0; //счетчик количества самых больших чисел
-        int sumOfAllNumbers = 0; //сумма всех чисел - голосов - начинаем с самого первого
+        int indexNumberMax = 0;
+        int maxNumberCount = 0;
+        int sumOfAllNumbers = 0;
         double percentOfSum = 0;
         double percentOfSunAfterCut = 0;
         boolean flag = false;
