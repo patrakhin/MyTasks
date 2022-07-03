@@ -1,138 +1,55 @@
 import java.util.*;
 public class Level1 {
-    public static String BigMinus (String s1, String s2) {
-        int point = 9;
-        int a = 0;
-        int b = 0;
-        int c = 0;
-        int d = 0;
-        int diff = 0;
-        double s1a = 0;
-        double s2a = 0;
-        String buff ="";
-        String zeroC = "123";
-        String zeroD = "123";
+    public static String MassVote (int N, int [] Votes) {
+        int maxNumber;
+        int indexNumberMax = 0; //потом добавь 1 т.к. это номера участников а они с нуля не начинаются :) - индекс самого большого числа
+        int maxNumberCount = 0; //счетчик количества самых больших чисел
+        int sumOfAllNumbers = 0; //сумма всех чисел - голосов - начинаем с самого первого
+        double percentOfSum = 0;
+        double percentOfSunAfterCut = 0;
         boolean flag = false;
-        boolean banner = false;
-        StringBuilder subString = new StringBuilder(); //for cut strings
-        StringBuilder buildString1 = new StringBuilder(); //build string one
-        StringBuilder buildString2 = new StringBuilder(); //build string two
-        StringBuilder buildString1a = new StringBuilder();
-        StringBuilder buildString2a = new StringBuilder();
-        String buildString1b = "";
-        String buildString2b = "";
-        String bigMinus = "";
-        //strings <= 9 symbols
-        if (s1.length() <= point && s2.length() <= point) {
-            a = Integer.parseInt(s1);
-            b = Integer.parseInt(s2);
-            if (a >= b) {
-                c = a - b;
+        String majority = "majority";
+        String minority = "minority";
+        String winner = "winner";
+        String nowinner = "no winner";
+        String massVote = "";
+        //search biggest
+        maxNumber = Votes[0];
+        for (int i = 0; i < Votes.length; i ++) {
+            for (int j = i+1; j < Votes.length; j ++) {
+                if (Votes [j] > maxNumber) {
+                    maxNumber = Votes[j];
+                    indexNumberMax = j;
+                }
             }
-            else {
-                c = b - a;
-            }
-            bigMinus = String.valueOf(c);
-            return bigMinus;
+            sumOfAllNumbers += Votes[i];
         }
-        //once string >=9 symbols and twice <= 9 symbols
-        if (s1.length() >= point && s2.length() <= point && !banner) {
-            diff = s1.length() - s2.length();
-            subString.append("0".repeat(diff));
-            banner = true;
-        }
-        if (s1.length() <= point && s2.length() >= point && !banner) {
-            buff = s1;
-            s1 = s2;
-            s2 = buff;
-            diff = s1.length() - s2.length();
-            subString.append("0".repeat(diff));
-            banner = true;
-        }
-
-        //searching the biggest string
-        if (s1.length() >= point && s2.length() >= point && !banner) {
-            buildString1.append(".");
-            buildString2.append(".");
-            for (int j = (s1.length() - point); j < s1.length(); j++) {
-                buildString1.append(s1.charAt(j)); // build right part s1 contains 9 symbols
-            }
-            for (int j = (s2.length() - point); j < s2.length(); j++) {
-                buildString2.append(s2.charAt(j)); // build right part s1 contains 9 symbols
-            }
-
-            for (int j =0 ; j < (s1.length() - point); j++) {
-                buildString1a.append(s1.charAt(j)); // build left part s1
-            }
-            for (int j =0 ; j < (s2.length() - point); j++) {
-                buildString2a.append(s2.charAt(j)); // build left part s2
-            }
-            buildString1b = buildString1a.toString() + buildString1;
-            buildString2b = buildString2a.toString() + buildString2;
-            s1a = Double.parseDouble(buildString1b);
-            s2a = Double.parseDouble(buildString2b);
-            if (s1a >= s2a) {                          //  s1 >= s2
-                diff = s1.length() - s2.length();
-                subString.append("0".repeat(Math.max(0, diff)));
-            }
-            else {
-                buff = s1;
-                s1 = s2;
-                s2 = buff;
-                diff = s1.length() - s2.length();
-                subString.append("0".repeat(Math.max(0, diff)));
+        // counting number biggest
+        for (int vote : Votes) {
+            if (vote == maxNumber) {
+                maxNumberCount += 1;
             }
         }
-        buildString1 = new StringBuilder(); // reset
-        buildString2 = new StringBuilder(); // reset
-        subString.append(s2); // it's a second string now
-        for (int j = (s1.length() - point); j < s1.length(); j++) {
-            buildString1.append(s1.charAt(j));
-            buildString2.append(subString.charAt(j));
+        if (maxNumberCount > 1) {
+            massVote = nowinner;
+            return massVote; //re-election if max voice > 1
         }
-        a = Integer.parseInt(buildString1.toString());
-        b = Integer.parseInt(buildString2.toString());
-        if (a >= b) {
-            c = a - b;
-        }
-        else {
-            a = a + 1000000000;
-            c = a - b;
+        if (sumOfAllNumbers == 0) {
             flag = true;
+            massVote = nowinner;
+            return massVote; // re-election if nobody takes of voice
         }
-        if (c == 0) {
-            zeroC = "000000000";
+        if (maxNumberCount == 1 && !flag) {
+            // search % sum of all numbers
+            percentOfSum = (double) (Votes[indexNumberMax]*100)/sumOfAllNumbers; // search per cent
+            percentOfSunAfterCut = (double) ((int) (percentOfSum * 1000)) / 1000; //cut for 3 token
+            if (percentOfSunAfterCut > 50) {
+                massVote = majority + " " + winner + " " + (indexNumberMax + 1);
+            }
+            if (percentOfSunAfterCut <= 50) {
+                massVote = minority + " " + winner + " " + (indexNumberMax + 1);
+            }
         }
-        a = 0; b = 0;
-        buildString1 = new StringBuilder();
-        buildString2 = new StringBuilder();
-        for (int j = 0; j < (s1.length() - point); j++) {
-            buildString1.append(s1.charAt(j));
-            buildString2.append(subString.charAt(j));
-        }
-        a = Integer.parseInt(buildString1.toString());
-        b = Integer.parseInt(buildString2.toString());
-        if (!flag) {
-            d = a - b;
-        }
-        else {
-            d = (a - 1) - b;
-        }
-        if (d == 0) {
-            zeroD = "";
-        }
-        if (d == 0 && c != 0) {
-            bigMinus = zeroD + Integer.toString(c);
-        }
-        if (d == 0 && c == 0) {
-            bigMinus = "0";
-        }
-        if (d != 0 && c == 0) {
-            bigMinus = String.valueOf(d) + zeroC;
-        }
-        if (d != 0 && c != 0) {
-            bigMinus = String.valueOf(d) + String.valueOf(c);
-        }
-        return bigMinus;
+        return massVote;
     }
 }
