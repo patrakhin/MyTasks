@@ -4,8 +4,8 @@ public class Level1 {
         HashMap <String, Integer> map = new HashMap <>();
         String [] variable = {"P","R","G"};
         int d = track [0].length; //3
-        int tAbs = 0; //потеря времени на красном
-        int diff = 0; // целое при делении p % (r + g)
+        int tAbs = 0;
+        int diff = 0;
         int ostatok = 0;
         int sumtAbs = 0;
         int buffPointTraffic = 0;
