@@ -18,6 +18,10 @@ public class Level1 {
                 map.put (variable[i], track [k] [i]);
             }
             int p = map.get("P");
+            if (p > L) {
+                theEndOfRoad = L;
+                return theEndOfRoad;
+            }
             if (!noStop ) { // if before delay don't drop time
                 sumtAbs = 0;
             }
