@@ -3,12 +3,12 @@ public class Level1 {
     public static boolean TankRush (int H1, int W1, String S1, int H2, int W2, String S2) {
         int count = 0;
         //need vars and flags
-        int countStrings = 0; //
-        int buffSyncColumn = 0; //
-        boolean bannerSync = true; //
-        boolean bannerSync2 = true; //
+        int countStrings = 0;
+        int buffSyncColumn = 0;
+        boolean bannerSync = true;
+        boolean bannerSync2 = true;
         int markBannerTrue = 0;
-        boolean bannerTrue = false; //
+        boolean bannerTrue = false;
         //check size
         if (H2 > H1 || W2 > W1) {
             return false;
@@ -21,32 +21,24 @@ public class Level1 {
         //building map
         for (int i = 0; i < H1; i++) {
             for (int j = 0; j < W1; j++) {
-                while (count < S1.length()) {
                     if (S1.charAt(count) == ' ') {
                         count += 1;
-                        continue;
                     }
                     String d = String.valueOf(S1.charAt(count));
                     map[i][j] = Integer.parseInt(d);
                     count += 1;
-                    break;
-                }
             }
         }
         count = 0; //
         //building tank
         for (int i = 0; i < H2; i++) {
             for (int j = 0; j < W2; j++) {
-                while (count < S2.length()) {
                     if (S2.charAt(count) == ' ') {
                         count += 1;
-                        continue;
                     }
                     String v = String.valueOf(S2.charAt(count));
                     tank[i][j] = Integer.parseInt(v);
                     count += 1;
-                    break;
-                }
             }
         }
         // searching hit
