@@ -46,6 +46,7 @@ public class Level1 {
         int i = 0;
         int j = 0;
         int n = 0;
+        //int m = 0;
 
         while (i < H2) {
             if (markBannerTrue == 1) {
@@ -61,13 +62,15 @@ public class Level1 {
                     }
                     for (int m = 0; m < W1; m++) {
                         boolean breakEr = true;
+                        boolean coninuEr = true;
+                        boolean breakSync = true;
                         if (!bannerSync) { //sync
                             count = 0;
                             m = buffSyncColumn;
                             buffSyncColumn = 0; //
                             bannerSync2 = false;
                         }
-                        if (!bannerSync2 && tank [i] [0] != map [n] [m]) { //NO after sync
+                        if (!bannerSync2 && tank[i][0] != map[n][m]) { //NO after sync
                             bannerSync = true;
                             bannerSync2 = true;
                             count = 0;
@@ -76,17 +79,17 @@ public class Level1 {
                             i -= 1;
                             n -= 1;
                             j = 0;
-                            break;
+                            breakSync = false;
                         }
-                        if (tank [i] [j] != map [n] [m] && m + 1 != W1 - 1) { //NO after sync will set
+                        if (tank [i] [j] != map [n] [m] && m + 1 != W1 - 1 && breakSync) { //NO after sync will set
                             bannerSync = true;
                             bannerSync2 = true;
                             count = 0;
                             buffSyncColumn = 0;
                             countStrings = 0;
-                            continue; // go to next numb
+                            m++; // go to next numb
                         }
-                        if (tank[i][j] != map[n][m] && m + 1 == W1 - 1 && tank[i][j] != map[n][m + 1]) { //NO after sync will set
+                        if (tank[i][j] != map[n][m] && m + 1 == W1 - 1 && tank[i][j] != map[n][m + 1] && breakSync) { //NO after sync will set
                             bannerSync = true;
                             bannerSync2 = true;
                             count = 0;
@@ -94,33 +97,32 @@ public class Level1 {
                             countStrings = 0;
                             breakEr = false; //  and go to next string
                         }
-                        if (n == H1 - 1 && i != H2 - 1 && countStrings != H2 && breakEr) {
+                        if (n == H1 - 1 && i != H2 - 1 && countStrings != H2 && breakEr && breakSync) {
                             markBannerTrue = 1;
                             breakEr = false;
                         }
-                        if (!bannerSync2 && tank [i] [0] == map [n] [m]) { //YES after sync
+                        if (!bannerSync2 && tank[i][0] == map[n][m] && breakSync) { //YES after sync
                             bannerSync = true;
                             bannerSync2 = true;
                             count += 1;
                             buffSyncColumn = m;
                             j += 1;
-                            continue;
+                            coninuEr = false;
                         }
-                        if (bannerSync && tank [i] [j] == map [n] [m] && count == 0 && buffSyncColumn == 0) { //YES without sync
+                        if (bannerSync && tank [i] [j] == map [n] [m] && count == 0 && buffSyncColumn == 0 && coninuEr && breakSync) { //YES without sync
                             count += 1;
                             buffSyncColumn = m; //
                             j += 1;
-                            continue; // ИДЕМ ЗА СЛДЕДУЮЩ ЧИСЛОМ
+                            coninuEr = false; // go to next number
                         }
-                        if (bannerSync && tank [i] [j] == map [n] [m] && count != 0 && count  + 1 != W2) { //YES without sync
+                        if (bannerSync && tank [i] [j] == map [n] [m] && count != 0 && count  + 1 != W2 && coninuEr && breakSync) { //YES without sync
                             j += 1;
                             count += 1;
-                            continue;
                         }
-                        if (bannerSync && tank [i] [j] == map [n] [m] && count != 0 && count  + 1 == W2) { //YES without sync
+                        if (bannerSync && tank [i] [j] == map [n] [m] && count != 0 && count  + 1 == W2 && breakSync) { //YES without sync
                             count += 1;
                         }
-                        if (bannerSync && tank [i] [j] == map [n] [m] && count == W2 && i != H2 - 1 && breakEr) { //YES without sync
+                        if (bannerSync && tank [i] [j] == map [n] [m] && count == W2 && i != H2 - 1 && breakEr && breakSync) { //YES without sync
                             count = 0;
                             countStrings += 1;
                             i += 1;
@@ -128,19 +130,20 @@ public class Level1 {
                             bannerSync = false; // go to sync
                             breakEr = false;
                         }
-                        if (bannerSync  && count == W2 && i == H2 - 1 && countStrings == H2 - 1 && breakEr) {
+                        if (bannerSync  && count == W2 && i == H2 - 1 && countStrings == H2 - 1 && breakEr && breakSync) {
                             countStrings = H2; //HIT!!
                             markBannerTrue = 1;
                             bannerTrue = true;
                             breakEr = false;
                         }
-                        if (bannerSync  && count == W2 && i == H2 - 1 && countStrings != H2 && breakEr) {
+                        if (bannerSync  && count == W2 && i == H2 - 1 && countStrings != H2 && breakEr && breakSync) {
                             markBannerTrue = 1; // NO HIT !!!
                             breakEr = false;
                         }
-                        if (!breakEr) {
+                        if (!breakEr || !breakSync) {
                             break;
                         }
+
                     }
                     n++;
                 }
@@ -150,4 +153,5 @@ public class Level1 {
         }
         return bannerTrue;
     }
+
 }
