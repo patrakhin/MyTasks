@@ -86,7 +86,7 @@ public class Level1 {
                             countStrings = 0;
                             continue; // go to next numb
                         }
-                        if (tank [i] [j] != map [n] [m] && m + 1 == W1 - 1 && tank [i] [j] != map [n] [m + 1] && breakEr) { //NO after sync will set
+                        if (tank[i][j] != map[n][m] && m + 1 == W1 - 1 && tank[i][j] != map[n][m + 1]) { //NO after sync will set
                             bannerSync = true;
                             bannerSync2 = true;
                             count = 0;
@@ -96,7 +96,6 @@ public class Level1 {
                         }
                         if (n == H1 - 1 && i != H2 - 1 && countStrings != H2 && breakEr) {
                             markBannerTrue = 1;
-                            bannerTrue = false;
                             breakEr = false;
                         }
                         if (!bannerSync2 && tank [i] [0] == map [n] [m]) { //YES after sync
@@ -137,13 +136,11 @@ public class Level1 {
                         }
                         if (bannerSync  && count == W2 && i == H2 - 1 && countStrings != H2 && breakEr) {
                             markBannerTrue = 1; // NO HIT !!!
-                            bannerTrue = false;
                             breakEr = false;
                         }
                         if (!breakEr) {
                             break;
                         }
-
                     }
                     n++;
                 }
@@ -152,14 +149,5 @@ public class Level1 {
             i++;
         }
         return bannerTrue;
-    }
-    public static void main(String[] args) {
-        int H1 = 3;
-        int W1 = 4;
-        String S1 = "1234 2345 8987"; //map  "1234 2345 0987"   "1342 2398 0987"  "13429 87653 41872 58149"
-        int H2 = 2;
-        int W2 = 2;
-        String S2 = "34 98"; //tank  "34 98"   "34 98"  "342 765 187" "765 187"
-        System.out.println(TankRush(H1, W1, S1, H2, W2, S2));
     }
 }
