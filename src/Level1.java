@@ -43,20 +43,24 @@ public class Level1 {
         }
         // searching hit
         count = 0; // now it's hit of column
+        int i = 0;
+        int j = 0;
+        int n = 0;
 
-        for (int i = 0; i < H2; i++) {
+        while (i < H2) {
             if (markBannerTrue == 1) {
                 break;
             }
-            for (int j = 0; j < W2; j++) {
+            while (j < W2) {
                 if (markBannerTrue == 1) {
                     break;
                 }
-                for (int n = 0; n < H1; n ++) {
+                while (n < H1) {
                     if (markBannerTrue == 1) {
                         break;
                     }
                     for (int m = 0; m < W1; m++) {
+                        boolean breakEr = true;
                         if (!bannerSync) { //sync
                             count = 0;
                             m = buffSyncColumn;
@@ -82,18 +86,18 @@ public class Level1 {
                             countStrings = 0;
                             continue; // go to next numb
                         }
-                        if (tank [i] [j] != map [n] [m] && m + 1 == W1 - 1 && tank [i] [j] != map [n] [m + 1] ) { //NO after sync will set
+                        if (tank [i] [j] != map [n] [m] && m + 1 == W1 - 1 && tank [i] [j] != map [n] [m + 1] && breakEr) { //NO after sync will set
                             bannerSync = true;
                             bannerSync2 = true;
                             count = 0;
                             buffSyncColumn = 0;
                             countStrings = 0;
-                            break; //  and go to next string
+                            breakEr = false; //  and go to next string
                         }
-                        if (n == H1 - 1 && i != H2 - 1 && countStrings != H2) {
+                        if (n == H1 - 1 && i != H2 - 1 && countStrings != H2 && breakEr) {
                             markBannerTrue = 1;
                             bannerTrue = false;
-                            break;
+                            breakEr = false;
                         }
                         if (!bannerSync2 && tank [i] [0] == map [n] [m]) { //YES after sync
                             bannerSync = true;
@@ -117,29 +121,45 @@ public class Level1 {
                         if (bannerSync && tank [i] [j] == map [n] [m] && count != 0 && count  + 1 == W2) { //YES without sync
                             count += 1;
                         }
-                        if (bannerSync && tank [i] [j] == map [n] [m] && count == W2 && i != H2 - 1) { //YES without sync
+                        if (bannerSync && tank [i] [j] == map [n] [m] && count == W2 && i != H2 - 1 && breakEr) { //YES without sync
                             count = 0;
                             countStrings += 1;
                             i += 1;
                             j = 0;
                             bannerSync = false; // go to sync
-                            break;
+                            breakEr = false;
                         }
-                        if (bannerSync  && count == W2 && i == H2 - 1 && countStrings == H2 - 1 ) {
+                        if (bannerSync  && count == W2 && i == H2 - 1 && countStrings == H2 - 1 && breakEr) {
                             countStrings = H2; //HIT!!
                             markBannerTrue = 1;
                             bannerTrue = true;
-                            break;
+                            breakEr = false;
                         }
-                        if (bannerSync  && count == W2 && i == H2 - 1 && countStrings != H2) {
+                        if (bannerSync  && count == W2 && i == H2 - 1 && countStrings != H2 && breakEr) {
                             markBannerTrue = 1; // NO HIT !!!
                             bannerTrue = false;
+                            breakEr = false;
+                        }
+                        if (!breakEr) {
                             break;
                         }
+
                     }
+                    n++;
                 }
+                j++;
             }
+            i++;
         }
         return bannerTrue;
+    }
+    public static void main(String[] args) {
+        int H1 = 3;
+        int W1 = 4;
+        String S1 = "1234 2345 8987"; //map  "1234 2345 0987"   "1342 2398 0987"  "13429 87653 41872 58149"
+        int H2 = 2;
+        int W2 = 2;
+        String S2 = "34 98"; //tank  "34 98"   "34 98"  "342 765 187" "765 187"
+        System.out.println(TankRush(H1, W1, S1, H2, W2, S2));
     }
 }
