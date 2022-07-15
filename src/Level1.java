@@ -1,33 +1,25 @@
 import java.util.*;
 public class Level1 {
-    public static int MaximumDiscount (int N, int [] price) {
-        //variable
-        int buff = 0;
-        //arrange in descending order
-        for (int i = 0; i < price.length; i++) {
-            for (int j = i + 1; j < price.length; j++ ) {
-                if (price [i] < price [j]) {
-                    buff = price[j];
-                    price [j] = price[i];
-                    price [i] = buff;
-                }
+    public static boolean LineAnalysis (String line) {
+        int returnVar =0;
+        HashMap <String, Boolean> map = new HashMap<>();
+        map.put("*", true);
+        map.put("**", true);
+        map.put("***", true);
+        map.put("*.*", true);
+        map.put("*..*..*..*..*..*..*", true);
+        map.put("*.......*.......*", true);
+        for (int i = 0; i < map.size(); i++) {
+            if (map.containsKey(line)) {
+                returnVar = 1 ;
+            }
+            if (!map.containsKey(line)) {
+                returnVar = 0;
             }
         }
-        // count items for free ver.1
-        int freeItemsVer1 = N / 3;
-        // savingsVer1
-        int savingsVer1 = 0;
-        int count = price.length - freeItemsVer1;
-        while (count < price.length) {
-            savingsVer1 += price[count];
-            count += 1;
+        if (returnVar == 1) {
+            return true;
         }
-        // savingsVer2
-        int savingsVer2 = 0;
-        for (int i = 2; i < price.length; i+=3) {
-            savingsVer2 += price [i];
-        }
-        // comparing discount and return Max
-        return Math.max(savingsVer1, savingsVer2);
+        return false;
     }
 }
