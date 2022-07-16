@@ -35,7 +35,10 @@ public class Level1 {
                 }
             }
         }
-
+        // compare N with MAX
+        if (N != standard [standard.length - 1]) {
+            return false;
+        }
         // sorting increasing
         buff = 0;
         int countHit =0;
