@@ -63,14 +63,18 @@ public class Level1 {
                     countHit += 1;
                 }
             }
+            if (countHit == increasing.length) {
+                break;
+            }
             countHit = 0;
             long endTime = System.currentTimeMillis();
             if (endTime-startTime > 1000) {
                 flagTime = false;
                 break;
             }
-            if (countHit == increasing.length) {
-                break;
+            if (k == increasing.length - 1 && countHit != increasing.length) {
+                found = false;
+                return false;
             }
         }
         return flagTime;
