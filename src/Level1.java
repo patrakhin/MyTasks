@@ -35,6 +35,20 @@ public class Level1 {
             value = "";
             breakEr = false;
         }
+
+        //refresh stringKey after build mapItems
+        ArrayList <String> newStringKey = new ArrayList<>(mapItems.keySet());
+        stringKey = newStringKey.toArray(new String[0]);
+
+
+        //refresh intValue after build mapItems
+        intValue = new int[mapItems.size()];
+        ArrayList <Integer> intValueRefresh = new ArrayList<>(mapItems.values());
+        for (int i = 0; i < intValueRefresh.size(); i++) {
+            intValue [i] = intValueRefresh.get(i);
+        }
+
+
         //put in mapIndex double values
         for (int i = 0; i < mapItems.size(); i++) {
             for (int k = i + 1; k < mapItems.size(); k++) {
@@ -96,4 +110,5 @@ public class Level1 {
         }
         return endArray;
     }
+
 }
