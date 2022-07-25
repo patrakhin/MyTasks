@@ -10,10 +10,12 @@ public class Level1 {
     static HashMap <Integer, String> mapStory = new HashMap<>();
     static int storyCountStory = 0;
     static int countUndo = 0;
+    static int countRedo = 0;
     static boolean flagUndo = false;
     static int memoryOfStoryCountStory = 0; // :)
     static int memoryForRedo = 0;
     static int countDA = 0;
+    static int countPutAndDeleteItem = 0;
     //creat map - command
     static {
         mapCommand.put(1, "Put");
@@ -23,7 +25,8 @@ public class Level1 {
         mapCommand.put(5, "Redo()");
     }
     //
-    public static String BastShoe (String enter) {
+
+    public static String exit (String enter) {
         String commandBuffer = "";
         String stringBuffer = "";
         String stringBufferForDeleteItem = "";
@@ -64,6 +67,22 @@ public class Level1 {
             }
             stringBuffer += enter.charAt(i);
         }
+
+        //
+
+        //catcher for Undo
+        if (commandBuffer.equals("Put") || commandBuffer.equals("DeleteItem") || commandBuffer.equals("Redo()")) {
+            countPutAndDeleteItem += 1;
+        }
+        if (commandBuffer.equals("Undo()") && countPutAndDeleteItem > 0) {
+            countPutAndDeleteItem -= 1;
+        }
+        if (commandBuffer.equals("Undo()") && countPutAndDeleteItem <= 0) {
+            outString = "";
+            commandBuffer = "";
+            stringBuffer = "";
+        }
+
         // drop flagUNDO
         if ((commandBuffer.equals("Put") || commandBuffer.equals("DeleteItem")) && flagUndo) {
             stringBufferForDrop = storyArray.get(storyArray.size() - 1);
@@ -85,10 +104,29 @@ public class Level1 {
             countUndo = 0;
             memoryOfStoryCountStory = 0; // :)
             memoryForRedo = 0;
+            drop = "drop";
         }
+
         // add to mapStory
         storyCountStory += 1;
         mapStory.put(storyCountStory,commandBuffer);
+
+        // relation Undo with Redo
+        if (countUndo == 0) {
+            countRedo = 0;
+        }
+        //counter Redo
+        if (commandBuffer.equals("Redo()")) {
+            countRedo += 1;
+        }
+        //catcher for Redo
+        if (commandBuffer.equals("Redo()") && countUndo <= 0) {
+            outString = "";
+            outString = storyArray.get(storyArray.size() - 1);
+            commandBuffer = "";
+            stringBuffer = "";
+        }
+
         //block command-arrayStorage with Put ONCE
         if ((commandBuffer.equals("Put") && storyArray.isEmpty())) {
             storyArray.add(String.valueOf(stringBuffer));
@@ -108,16 +146,19 @@ public class Level1 {
             stringBuffer = "";
         }
         //block output string with Put
+
         if (commandBuffer.equals("Put")) {
             outString = "";
             outString = storyArray.get(storyArray.size() - 1);
             commandBuffer = "";
         }
+
         //block command-arrayStorage with DeleteItem
         if (commandBuffer.equals("DeleteItem")) {
             itemsDelete = Integer.parseInt(String.valueOf(stringBuffer));
             stringBuffer = "";
         }
+
         if (commandBuffer.equals("DeleteItem") && itemsDelete <= (String.valueOf(storyArray.get(storyArray.size() - 1))).length()) {
             stringBufferForDeleteItem += storyArray.get(storyArray.size() - 1);
         }
@@ -128,6 +169,7 @@ public class Level1 {
             mapStory.remove(storyCountStory);
             storyCountStory -= 1;
         }
+
         for ( int i = 0 ;i < (stringBufferForDeleteItem.length() - 1) - (itemsDelete - 1) ; i++) {
             if (commandBuffer.equals("DeleteItem")) {
                 stringBuffer += stringBufferForDeleteItem.charAt(i);
@@ -164,6 +206,7 @@ public class Level1 {
             outString = storyArray.get(storyArray.size() - 1);
             break;
         }
+
         //block Undo()
         int a = storyCountStory;
         for (; a > 0 && commandBuffer.equals("Undo()") && countUndo == 0; a --) {
@@ -209,25 +252,31 @@ public class Level1 {
                 break;
             }
         }
+        if ( commandBuffer.equals("Undo()") && mapStory.get(storyCountStory - 1).contains("Redo()")) {
+            storyArray.add(storyArray.get((storyArray.size() - 1) - 1));
+            outString = storyArray.get(storyArray.size() - 1);
+        }
         //block REDO()
-        int c = storyCountStory;
-        for (; c > 0 && commandBuffer.equals("Redo()"); c --) {
-            if (mapStory.get(storyCountStory).contains("Undo()")) {
-                storyArray.add(storyArray.get(c));
+        int c = storyCountStory - 1;
+        for (; c > 0 && commandBuffer.equals("Redo()") && countRedo == 1; c --) {
+            if (mapStory.get(c).contains("Undo()")) {
+                storyArray.add(storyArray.get(c - 2));
                 outString = storyArray.get(storyArray.size() - 1);
                 countUndo -= 1;
                 memoryForRedo = (c - 1);
+                countStoryArray += 1;
                 commandBuffer = "";
                 break;
             }
         }
         int d = memoryForRedo;
-        for (; d > 0 && commandBuffer.equals("Redo()"); d --) {
-            if (mapStory.get(storyCountStory).contains("Undo()")) {
+        for (; d > mapStory.size() - 1 && commandBuffer.equals("Redo()") && countRedo > 1; d --) {
+            if (mapStory.get(d).contains("Undo()")) {
                 storyArray.add(storyArray.get(d));
                 outString = storyArray.get(storyArray.size() - 1);
                 countUndo -= 1;
                 memoryForRedo = (d - 1);
+                commandBuffer = "";
                 break;
             }
         }
