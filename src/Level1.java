@@ -26,7 +26,7 @@ public class Level1 {
     }
     //
 
-    public static String exit (String command) {
+    public static String BastShoe(String command) {
         String commandBuffer = "";
         String stringBuffer = "";
         String stringBufferForDeleteItem = "";
