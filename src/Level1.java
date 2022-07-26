@@ -26,7 +26,7 @@ public class Level1 {
     }
     //
 
-    public static String exit (String enter) {
+    public static String exit (String command) {
         String commandBuffer = "";
         String stringBuffer = "";
         String stringBufferForDeleteItem = "";
@@ -39,33 +39,33 @@ public class Level1 {
         int itemsOutput =0;
         String drop = "";
         //loop - reader incoming string
-        for (int i = 0; i < enter.length(); i++) {
-            if (i == 0 && (!Character.isDigit(enter.charAt(i))) ) {
+        for (int i = 0; i < command.length(); i++) {
+            if (i == 0 && (!Character.isDigit(command.charAt(i))) ) {
                 outString = "";
                 outString = storyArray.get(storyArray.size() - 1);
                 commandBuffer = "";
                 stringBuffer = "";
             }
             if (i == 0 ) {
-                commandBuffer += mapCommand.get(Integer.parseInt(String.valueOf(enter.charAt(i))));
+                commandBuffer += mapCommand.get(Integer.parseInt(String.valueOf(command.charAt(i))));
                 continue;
             }
-            if (i == 1 && enter.charAt(i) != ' ') {
+            if (i == 1 && command.charAt(i) != ' ') {
                 outString = "";
                 outString = storyArray.get(storyArray.size() - 1);
                 commandBuffer = "";
                 stringBuffer = "";
             }
-            if ((commandBuffer.contains("4") || commandBuffer.contains("5")) && enter.length() > 1) {
+            if ((commandBuffer.contains("4") || commandBuffer.contains("5")) && command.length() > 1) {
                 outString = "";
                 outString = storyArray.get(storyArray.size() - 1);
                 commandBuffer = "";
                 stringBuffer = "";
             }
-            if (i == 1 && enter.charAt(i) == ' ') {
+            if (i == 1 && command.charAt(i) == ' ') {
                 continue;
             }
-            stringBuffer += enter.charAt(i);
+            stringBuffer += command.charAt(i);
         }
 
         //
