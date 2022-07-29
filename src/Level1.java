@@ -90,9 +90,21 @@ public class Level1 {
 
 
         // add to mapStory after DROP
-        if (flagUndo == true && (commandBuffer.equals("Put") || commandBuffer.equals("DeleteItem")) && mapStory.get(countMapStory - 1).equals("Undo()")) {
+
+        if (flagUndo == true && commandBuffer.equals("Put") && mapStory.get(countMapStory - 1).equals("Undo()")) {
             memoryUndo = 0;
-            countUndo = 0;
+            countRedo = 0;
+            memoryRedo = 0;
+            countUndo = 1;///////
+            countPutAndDeleteItem += 1;
+            flagUndo = false;
+        }
+        if (flagUndo == true && commandBuffer.equals("DeleteItem") && mapStory.get(countMapStory - 1).equals("Undo()")) {
+            memoryUndo = 0;
+            countRedo = 0;
+            memoryRedo = 0;
+            countUndo = 1;///////
+            countPutAndDeleteItem += 1;
             flagUndo = false;
         }
 
