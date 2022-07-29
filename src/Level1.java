@@ -108,7 +108,7 @@ public class Level1 {
             flagUndo = false;
         }
 
-        //exception
+        //exception UNDO
         if (commandBuffer.equals("Undo()") && mapStory.size() == 1) {
             outString = "";
             stringBuffer = "";
@@ -117,6 +117,21 @@ public class Level1 {
             countStoryArray += 1;
         }
         if (commandBuffer.equals("Undo()") && mapStory.size() == 2) {
+            outString = "";
+            stringBuffer = "";
+            commandBuffer = "";
+            storyArray.add(String.valueOf(stringBuffer));
+            countStoryArray += 1;
+        }
+        //eception REDO
+        if (commandBuffer.equals("Redo()") && mapStory.size() == 1) {
+            outString = "";
+            stringBuffer = "";
+            commandBuffer = "";
+            storyArray.add(String.valueOf(stringBuffer));
+            countStoryArray += 1;
+        }
+        if (commandBuffer.equals("Redo()") && mapStory.size() == 2) {
             outString = "";
             stringBuffer = "";
             commandBuffer = "";
