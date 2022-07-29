@@ -207,31 +207,31 @@ public class Level1 {
         }
 
 
-        //block UNDO
+//block UNDO
         int b;
         if (countUndo == 1) {
             b = countMapStory;
-            memoryLimitUndo = countMapStory;
         }
         else {
             b = memoryUndo;
         }
-        for (; b > 0 ; b --) { //
-            if (commandBuffer.equals("Undo()") && (mapStory.get(b).contains("Put") || mapStory.get(b).contains("DeleteItem")) && b != 1) {
-                storyArray.add(storyArray.get(b - 2)); // взял строку из истории с этим номером и добавил ее последней в истории
-                System.out.println(storyArray.get(b - 2));
-                outString = storyArray.get((storyArray.size() - 1)); // поместил послед строку в вывод
-                flagUndo = true; //показал что УНДО сработал
-                memoryUndo = b - 1; // запомнил номер строки по которой пришел ПУТ (и уменьшил на 1 чтобы со след начать)
+        for (; b == 1 ; b --) { //
+            if (commandBuffer.equals("Undo()") && (mapStory.get(b).contains("Put") || mapStory.get(b).contains("DeleteItem")) && (b-1) != 0) {
+                storyArray.add(storyArray.get(b - 1));
+                System.out.println(storyArray.get(b - 1));
+                outString = storyArray.get((storyArray.size() - 1));
+                flagUndo = true;
+                memoryUndo = b ;
                 countStoryArray += 1;
                 commandBuffer = "";
                 stringBuffer = "";
                 break;
             }
-            if (commandBuffer.equals("Undo()") && (mapStory.get(b).contains("Put") || mapStory.get(b).contains("DeleteItem")) && b == 1) {
-                storyArray.add(storyArray.get(b-1)); // взял строку из истории с этим номером и добавил ее последней в истории
-                outString = storyArray.get((storyArray.size() - 1)); // поместил послед строку в вывод
+            if (commandBuffer.equals("Undo()") && (mapStory.get(b).contains("Put") || mapStory.get(b).contains("DeleteItem")) && (b-1) == 0) {
+                storyArray.add("");
+                outString = storyArray.get((storyArray.size() - 1));
                 flagUndo = true;
+                memoryUndo = b ;
                 countStoryArray += 1;
                 commandBuffer = "";
                 stringBuffer = "";
@@ -251,21 +251,23 @@ public class Level1 {
             t = memoryRedo;
         }
 
-        for (; t >= 2; t--) {
-            if (commandBuffer.equals("Redo()") && mapStory.get(t).contains("Undo()") && t !=2 ) {
-                storyArray.add(storyArray.get(t -2));
-
+        for (; t == 1; t--) {
+            if (commandBuffer.equals("Redo()") && mapStory.get(t).contains("Undo()") && (t - 1) != 0) {
+                storyArray.add(storyArray.get(t - 1));
+                System.out.println(storyArray.get(t - 1));
                 outString = storyArray.get((storyArray.size() - 1));
-                memoryRedo = t - 1;
+                flagUndo = true;
+                memoryUndo = t ;
                 countStoryArray += 1;
                 commandBuffer = "";
                 stringBuffer = "";
                 break;
             }
-            if (commandBuffer.equals("Redo()") && !mapStory.get(t).contains("Undo()") && t == 2  ) {
-                storyArray.add(storyArray.get(memoryRedo - 1));
+            if (commandBuffer.equals("Redo()") && !mapStory.get(t).contains("Undo()") && (t - 1) == 0) {
+                storyArray.add("");
                 outString = storyArray.get((storyArray.size() - 1));
                 flagUndo = true;
+                memoryUndo = t ;
                 countStoryArray += 1;
                 commandBuffer = "";
                 stringBuffer = "";
