@@ -125,14 +125,7 @@ public class Level1 {
             storyArray.add(String.valueOf(stringBuffer));
             countStoryArray += 1;
         }
-        if (commandBuffer.equals("Undo()") && mapStory.size() > 2 && mapStory.get(1).contains("Put") && countPutAndDeleteItem == 1) {
-            outString = "";
-            stringBuffer = "";
-            commandBuffer = "";
-            memoryUndo = 1;
-            storyArray.add(String.valueOf(stringBuffer));
-            countStoryArray += 1;
-        }
+
         //exception REDO
         if (commandBuffer.equals("Redo()") && mapStory.size() == 1) {
             outString = "";
@@ -237,20 +230,21 @@ public class Level1 {
         else {
             b = memoryUndo;
         }
-        for (; b >= 1 ; b --) { //
-            if (commandBuffer.equals("Undo()") && (mapStory.get(b).contains("Put") || mapStory.get(b).contains("DeleteItem")) && memoryUndo != 1) {
-                storyArray.add(storyArray.get(b - 2));
-                outString = storyArray.get((storyArray.size() - 1));
-                flagUndo = true;
-                memoryUndo = b - 1;
+        for (; b > 0 ; b --) { //
+            if (commandBuffer.equals("Undo()") && (mapStory.get(b).contains("Put") || mapStory.get(b).contains("DeleteItem")) && b != 1) {
+                storyArray.add(storyArray.get(b - 2)); // взял строку из истории с этим номером и добавил ее последней в истории
+                System.out.println(storyArray.get(b - 2));
+                outString = storyArray.get((storyArray.size() - 1)); // поместил послед строку в вывод
+                flagUndo = true; //показал что УНДО сработал
+                memoryUndo = b - 1; // запомнил номер строки по которой пришел ПУТ (и уменьшил на 1 чтобы со след начать)
                 countStoryArray += 1;
                 commandBuffer = "";
                 stringBuffer = "";
                 break;
             }
-            if (commandBuffer.equals("Undo()") && (mapStory.get(b).contains("Put") || mapStory.get(b).contains("DeleteItem")) && memoryUndo == 1) {
-                storyArray.add(storyArray.get(0));
-                outString = storyArray.get((storyArray.size() - 1));
+            if (commandBuffer.equals("Undo()") && (mapStory.get(b).contains("Put") || mapStory.get(b).contains("DeleteItem")) && b == 1) {
+                storyArray.add(storyArray.get(0)); // взял строку из истории с этим номером и добавил ее последней в истории
+                outString = storyArray.get((storyArray.size() - 1)); // поместил послед строку в вывод
                 flagUndo = true;
                 countStoryArray += 1;
                 commandBuffer = "";
