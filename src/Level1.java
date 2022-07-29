@@ -81,7 +81,7 @@ public class Level1 {
             storyArray.add(stringBufferForDrop);
             countStoryArray = 1;
             countMapStory = 1;
-            memoryUndo = 0;
+            memoryUndo = 1;
             memoryRedo = 0;
             countRedo = 0;
             countUndo = 0;
@@ -229,7 +229,7 @@ public class Level1 {
                 break;
             }
             if (commandBuffer.equals("Undo()") && (mapStory.get(b).contains("Put") || mapStory.get(b).contains("DeleteItem")) && b == 1) {
-                storyArray.add(storyArray.get(0)); // взял строку из истории с этим номером и добавил ее последней в истории
+                storyArray.add(storyArray.get(b-1)); // взял строку из истории с этим номером и добавил ее последней в истории
                 outString = storyArray.get((storyArray.size() - 1)); // поместил послед строку в вывод
                 flagUndo = true;
                 countStoryArray += 1;
@@ -263,7 +263,7 @@ public class Level1 {
                 break;
             }
             if (commandBuffer.equals("Redo()") && !mapStory.get(t).contains("Undo()") && t == 2  ) {
-                storyArray.add(storyArray.get(memoryRedo));
+                storyArray.add(storyArray.get(memoryRedo - 1));
                 outString = storyArray.get((storyArray.size() - 1));
                 flagUndo = true;
                 countStoryArray += 1;
