@@ -92,6 +92,7 @@ public class Level1 {
         // add to mapStory after DROP
         if (flagUndo == true && (commandBuffer.equals("Put") || commandBuffer.equals("DeleteItem")) && mapStory.get(countMapStory - 1).equals("Undo()")) {
             memoryUndo = 0;
+            countUndo = 0;
             flagUndo = false;
         }
 
