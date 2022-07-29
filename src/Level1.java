@@ -108,6 +108,21 @@ public class Level1 {
             flagUndo = false;
         }
 
+        //exception
+        if (commandBuffer.equals("Undo()") && mapStory.size() == 1) {
+            outString = "";
+            stringBuffer = "";
+            commandBuffer = "";
+            storyArray.add(String.valueOf(stringBuffer));
+            countStoryArray += 1;
+        }
+        if (commandBuffer.equals("Undo()") && mapStory.size() == 2) {
+            outString = "";
+            stringBuffer = "";
+            commandBuffer = "";
+            storyArray.add(String.valueOf(stringBuffer));
+            countStoryArray += 1;
+        }
 
         //block command-arrayStorage with Put ONCE
         if ((commandBuffer.equals("Put") && storyArray.isEmpty())) {
