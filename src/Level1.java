@@ -79,6 +79,7 @@ public class Level1 {
             stringBufferForDrop = storyArray.get(countMapStory - 1);
             storyArray = new ArrayList<>();
             storyArray.add(stringBufferForDrop);
+            countStoryArray = 1;
             countMapStory = 1;
             memoryUndo = 0;
             memoryRedo = 0;
