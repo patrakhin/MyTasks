@@ -69,44 +69,29 @@ public class Level1 {
             stringBuffer += command.charAt(i);
         }
 
-        //block all counters
-        if (commandBuffer.equals("Put") || commandBuffer.equals("DeleteItem")) {
-            countPutAndDeleteItem += 1;
+        // add to mapStory after DROP
+
+        if (flagUndo == true && (commandBuffer.equals("DeleteItem") || commandBuffer.equals("Put")) && mapStory.get(countMapStory - 1).equals("Undo()")) {
+
+            stringBufferForDrop = mapStory.get(countMapStory - 1);
+            mapStory = new HashMap<>();
+            mapStory.put(1,stringBufferForDrop);
+            stringBufferForDrop = storyArray.get(countMapStory - 1);
+            storyArray = new ArrayList<>();
+            storyArray.add(stringBufferForDrop);
+            countMapStory = 1;
+            memoryUndo = 0;
+            memoryRedo = 0;
+            countRedo = 0;
+            countUndo = 0;
+
+            flagUndo = false;
         }
-        if (commandBuffer.equals("Undo()")) {
-            countUndo += 1;
-        }
-        if (commandBuffer.equals("Redo()")) {
-            countRedo += 1;
-        }
+
+
         // add to mapStory
         countMapStory += 1;
         mapStory.put(countMapStory,commandBuffer);
-
-
-        if (countRedo == 1) {
-            memoryLimitUndo = countUndo;
-        }
-
-
-        // add to mapStory after DROP
-
-        if (flagUndo == true && commandBuffer.equals("Put") && mapStory.get(countMapStory - 1).equals("Undo()")) {
-            memoryUndo = 0;
-            countRedo = 0;
-            memoryRedo = 0;
-            countUndo = 1;///////
-            countPutAndDeleteItem += 1;
-            flagUndo = false;
-        }
-        if (flagUndo == true && commandBuffer.equals("DeleteItem") && mapStory.get(countMapStory - 1).equals("Undo()")) {
-            memoryUndo = 0;
-            countRedo = 0;
-            memoryRedo = 0;
-            countUndo = 1;///////
-            countPutAndDeleteItem += 1;
-            flagUndo = false;
-        }
 
         //exception UNDO
         if (commandBuffer.equals("Undo()") && mapStory.size() == 1) {
