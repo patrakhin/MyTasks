@@ -113,13 +113,15 @@ public class Level1 {
             outString = "";
             stringBuffer = "";
             commandBuffer = "";
+            memoryUndo = 1;
             storyArray.add(String.valueOf(stringBuffer));
             countStoryArray += 1;
         }
-        if (commandBuffer.equals("Undo()") && mapStory.size() == 2) {
+        if (commandBuffer.equals("Undo()") && mapStory.size() == 2 && mapStory.get(2).contains("Undo()") ) {
             outString = "";
             stringBuffer = "";
             commandBuffer = "";
+            memoryUndo = 2;
             storyArray.add(String.valueOf(stringBuffer));
             countStoryArray += 1;
         }
@@ -127,6 +129,7 @@ public class Level1 {
             outString = "";
             stringBuffer = "";
             commandBuffer = "";
+            memoryUndo = 1;
             storyArray.add(String.valueOf(stringBuffer));
             countStoryArray += 1;
         }
@@ -135,13 +138,15 @@ public class Level1 {
             outString = "";
             stringBuffer = "";
             commandBuffer = "";
+            memoryRedo = 1;
             storyArray.add(String.valueOf(stringBuffer));
             countStoryArray += 1;
         }
-        if (commandBuffer.equals("Redo()") && mapStory.size() == 2) {
+        if (commandBuffer.equals("Redo()") && mapStory.size() == 2 &&  mapStory.get(2).contains("Redo()")) {
             outString = "";
             stringBuffer = "";
             commandBuffer = "";
+            memoryRedo = 2;
             storyArray.add(String.valueOf(stringBuffer));
             countStoryArray += 1;
         }
