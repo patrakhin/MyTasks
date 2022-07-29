@@ -123,14 +123,14 @@ public class Level1 {
             storyArray.add(String.valueOf(stringBuffer));
             countStoryArray += 1;
         }
-        if (commandBuffer.equals("Undo()") && mapStory.size() > 2 && mapStory.get(1).contains("Put")) {
+        if (commandBuffer.equals("Undo()") && mapStory.size() > 2 && mapStory.get(1).contains("Put") && countPutAndDeleteItem == 1) {
             outString = "";
             stringBuffer = "";
             commandBuffer = "";
             storyArray.add(String.valueOf(stringBuffer));
             countStoryArray += 1;
         }
-        //eception REDO
+        //exception REDO
         if (commandBuffer.equals("Redo()") && mapStory.size() == 1) {
             outString = "";
             stringBuffer = "";
