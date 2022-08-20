@@ -131,8 +131,7 @@ public class Level1 {
             stringBuffer = "";
         }
         if (commandBuffer.equals("OutputItem") && (itemsOutput > (allStoryStrings.get(allStoryStrings.size() - 1).length() - 1) || itemsOutput < 0)) {
-            allStoryStrings.add("");
-            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            outString = "";
             commandBuffer = "";
             flagLimitItems = false;
             stringBuffer = "";
@@ -146,14 +145,14 @@ public class Level1 {
         //block Undo
         if (commandBuffer.equals("Undo()") && memoryUndo.size() > 1 && !flagUndo) {
             flagUndo = true;
-            memoryRedo.add(memoryUndo.size() - 1);
+            memoryRedo.add(memoryUndo.get(memoryUndo.size() - 1));
             memoryUndo.remove(memoryUndo.size() - 1);
             allStoryStrings.add(allStoryStrings.get(memoryUndo.size() - 1));
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
         }
         if (commandBuffer.equals("Undo()") && memoryUndo.size() > 1 && flagUndo) {
-            memoryRedo.add(memoryUndo.size() - 1);
+            memoryRedo.add(memoryUndo.get(memoryUndo.size() - 1));
             memoryUndo.remove(memoryUndo.size() - 1);
             allStoryStrings.add(allStoryStrings.get(memoryUndo.size() - 1));
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
