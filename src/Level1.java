@@ -110,7 +110,7 @@ public class Level1 {
             itemsOutput = Integer.parseInt(stringBuffer);
             stringBuffer = "";
         }
-        if (commandBuffer.equals("OutputItem") && itemsOutput > allStoryStrings.get(allStoryStrings.size() - 1).length()) {
+        if (commandBuffer.equals("OutputItem") && (itemsOutput > allStoryStrings.get(allStoryStrings.size() - 1).length() || itemsOutput < 0)) {
             allStoryStrings.add("");
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
