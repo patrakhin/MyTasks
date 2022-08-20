@@ -38,23 +38,38 @@ public class Level1 {
         //loop - reader incoming string
         for (int i = 0; i < command.length(); i++) {
             if (i == 0 && (!Character.isDigit(command.charAt(i))) ) {
-                outString = allStoryStrings.get(0);
+                outString = allStoryStrings.get(allStoryStrings.size() - 1);
             }
             if (i == 0 ) {
                 commandBuffer += mapCommand.get(Integer.parseInt(String.valueOf(command.charAt(i))));
                 continue;
             }
             if (i == 1 && command.charAt(i) != ' ') {
-                outString = allStoryStrings.get(0);
+                outString = allStoryStrings.get(allStoryStrings.size() - 1);
             }
             if ((commandBuffer.contains("4") || commandBuffer.contains("5")) && command.length() > 1) {
-                outString = allStoryStrings.get(0);
+                outString = allStoryStrings.get(allStoryStrings.size() - 1);
             }
             if (i == 1 && command.charAt(i) == ' ') {
                 continue;
             }
             stringBuffer += command.charAt(i);
         }
+        // checks of the correct entry
+        for (int i = 0; i < stringBuffer.length(); i++) {
+            if ((commandBuffer.equals("DeleteItem") || commandBuffer.equals("OutputItem")) && (!Character.isDigit(stringBuffer.charAt(i)))) {
+                outString = allStoryStrings.get(allStoryStrings.size() - 1);
+                commandBuffer = "";
+                stringBuffer = "";
+                break;
+            }
+        }
+        if ((commandBuffer.equals("Redo()") || commandBuffer.equals("Undo()")) && stringBuffer.length() != 0) {
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            commandBuffer = "";
+            stringBuffer = "";
+        }
+
         // condition to flagUndo
         if (commandBuffer.contains("Redo()") && flagUndo) {
             flagUndo = false;
@@ -79,6 +94,11 @@ public class Level1 {
         //block command-arrayStorage with DeleteItem
         if (commandBuffer.equals("DeleteItem")) {
             itemsDelete = Integer.parseInt(stringBuffer);
+            stringBuffer = "";
+        }
+        if (itemsDelete < 0) {
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            commandBuffer = "";
             stringBuffer = "";
         }
 
@@ -117,14 +137,12 @@ public class Level1 {
             flagLimitItems = false;
             stringBuffer = "";
         }
-
         if (flagLimitItems && commandBuffer.equals("OutputItem")) {
             stringBuffer += String.valueOf(allStoryStrings.get(allStoryStrings.size() - 1).charAt(itemsOutput));
             allStoryStrings.add(stringBuffer);
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             stringBuffer = "";
         }
-
         //block Undo
         if (commandBuffer.equals("Undo()") && memoryUndo.size() > 1 && !flagUndo) {
             flagUndo = true;
