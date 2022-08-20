@@ -57,6 +57,9 @@ public class Level1 {
         }
         // checks of the correct entry
         for (int i = 0; i < stringBuffer.length(); i++) {
+            if ((commandBuffer.equals("DeleteItem") || commandBuffer.equals("OutputItem") && (stringBuffer.charAt(0) == '-'))) {
+                continue;
+            }
             if ((commandBuffer.equals("DeleteItem") || commandBuffer.equals("OutputItem")) && (!Character.isDigit(stringBuffer.charAt(i)))) {
                 outString = allStoryStrings.get(allStoryStrings.size() - 1);
                 commandBuffer = "";
