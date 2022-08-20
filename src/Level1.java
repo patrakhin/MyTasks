@@ -17,12 +17,17 @@ public class Level1 {
         memoryUndo.add(0);
     }
     // create map command
+    static final String ACTION_1 = "Put";
+    static final String ACTION_2 = "DeleteItem";
+    static final String ACTION_3 = "OutputItem";
+    static final String ACTION_4 = "Undo()";
+    static final String ACTION_5 = "Redo()";
     static {
-        mapCommand.put(1, "Put");
-        mapCommand.put(2, "DeleteItem");
-        mapCommand.put(3, "OutputItem");
-        mapCommand.put(4, "Undo()");
-        mapCommand.put(5, "Redo()");
+        mapCommand.put(1, ACTION_1);
+        mapCommand.put(2, ACTION_2);
+        mapCommand.put(3, ACTION_3);
+        mapCommand.put(4, ACTION_4);
+        mapCommand.put(5, ACTION_5);
     }
     public static String BastShoe (String command) {
         String outString = "";
@@ -31,53 +36,74 @@ public class Level1 {
         String stringBufferForDeleteItem = "";
         String stringBufferForDrop = "";
         boolean flagLimitItems = true;
+        boolean flagCorrect = true;
         // number of items for delete
         int itemsDelete =0;
         // number of items for OutputItems
         int itemsOutput =0;
-        //loop - reader incoming string
-        for (int i = 0; i < command.length(); i++) {
-            if (i == 0 && (!Character.isDigit(command.charAt(i))) ) {
-                outString = allStoryStrings.get(allStoryStrings.size() - 1);
-            }
-            if (i == 0 ) {
-                commandBuffer += mapCommand.get(Integer.parseInt(String.valueOf(command.charAt(i))));
-                continue;
-            }
-            if (i == 1 && command.charAt(i) != ' ') {
-                outString = allStoryStrings.get(allStoryStrings.size() - 1);
-            }
-            if ((commandBuffer.contains("4") || commandBuffer.contains("5")) && command.length() > 1) {
-                outString = allStoryStrings.get(allStoryStrings.size() - 1);
-            }
-            if (i == 1 && command.charAt(i) == ' ') {
-                continue;
-            }
-            stringBuffer.append(command.charAt(i));
+        //
+        int zeroNumber = 0;
+        // reading incoming string
+        if (!Character.isDigit(command.charAt(0))) {
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            flagCorrect = false;
         }
+        if (flagCorrect) {
+            zeroNumber = (Integer.parseInt(String.valueOf(command.charAt(0))));
+        }
+        if (flagCorrect && zeroNumber < 1) {
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            flagCorrect = false;
+        }
+        if (flagCorrect && zeroNumber > 5) {
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            flagCorrect = false;
+        }
+        if (flagCorrect && (zeroNumber == 1 || zeroNumber == 2 || zeroNumber == 3) && command.length() == 1) {
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            flagCorrect = false;
+        }
+        if (flagCorrect && (zeroNumber == 1 || zeroNumber == 2 || zeroNumber == 3) && command.charAt(1) != ' ') {
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            flagCorrect = false;
+        }
+        if (flagCorrect && (zeroNumber == 4 || zeroNumber == 5) && command.length() > 1) {
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            flagCorrect = false;
+        }
+        if (flagCorrect) {
+            commandBuffer = (String.valueOf(command.charAt(0)));
+            commandBuffer = mapCommand.get(Integer.parseInt(commandBuffer));
+        }
+        for (int i = 0; i < command.length() && flagCorrect; i++) {
+            if (i > 1) {
+                stringBuffer.append(command.charAt(i));
+            }
+        }
+
         // checks of the correct entry
         for (int i = 0; i < stringBuffer.length(); i++) {
-            if ((commandBuffer.equals("DeleteItem") || commandBuffer.equals("OutputItem") && (stringBuffer.charAt(0) == '-'))) {
+            if ((commandBuffer.equals(ACTION_2) || commandBuffer.equals(ACTION_3)) && (stringBuffer.charAt(0) == '-') && stringBuffer.length() > 1) {
                 continue;
             }
-            if ((commandBuffer.equals("DeleteItem") || commandBuffer.equals("OutputItem")) && (!Character.isDigit(stringBuffer.charAt(i)))) {
+            if ((commandBuffer.equals(ACTION_2) || commandBuffer.equals(ACTION_3)) && (!Character.isDigit(stringBuffer.charAt(i)))) {
                 outString = allStoryStrings.get(allStoryStrings.size() - 1);
                 commandBuffer = "";
                 stringBuffer = new StringBuilder();
             }
         }
-        if ((commandBuffer.equals("Redo()") || commandBuffer.equals("Undo()")) && stringBuffer.length() != 0) {
+        if ((commandBuffer.equals(ACTION_5) || commandBuffer.equals(ACTION_4)) && stringBuffer.length() != 0) {
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
             stringBuffer = new StringBuilder();
         }
 
         // condition to flagUndo
-        if (commandBuffer.contains("Redo()") && flagUndo) {
+        if (commandBuffer.contains(ACTION_5) && flagUndo) {
             flagUndo = false;
         }
         //condition for Reload Undo
-        if (flagUndo && (commandBuffer.equals("DeleteItem") || commandBuffer.equals("Put")) ) {
+        if (flagUndo && (commandBuffer.equals(ACTION_2) || commandBuffer.equals(ACTION_1)) ) {
             stringBufferForDrop = allStoryStrings.get(memoryUndo.size() - 1);
             allStoryStrings = new LinkedList<>();
             allStoryStrings.add(stringBufferForDrop);
@@ -88,13 +114,13 @@ public class Level1 {
         }
         //filling allStoryStrings
         //block command-arrayStorage with Put
-        if (commandBuffer.equals("Put")) {
+        if (commandBuffer.equals(ACTION_1)) {
             allStoryStrings.add(allStoryStrings.get(allStoryStrings.size() - 1) + stringBuffer);
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             memoryUndo.add(allStoryStrings.size() - 1);
         }
         //block command-arrayStorage with DeleteItem
-        if (commandBuffer.equals("DeleteItem")) {
+        if (commandBuffer.equals(ACTION_2)) {
             itemsDelete = Integer.parseInt(stringBuffer.toString());
             stringBuffer = new StringBuilder();
         }
@@ -104,10 +130,10 @@ public class Level1 {
             stringBuffer = new StringBuilder();
         }
 
-        if (commandBuffer.equals("DeleteItem") && itemsDelete <= (String.valueOf(allStoryStrings.get(allStoryStrings.size() - 1))).length()) {
+        if (commandBuffer.equals(ACTION_2) && itemsDelete <= (String.valueOf(allStoryStrings.get(allStoryStrings.size() - 1))).length()) {
             stringBufferForDeleteItem += allStoryStrings.get(allStoryStrings.size() - 1);
         }
-        if (commandBuffer.equals("DeleteItem") && itemsDelete > (String.valueOf(allStoryStrings.get(allStoryStrings.size() - 1))).length()) {
+        if (commandBuffer.equals(ACTION_2) && itemsDelete > (String.valueOf(allStoryStrings.get(allStoryStrings.size() - 1))).length()) {
             allStoryStrings.add("");
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             memoryUndo.add(allStoryStrings.size() - 1);
@@ -116,11 +142,11 @@ public class Level1 {
         }
 
         for ( int i = 0 ;i < ((stringBufferForDeleteItem.length() - 1) - (itemsDelete - 1)); i++) {
-            if (commandBuffer.equals("DeleteItem")) {
+            if (commandBuffer.equals(ACTION_2)) {
                 stringBuffer.append(stringBufferForDeleteItem.charAt(i));
             }
         }
-        if (commandBuffer.equals("DeleteItem")) {
+        if (commandBuffer.equals(ACTION_2)) {
             allStoryStrings.add(stringBuffer.toString());
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             memoryUndo.add(allStoryStrings.size() - 1);
@@ -128,23 +154,23 @@ public class Level1 {
             stringBuffer = new StringBuilder();
         }
         //block output string with OutputItem
-        if (commandBuffer.equals("OutputItem")) {
+        if (commandBuffer.equals(ACTION_3)) {
             itemsOutput = Integer.parseInt(stringBuffer.toString());
             stringBuffer = new StringBuilder();
         }
-        if (commandBuffer.equals("OutputItem") && (itemsOutput > (allStoryStrings.get(allStoryStrings.size() - 1).length() - 1) || itemsOutput < 0)) {
+        if (commandBuffer.equals(ACTION_3) && (itemsOutput > (allStoryStrings.get(allStoryStrings.size() - 1).length() - 1) || itemsOutput < 0)) {
             outString = "";
             commandBuffer = "";
             flagLimitItems = false;
             stringBuffer = new StringBuilder();
         }
-        if (flagLimitItems && commandBuffer.equals("OutputItem")) {
+        if (flagLimitItems && commandBuffer.equals(ACTION_3)) {
             stringBuffer.append(String.valueOf(allStoryStrings.get(allStoryStrings.size() - 1).charAt(itemsOutput)));
             allStoryStrings.add(stringBuffer.toString());
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
         }
         //block Undo
-        if (commandBuffer.equals("Undo()") && memoryUndo.size() > 1 && !flagUndo) {
+        if (commandBuffer.equals(ACTION_4) && memoryUndo.size() > 1 && !flagUndo) {
             flagUndo = true;
             memoryRedo.add(memoryUndo.get(memoryUndo.size() - 1));
             memoryUndo.remove(memoryUndo.size() - 1);
@@ -152,26 +178,26 @@ public class Level1 {
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
         }
-        if (commandBuffer.equals("Undo()") && memoryUndo.size() > 1) {
+        if (commandBuffer.equals(ACTION_4) && memoryUndo.size() > 1) {
             memoryRedo.add(memoryUndo.get(memoryUndo.size() - 1));
             memoryUndo.remove(memoryUndo.size() - 1);
             allStoryStrings.add(allStoryStrings.get(memoryUndo.size() - 1));
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
         }
-        if (commandBuffer.equals("Undo()") && memoryUndo.size() == 1 && !flagReUndo) {
+        if (commandBuffer.equals(ACTION_4) && memoryUndo.size() == 1 && !flagReUndo) {
             flagReUndo = true;
             memoryRedo.add(memoryUndo.get(0));
             allStoryStrings.add(allStoryStrings.get(memoryUndo.size() - 1));
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
         }
-        if (commandBuffer.equals("Undo()") && memoryUndo.size() == 1) {
+        if (commandBuffer.equals(ACTION_4) && memoryUndo.size() == 1) {
             allStoryStrings.add(allStoryStrings.get(memoryUndo.get(0)));
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
         }
-        if (commandBuffer.equals("Undo()") && memoryRedo.size() == 1 && flagRedo) {
+        if (commandBuffer.equals(ACTION_4) && memoryRedo.size() == 1 && flagRedo) {
             memoryUndo.remove(memoryUndo.size() - 1);
             allStoryStrings.add(allStoryStrings.get(memoryUndo.get(memoryUndo.size() - 1)));
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
@@ -179,32 +205,31 @@ public class Level1 {
         }
 
         // block Redo
-        if (commandBuffer.equals("Redo()") && memoryUndo.size() == 1 && flagReUndo) {
+        if (commandBuffer.equals(ACTION_5) && memoryUndo.size() == 1 && flagReUndo) {
             flagReUndo = false;
             memoryRedo.remove(memoryRedo.size() - 1);
             allStoryStrings.add(allStoryStrings.get((memoryUndo.get(memoryUndo.size() - 1))));
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
         }
-        if (commandBuffer.equals("Redo()") && memoryRedo.size() == 1 && !flagRedo) {
+        if (commandBuffer.equals(ACTION_5) && memoryRedo.size() == 1 && !flagRedo) {
             flagRedo = true;
             memoryUndo.add(0);
             allStoryStrings.add(allStoryStrings.get(memoryUndo.size() - 1));
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
         }
-        if (commandBuffer.equals("Redo()") && memoryRedo.size() == 1) {
+        if (commandBuffer.equals(ACTION_5) && memoryRedo.size() == 1) {
             allStoryStrings.add(allStoryStrings.get(memoryRedo.get(0)));
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
         }
-        if (commandBuffer.equals("Redo()") && memoryRedo.size() > 1) {
+        if (commandBuffer.equals(ACTION_5) && memoryRedo.size() > 1) {
             memoryUndo.add(memoryRedo.get(memoryRedo.size() - 1));
             memoryRedo.remove(memoryRedo.size() - 1);
             allStoryStrings.add(allStoryStrings.get(memoryUndo.get(memoryUndo.size() - 1)));
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
         }
-
         return outString;
     }
 }
