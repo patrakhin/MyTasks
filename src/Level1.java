@@ -117,16 +117,14 @@ public class Level1 {
             flagLimitItems = false;
             stringBuffer = "";
         }
-        for (int i = 0; i < allStoryStrings.get(allStoryStrings.size() - 1).length(); i++) {
-            if (flagLimitItems && commandBuffer.equals("OutputItem")) {
-                stringBuffer = String.valueOf(allStoryStrings.get(allStoryStrings.size() - 1).charAt(itemsOutput - 1));
-                itemsOutput = 0;
-                allStoryStrings.add(stringBuffer);
-                outString = allStoryStrings.get(allStoryStrings.size() - 1);
-                stringBuffer = "";
-                break;
-            }
+
+        if (flagLimitItems && commandBuffer.equals("OutputItem")) {
+            stringBuffer += String.valueOf(allStoryStrings.get(allStoryStrings.size() - 1).charAt(itemsOutput));
+            allStoryStrings.add(stringBuffer);
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            stringBuffer = "";
         }
+
         //block Undo
         if (commandBuffer.equals("Undo()") && memoryUndo.size() > 1 && !flagUndo) {
             flagUndo = true;
