@@ -1,9 +1,9 @@
-import  java.util.*;
+import java.util.*;
 public class Level1 {
-    static LinkedList <String> allStoryStrings = new LinkedList<>();
+    static LinkedList<String> allStoryStrings = new LinkedList<>();
     static LinkedList <Integer> memoryUndo = new LinkedList<>();
     static LinkedList <Integer> memoryRedo = new LinkedList<>();
-    static HashMap <Integer, String> mapCommand = new HashMap<>();
+    static HashMap<Integer, String> mapCommand = new HashMap<>();
     // flags
     static boolean flagUndo = false;
     static boolean flagReUndo = false;
@@ -29,7 +29,7 @@ public class Level1 {
         mapCommand.put(4, ACTION_4);
         mapCommand.put(5, ACTION_5);
     }
-    public static String BastShoe (String command) {
+    public static String BastShoe(String command) {
         String outString = "";
         String commandBuffer = "";
         StringBuilder stringBuffer = new StringBuilder();
@@ -67,6 +67,10 @@ public class Level1 {
             flagCorrect = false;
         }
         if (flagCorrect && (zeroNumber == 1 || zeroNumber == 2 || zeroNumber == 3) && command.charAt(1) != ' ') {
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            flagCorrect = false;
+        }
+        if (flagCorrect && (zeroNumber == 1 || zeroNumber == 2 || zeroNumber == 3) && command.charAt(1) == ' ' && command.length() == 2) {
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             flagCorrect = false;
         }
@@ -160,7 +164,7 @@ public class Level1 {
         if (commandBuffer.equals(ACTION_3)) {
             itemsOutput = Integer.parseInt(stringBuffer.toString());
         }
-        if (commandBuffer.equals(ACTION_3) && (itemsOutput > (allStoryStrings.get(allStoryStrings.size() - 1).length()) || itemsOutput < 1)) {
+        if (commandBuffer.equals(ACTION_3) && (itemsOutput > (allStoryStrings.get(allStoryStrings.size() - 1).length() - 1) || itemsOutput < 0)) {
             outString = "";
             commandBuffer = "";
             flagLimitItems = false;
@@ -168,7 +172,7 @@ public class Level1 {
         if (flagLimitItems && commandBuffer.equals(ACTION_3)) {
             outBuf = allStoryStrings.get(allStoryStrings.size() - 1);
             ca = outBuf.toCharArray();
-            outBuf = String.valueOf(ca[itemsOutput - 1]);
+            outBuf = String.valueOf(ca[itemsOutput]);
             allStoryStrings.add(outBuf);
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
         }
