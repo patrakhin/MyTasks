@@ -160,7 +160,7 @@ public class Level1 {
         if (commandBuffer.equals(ACTION_3)) {
             itemsOutput = Integer.parseInt(stringBuffer.toString());
         }
-        if (commandBuffer.equals(ACTION_3) && (itemsOutput > (allStoryStrings.get(allStoryStrings.size() - 1).length() - 1) || itemsOutput < 0)) {
+        if (commandBuffer.equals(ACTION_3) && (itemsOutput > (allStoryStrings.get(allStoryStrings.size() - 1).length()) || itemsOutput < 1)) {
             outString = "";
             commandBuffer = "";
             flagLimitItems = false;
@@ -168,7 +168,7 @@ public class Level1 {
         if (flagLimitItems && commandBuffer.equals(ACTION_3)) {
             outBuf = allStoryStrings.get(allStoryStrings.size() - 1);
             ca = outBuf.toCharArray();
-            outBuf = String.valueOf(ca[itemsOutput]);
+            outBuf = String.valueOf(ca[itemsOutput - 1]);
             allStoryStrings.add(outBuf);
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
         }
