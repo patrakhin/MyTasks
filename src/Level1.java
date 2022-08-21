@@ -43,6 +43,9 @@ public class Level1 {
         int itemsOutput =0;
         //
         int zeroNumber = 0;
+        //
+        char [] ca;
+        String outBuf;
         // reading incoming string
         if (!Character.isDigit(command.charAt(0))) {
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
@@ -156,17 +159,17 @@ public class Level1 {
         //block output string with OutputItem
         if (commandBuffer.equals(ACTION_3)) {
             itemsOutput = Integer.parseInt(stringBuffer.toString());
-            stringBuffer = new StringBuilder();
         }
         if (commandBuffer.equals(ACTION_3) && (itemsOutput > (allStoryStrings.get(allStoryStrings.size() - 1).length() - 1) || itemsOutput < 0)) {
             outString = "";
             commandBuffer = "";
             flagLimitItems = false;
-            stringBuffer = new StringBuilder();
         }
         if (flagLimitItems && commandBuffer.equals(ACTION_3)) {
-            stringBuffer.append(String.valueOf(allStoryStrings.get(allStoryStrings.size() - 1).charAt(itemsOutput)));
-            allStoryStrings.add(stringBuffer.toString());
+            outBuf = allStoryStrings.get(allStoryStrings.size() - 1);
+            ca = outBuf.toCharArray();
+            outBuf = String.valueOf(ca[itemsOutput]);
+            allStoryStrings.add(outBuf);
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
         }
         //block Undo
@@ -231,5 +234,47 @@ public class Level1 {
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
         }
         return outString;
+    }
+    public static void main(String[] args) {
+        String da1 = "1 Привет";
+        String da2 = "3 0";
+        String da3 = "3";
+        String da4 = "3 -1";
+        String da5 = "4";
+        String da6 = "5";
+        String da7 = "4";
+        String da8 = "5";
+        String da9 = "5";
+        String da10 = "5";
+        String da11 = "5";
+        String da12 = "4";
+        String da13 = "4";
+        String da14 = "2 2";
+        String da15 = "4";
+        String da16 = "5";
+        String da17 = "5";
+        String da18 = "5";
+
+
+        System.out.println(BastShoe(da1));
+        System.out.println(BastShoe(da2));
+        System.out.println(BastShoe(da3));
+        System.out.println(BastShoe(da4));
+        System.out.println(BastShoe(da5));
+        System.out.println(BastShoe(da6));
+        System.out.println(BastShoe(da7));
+        System.out.println(BastShoe(da8));
+
+        System.out.println(BastShoe(da9));
+        System.out.println(BastShoe(da10));
+        System.out.println(BastShoe(da11));
+        System.out.println(BastShoe(da12));
+        System.out.println(BastShoe(da13));
+        System.out.println(BastShoe(da14));
+        System.out.println(BastShoe(da15));
+        System.out.println(BastShoe(da16));
+        System.out.println(BastShoe(da17));
+        System.out.println(BastShoe(da18));
+
     }
 }
