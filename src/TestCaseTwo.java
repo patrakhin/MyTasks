@@ -5,10 +5,10 @@ class TestCaseTwo {
 
     @Test
     void bastShoe() {
-        //excepted item
         Level1.BastShoe("1 Privet");
-        String actual = Level1.BastShoe("3 1");
-        String expected = "r";
+        Level1.BastShoe("3 0");
+        String actual = Level1.BastShoe("1 ut");
+        String expected = "Put";
         assertEquals(expected, actual);
     }
 }
