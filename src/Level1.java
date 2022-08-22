@@ -4,10 +4,12 @@ public class Level1 {
     static LinkedList <Integer> memoryUndo = new LinkedList<>();
     static LinkedList <Integer> memoryRedo = new LinkedList<>();
     static HashMap<Integer, String> mapCommand = new HashMap<>();
+    static LinkedList <String> memoryOutPutItem = new LinkedList<>();
     // flags
     static boolean flagUndo = false;
     static boolean flagReUndo = false;
     static boolean flagRedo = false;
+    static boolean flagOutputItem = false;
     // create allStoryStrings
     static {
         allStoryStrings.add("");
@@ -109,6 +111,16 @@ public class Level1 {
         if (commandBuffer.contains(ACTION_5) && flagUndo) {
             flagUndo = false;
         }
+        //condition to flagOutPutItem
+        if (commandBuffer.contains(ACTION_1) && flagOutputItem) {
+            allStoryStrings.add(memoryOutPutItem.get(0));
+            memoryOutPutItem.remove(0);
+            flagOutputItem = false;
+        }
+        if ((commandBuffer.contains(ACTION_2) || commandBuffer.contains(ACTION_4) || commandBuffer.contains(ACTION_5) )&& flagOutputItem) {
+            memoryOutPutItem.remove(0);
+            flagOutputItem = false;
+        }
         //condition for Reload Undo
         if (flagUndo && (commandBuffer.equals(ACTION_2) || commandBuffer.equals(ACTION_1)) ) {
             stringBufferForDrop = allStoryStrings.get(memoryUndo.size() - 1);
@@ -169,12 +181,20 @@ public class Level1 {
             commandBuffer = "";
             flagLimitItems = false;
         }
-        if (flagLimitItems && commandBuffer.equals(ACTION_3)) {
+        if (flagLimitItems && commandBuffer.equals(ACTION_3) && !flagOutputItem) {
+            flagOutputItem = true;
             outBuf = allStoryStrings.get(allStoryStrings.size() - 1);
             ca = outBuf.toCharArray();
             outBuf = String.valueOf(ca[itemsOutput]);
-            allStoryStrings.add(outBuf);
-            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            memoryOutPutItem.add(outBuf);
+            outString = memoryOutPutItem.get(0);
+        }
+        if (flagLimitItems && commandBuffer.equals(ACTION_3) && flagOutputItem) {
+            outBuf = allStoryStrings.get(allStoryStrings.size() - 1);
+            ca = outBuf.toCharArray();
+            outBuf = String.valueOf(ca[itemsOutput]);
+            memoryOutPutItem.add(outBuf);
+            outString = memoryOutPutItem.get(0);
         }
         //block Undo
         if (commandBuffer.equals(ACTION_4) && memoryUndo.size() > 1 && !flagUndo) {
