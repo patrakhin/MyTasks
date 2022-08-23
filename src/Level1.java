@@ -188,13 +188,16 @@ public class Level1 {
             outBuf = String.valueOf(ca[itemsOutput]);
             memoryOutPutItem.add(outBuf);
             outString = memoryOutPutItem.get(0);
+            commandBuffer = "";
         }
-        if (flagLimitItems && commandBuffer.equals(ACTION_3) && flagOutputItem) {
+        if (flagLimitItems && commandBuffer.equals(ACTION_3)) {
+            memoryOutPutItem.remove(0);
             outBuf = allStoryStrings.get(allStoryStrings.size() - 1);
             ca = outBuf.toCharArray();
             outBuf = String.valueOf(ca[itemsOutput]);
             memoryOutPutItem.add(outBuf);
             outString = memoryOutPutItem.get(0);
+            commandBuffer = "";
         }
         //block Undo
         if (commandBuffer.equals(ACTION_4) && memoryUndo.size() > 1 && !flagUndo) {
