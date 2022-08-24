@@ -9,6 +9,9 @@ public class Level1 {
     static boolean flagUndo = false;
     static boolean flagLastUndo = false;
     static boolean flagLastRedo = false;
+    static boolean flagFirstPut = false;
+    static boolean flagDelForOutPutItem = false;
+    //static boolean flagOutputItem = false;
     // create allStoryStrings
     static {
         allStoryStrings.add("");
@@ -32,6 +35,7 @@ public class Level1 {
     }
     public static String BastShoe(String command) {
         String outString = "";
+        String TwoStringBuffer = "";
         String commandBuffer = "";
         StringBuilder stringBuffer = new StringBuilder();
         String stringBufferForDeleteItem = "";
@@ -124,16 +128,24 @@ public class Level1 {
         //filling allStoryStrings
         //block command-arrayStorage with Put
 
-        if (commandBuffer.equals(ACTION_1) && !memoryOutPutItem.isEmpty()) {
-            memoryOutPutItem.remove(0);
-        }
-
-
-        if (commandBuffer.equals(ACTION_1)) {
+        if (!flagFirstPut) {
             allStoryStrings.add(allStoryStrings.get(allStoryStrings.size() - 1) + stringBuffer);
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             memoryUndo.add(allStoryStrings.size() - 1);
             memoryOutPutItem.add(allStoryStrings.get(allStoryStrings.size() - 1));
+            flagFirstPut = true;
+            commandBuffer = "";
+        }
+
+
+        if (commandBuffer.equals(ACTION_1)) {
+            TwoStringBuffer = (memoryOutPutItem.get(memoryOutPutItem.size() - 1) + stringBuffer);
+            allStoryStrings.add(TwoStringBuffer);
+            memoryUndo.add(allStoryStrings.size() - 1);
+            memoryOutPutItem.remove(memoryOutPutItem.size() - 1);
+            memoryOutPutItem.add(allStoryStrings.get(allStoryStrings.size() - 1));
+            outString = memoryOutPutItem.get(memoryOutPutItem.size() - 1);
+            commandBuffer = "";
         }
         //block command-arrayStorage with DeleteItem
         if (commandBuffer.equals(ACTION_2)) {
