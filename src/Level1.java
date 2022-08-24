@@ -10,8 +10,8 @@ public class Level1 {
     static boolean flagLastUndo = false;
     static boolean flagLastRedo = false;
     static boolean flagFirstPut = false;
-    static boolean flagDelForOutPutItem = false;
-    //static boolean flagOutputItem = false;
+    static boolean flagCastString = false;
+    static boolean flagUndoRedoOutputItem = false;
     // create allStoryStrings
     static {
         allStoryStrings.add("");
@@ -35,7 +35,8 @@ public class Level1 {
     }
     public static String BastShoe(String command) {
         String outString = "";
-        String TwoStringBuffer = "";
+        String castString = "";
+        String twoStringBuffer = "";
         String commandBuffer = "";
         StringBuilder stringBuffer = new StringBuilder();
         String stringBufferForDeleteItem = "";
@@ -125,6 +126,17 @@ public class Level1 {
             memoryRedo = new LinkedList<>();
             flagUndo = false;
         }
+
+        // condition for flagUndoRedoOutPutItem
+        if (commandBuffer.equals(ACTION_3)) {
+            flagUndoRedoOutputItem = true;
+        }
+
+        // condition for add after OutputItem
+        if (commandBuffer.equals(ACTION_3)) {
+            flagCastString = true;
+        }
+
         //filling allStoryStrings
         //block command-arrayStorage with Put
 
@@ -137,13 +149,19 @@ public class Level1 {
             commandBuffer = "";
         }
 
+        //allStoryStrings.get(allStoryStrings.size() - 1) +  after OutPutItem
+        if (commandBuffer.equals(ACTION_1) && flagCastString) {
+            castString = allStoryStrings.get(allStoryStrings.size() - 1);
+            flagCastString = false;
+            flagUndoRedoOutputItem = false;
+        }
 
         if (commandBuffer.equals(ACTION_1)) {
-            TwoStringBuffer = (memoryOutPutItem.get(memoryOutPutItem.size() - 1) + stringBuffer);
-            allStoryStrings.add(TwoStringBuffer);
-            memoryUndo.add(allStoryStrings.size() - 1);
+            twoStringBuffer = (memoryOutPutItem.get(memoryOutPutItem.size() - 1) + stringBuffer);
+            allStoryStrings.add(castString + twoStringBuffer);
             memoryOutPutItem.remove(memoryOutPutItem.size() - 1);
             memoryOutPutItem.add(allStoryStrings.get(allStoryStrings.size() - 1));
+            memoryUndo.add(allStoryStrings.size() - 1);
             outString = memoryOutPutItem.get(memoryOutPutItem.size() - 1);
             commandBuffer = "";
         }
@@ -201,10 +219,15 @@ public class Level1 {
             commandBuffer = "";
         }
         //block Undo
+        if (commandBuffer.equals(ACTION_4) && flagUndoRedoOutputItem) {
+            twoStringBuffer = memoryOutPutItem.get(0); //add
+            flagUndoRedoOutputItem = false;
+        }
         if (commandBuffer.equals(ACTION_4) && flagLastRedo) {
             flagUndo = true;
+            //twoStringBuffer = memoryOutPutItem.get(0); //add
             memoryOutPutItem.remove(0);
-            memoryOutPutItem.add(allStoryStrings.get(memoryUndo.get(memoryUndo.size() - 1))); ///
+            memoryOutPutItem.add(allStoryStrings.get(memoryUndo.get(memoryUndo.size() - 1)) + twoStringBuffer); /// add
             outString = memoryOutPutItem.get(0);
             commandBuffer = "";
             flagLastRedo = false;
@@ -212,39 +235,48 @@ public class Level1 {
         if (commandBuffer.equals(ACTION_4) && memoryUndo.size() > 1) {
             flagUndo = true;
             memoryRedo.add(memoryUndo.get(memoryUndo.size() - 1));
+            //twoStringBuffer = memoryOutPutItem.get(0); //add
             memoryOutPutItem.remove(0);
             memoryUndo.remove(memoryUndo.size() - 1);
-            memoryOutPutItem.add(allStoryStrings.get(memoryUndo.get(memoryUndo.size() - 1))); ///
+            memoryOutPutItem.add(allStoryStrings.get(memoryUndo.get(memoryUndo.size() - 1)) + twoStringBuffer); /// add
             outString = memoryOutPutItem.get(0);
             commandBuffer = "";
         }
         if (commandBuffer.equals(ACTION_4) && memoryUndo.size() == 1) {
             flagUndo = true;
+            //twoStringBuffer = memoryOutPutItem.get(0); //add
             memoryOutPutItem.remove(0);
-            memoryOutPutItem.add(allStoryStrings.get(memoryUndo.get(memoryUndo.size() - 1))); ///
+            memoryOutPutItem.add(allStoryStrings.get(memoryUndo.get(memoryUndo.size() - 1)) + twoStringBuffer); /// add
             outString = memoryOutPutItem.get(0);
             commandBuffer = "";
             flagLastUndo = true;
         }
 
         // block Redo
+        if (commandBuffer.equals(ACTION_5) && flagUndoRedoOutputItem) {
+            twoStringBuffer = memoryOutPutItem.get(0); //add
+            flagUndoRedoOutputItem = false;
+        }
         if (commandBuffer.equals(ACTION_5) && flagLastUndo) {
+            //twoStringBuffer = memoryOutPutItem.get(0); //add
             memoryOutPutItem.remove(0);
-            memoryOutPutItem.add(allStoryStrings.get(memoryRedo.get(memoryRedo.size() - 1))); ///
+            memoryOutPutItem.add(allStoryStrings.get(memoryRedo.get(memoryRedo.size() - 1)) + twoStringBuffer); /// add
             outString = memoryOutPutItem.get(0);
             flagLastUndo = false;
         }
         if (commandBuffer.equals(ACTION_5) && memoryRedo.size() > 1) {
             memoryUndo.add(memoryRedo.get(memoryRedo.size() - 1));
+            //twoStringBuffer = memoryOutPutItem.get(0); //add
             memoryOutPutItem.remove(0);
             memoryRedo.remove(memoryRedo.size() - 1);
-            memoryOutPutItem.add(allStoryStrings.get(memoryUndo.get(memoryUndo.size() - 1))); ///
+            memoryOutPutItem.add(allStoryStrings.get(memoryUndo.get(memoryUndo.size() - 1)) + twoStringBuffer); /// add
             outString = memoryOutPutItem.get(0);
             commandBuffer = "";
         }
         if (commandBuffer.equals(ACTION_5) && memoryRedo.size() == 1) {
+            //twoStringBuffer = memoryOutPutItem.get(0); //add
             memoryOutPutItem.remove(0);
-            memoryOutPutItem.add(allStoryStrings.get(memoryRedo.get(memoryRedo.size() - 1))); ///
+            memoryOutPutItem.add(allStoryStrings.get(memoryRedo.get(memoryRedo.size() - 1)) + twoStringBuffer); /// add
             outString = memoryOutPutItem.get(0);
             flagLastRedo = true;
         }
