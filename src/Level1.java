@@ -1,7 +1,7 @@
 import java.util.*;
 public class Level1 {
     static LinkedList<String> allStoryStrings = new LinkedList<>();
-    static String currentString = new String("");
+    static String currentString = "";
     static int memoryUndo = 0;
     static boolean flagUndo = false;
     // create allStoryStrings ana currentString
@@ -34,8 +34,24 @@ public class Level1 {
                 stringBuffer.append(command.charAt(i));
             }
         }
+        // checks of the correct entry
+        for (int i = 0; i < stringBuffer.length(); i++) {
+            if ((commandBuffer.contains("2") || commandBuffer.contains("3")) && (stringBuffer.charAt(0) == '-') && stringBuffer.length() > 1) {
+                continue;
+            }
+            if ((commandBuffer.contains("2")|| commandBuffer.contains("3")) && (!Character.isDigit(stringBuffer.charAt(i)))) {
+                outString = allStoryStrings.get(allStoryStrings.size() - 1);
+                commandBuffer = "";
+                stringBuffer = new StringBuilder();
+            }
+        }
+        if ((commandBuffer.contains("5") || commandBuffer.contains("4")) && stringBuffer.length() != 0) {
+            outString = allStoryStrings.get(allStoryStrings.size() - 1);
+            commandBuffer = "";
+            stringBuffer = new StringBuilder();
+        }
         //condition for break story Undo
-        if ((commandBuffer.contains("1") || commandBuffer.contains("2") ) && flagUndo) {
+        if ((commandBuffer.contains("1") || commandBuffer.contains("2")) && flagUndo) {
             outString = currentString;
             allStoryStrings = new LinkedList<>();
             allStoryStrings.add(outString);
@@ -55,9 +71,8 @@ public class Level1 {
         //Delete
         if (commandBuffer.contains("2")) {
             itemsDelete = Integer.parseInt(stringBuffer.toString());
-            stringBuffer = new StringBuilder("");
+            stringBuffer = new StringBuilder();
         }
-
         if (itemsDelete < 0) {
             outString = allStoryStrings.get(allStoryStrings.size() - 1);
             commandBuffer = "";
@@ -74,7 +89,7 @@ public class Level1 {
             stringBufferForDeleteItem += allStoryStrings.get(allStoryStrings.size() - 1);
         }
         for (int i = 0; i < ((stringBufferForDeleteItem.length() - 1) - (itemsDelete - 1)); i++) {
-            if (Integer.parseInt(commandBuffer) == 2) {
+            if (commandBuffer.contains("2")) {
                 stringBuffer.append(stringBufferForDeleteItem.charAt(i));
             }
         }
@@ -114,16 +129,16 @@ public class Level1 {
             commandBuffer = "";
         }
         //Redo
-        if (commandBuffer.contains("5") && allStoryStrings.size() == 1) {
-            outString = allStoryStrings.get(0);
-            currentString = outString;
-            flagUndo = false;
-            commandBuffer = "";
-        }
-        if (commandBuffer.contains("5") && allStoryStrings.size() > 1) {
+        if (commandBuffer.contains("5") && memoryUndo < (allStoryStrings.size() - 1)) {
             outString = allStoryStrings.get(memoryUndo + 1);
             currentString = outString;
             memoryUndo += 1;
+            flagUndo = false;
+            commandBuffer = "";
+        }
+        if (commandBuffer.contains("5")  && memoryUndo == (allStoryStrings.size() - 1)) {
+            outString = allStoryStrings.get(memoryUndo);
+            currentString = outString;
             flagUndo = false;
         }
         return outString;
