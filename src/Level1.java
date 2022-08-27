@@ -4,7 +4,7 @@ public class Level1 {
     static String currentString = "";
     static int memoryUndo = 0;
     static boolean flagUndo = false;
-    // create allStoryStrings ana currentString
+    // create allStoryStrings and currentString
     static {
         allStoryStrings.add("");
     }
