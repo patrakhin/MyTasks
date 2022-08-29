@@ -1,21 +1,49 @@
 import java.util.*;
+
 public class Level1 {
     public static String BiggerGreater(String input) {
-        StringBuilder result = new StringBuilder();
+        String result = "";
         char[] restructure = input.toCharArray();
-        boolean flag = false; //it's eng  true - rus
+        boolean flag = false;
         HashMap<Character, Integer> alphabet = new HashMap<>();
         HashMap<Integer, Character> reversAlphabetRus = new HashMap<>();
         HashMap<Integer, Character> reversAlphabetEng = new HashMap<>();
         ArrayList<Integer> arrayList = new ArrayList<>();
-
-        alphabet.put('а', 1); alphabet.put('б', 2); alphabet.put('в', 3); alphabet.put('г', 4); alphabet.put('д', 5); alphabet.put('е', 6);
-        alphabet.put('ё', 7); alphabet.put('ж', 8); alphabet.put('з', 9); alphabet.put('и', 10); alphabet.put('й', 11); alphabet.put('к', 12);
-        alphabet.put('л', 13); alphabet.put('м', 14); alphabet.put('н', 15); alphabet.put('о', 16); alphabet.put('п', 17); alphabet.put('р', 18);
-        alphabet.put('с', 19); alphabet.put('т', 20); alphabet.put('у', 21); alphabet.put('ф', 22); alphabet.put('х', 23); alphabet.put('ц', 24);
-        alphabet.put('ч', 25); alphabet.put('ш', 26); alphabet.put('щ', 27); alphabet.put('ъ', 28); alphabet.put('ы', 29); alphabet.put('ь', 30);
-        alphabet.put('э', 31); alphabet.put('ю', 32); alphabet.put('я', 33);
-        alphabet.put('a', 1); alphabet.put('b', 2);
+        alphabet.put('а', 1);
+        alphabet.put('б', 2);
+        alphabet.put('в', 3);
+        alphabet.put('г', 4);
+        alphabet.put('д', 5);
+        alphabet.put('е', 6);
+        alphabet.put('ё', 7);
+        alphabet.put('ж', 8);
+        alphabet.put('з', 9);
+        alphabet.put('и', 10);
+        alphabet.put('й', 11);
+        alphabet.put('к', 12);
+        alphabet.put('л', 13);
+        alphabet.put('м', 14);
+        alphabet.put('н', 15);
+        alphabet.put('о', 16);
+        alphabet.put('п', 17);
+        alphabet.put('р', 18);
+        alphabet.put('с', 19);
+        alphabet.put('т', 20);
+        alphabet.put('у', 21);
+        alphabet.put('ф', 22);
+        alphabet.put('х', 23);
+        alphabet.put('ц', 24);
+        alphabet.put('ч', 25);
+        alphabet.put('ш', 26);
+        alphabet.put('щ', 27);
+        alphabet.put('ъ', 28);
+        alphabet.put('ы', 29);
+        alphabet.put('ь', 30);
+        alphabet.put('э', 31);
+        alphabet.put('ю', 32);
+        alphabet.put('я', 33);
+        alphabet.put('a', 1);
+        alphabet.put('b', 2);
         alphabet.put('c', 3);
         alphabet.put('d', 4);
         alphabet.put('e', 5);
@@ -122,10 +150,10 @@ public class Level1 {
                 indexMin = i;
             }
         }
-        //if arrayList.size = 2
+
         if (arrayList.size() == 2 && indexMax == 0) {
-            result = new StringBuilder();
-            return result.toString();
+            result = "";
+            return result;
         }
         if (arrayList.size() == 2) {
             int buf = arrayList.get(indexMax);
@@ -135,26 +163,26 @@ public class Level1 {
             arrayList.add(0, buf);
         }
         for (int i = 0; i < arrayList.size() && flag && arrayList.size() == 2; i++) {
-            result.append(reversAlphabetRus.get(arrayList.get(i)));
+            result += (reversAlphabetRus.get(arrayList.get(i)));
         }
         for (int i = 0; i < arrayList.size() && !flag && arrayList.size() == 2; i++) {
-            result.append(reversAlphabetEng.get(arrayList.get(i)));
+            result += (reversAlphabetEng.get(arrayList.get(i)));
         }
         if (arrayList.size() == 2) {
-            return result.toString();
+            return result;
         }
-        //if symbols of strings is equals
+
         Integer[] sortingArrayOne;
         sortingArrayOne = arrayList.toArray(new Integer[0]);
-        Arrays.sort(sortingArrayOne, Comparator.reverseOrder());    //
+        Arrays.sort(sortingArrayOne, Comparator.reverseOrder());
 
         Integer[] sortingArrayTwo = arrayList.toArray(new Integer[0]);
 
         if (Arrays.equals(sortingArrayTwo, sortingArrayOne)) {
-            result = new StringBuilder();
-            return result.toString();
+            result = "";
+            return result;
         }
-        //if indexMax = 0 and indexMin = 1
+
         int indexSecondMAx = 1;
         for (int i = 1; i < arrayList.size() && indexMax == 0; i++) {
             if (arrayList.get(i) > arrayList.get(indexSecondMAx)) {
@@ -169,17 +197,17 @@ public class Level1 {
             arrayList.add(indexSecondMAx - 1, buf);
         }
         for (int i = 0; i < arrayList.size() && flag && indexMax == 0; i++) {
-            result.append(reversAlphabetRus.get(arrayList.get(i)));
+            result += (reversAlphabetRus.get(arrayList.get(i)));
         }
         for (int i = 0; i < arrayList.size() && !flag && indexMax == 0; i++) {
-            result.append(reversAlphabetEng.get(arrayList.get(i)));
+            result += (reversAlphabetEng.get(arrayList.get(i)));
         }
 
         if (indexMax == 0) {
-            return result.toString();
+            return result;
         }
 
-        //if indexMax is last
+
         if (indexMax == (arrayList.size() - 1)) {
             int buf = arrayList.get(indexMax);
             arrayList.remove(indexMax);
@@ -188,17 +216,16 @@ public class Level1 {
             arrayList.add(indexMax - 1, buf);
         }
         for (int i = 0; i < arrayList.size() && flag && indexMax == (arrayList.size() - 1); i++) {
-            result.append(reversAlphabetRus.get(arrayList.get(i)));
+            result += (reversAlphabetRus.get(arrayList.get(i)));
         }
         for (int i = 0; i < arrayList.size() && !flag && indexMax == (arrayList.size() - 1); i++) {
-            result.append(reversAlphabetEng.get(arrayList.get(i)));
+            result += (reversAlphabetEng.get(arrayList.get(i)));
         }
 
         if (indexMax == (arrayList.size() - 1)) {
-            return result.toString();
+            return result;
         }
 
-        //if  indexMax isn't 0 index
         boolean flagSomeIndexMax = false;
         boolean flagBreak = false;
         Integer[] comparedArray;
@@ -234,11 +261,11 @@ public class Level1 {
             }
         }
         for (int i = 0; i < arrayList.size() && flag; i++) {
-            result.append(reversAlphabetRus.get(arrayList.get(i)));
+            result += (reversAlphabetRus.get(arrayList.get(i)));
         }
         for (int i = 0; i < arrayList.size() && !flag; i++) {
-            result.append(reversAlphabetEng.get(arrayList.get(i)));
+            result += (reversAlphabetEng.get(arrayList.get(i)));
         }
-        return result.toString();
+        return result;
     }
 }
