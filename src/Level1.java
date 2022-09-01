@@ -1,54 +1,99 @@
 import java.util.*;
 public class Level1 {
-    public static boolean SherlockValidString (String s) {
-        char[] restructure = s.toCharArray();
-        int[] arrayList = new int[s.length()];
-        HashMap<Integer, Integer> repeated = new HashMap<>();
-        //decoding
-        for (int i = 0; i < restructure.length; i++) {
-            arrayList[i] = (restructure[i]);
-        }
-        // search repeated
-        for (int i = 0; i < arrayList.length; i++) {
-            if (repeated.containsKey(arrayList[i])) {
-                continue;
-            }
-            for (int j = i; j < arrayList.length; j++) {
-                if ( arrayList[j] == arrayList [i] && !repeated.containsKey(arrayList[j])) {
-                    repeated.put(arrayList[i], 0);
-                }
-                if ( arrayList[j] == arrayList [i] && repeated.containsKey(arrayList[j])) {
-                    repeated.put(arrayList[i], repeated.get(arrayList[i]) + 1);
-                }
-            }
-        }
-        //get all values to list
-        ArrayList<Integer> values = new ArrayList<>(repeated.values());
-        int [] declineArray = new int[values.size()];
-        for (int i = 0; i < declineArray.length; i++) {
-            declineArray [i] = values.get(i);
-        }
-        //sort decline
-        for (int i = 0; i < declineArray.length; i++) {
-            for (int j = 0; j < declineArray.length; j++) {
-                if (declineArray[i] >= declineArray[j]) {
-                    int x = declineArray[i];
-                    declineArray[i] = declineArray[j];
-                    declineArray[j] = x;
-                }
-            }
-        }
-        // search valid
+    public static String [] TreeOfLife (int H, int W, int N, String [] tree) {
+        int [] [] digitalTree = new int[H][W];
 
-        //if all equals
-        if (declineArray [0] == declineArray[declineArray.length - 1]) {
-            return true;
+        //recoding
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < W; j++) {
+                char [] recoding = tree [i].toCharArray();
+                if (recoding [j] == '.') {
+                    digitalTree [i] [j] = 0;
+                }
+                if (recoding [j] == '+') {
+                    digitalTree [i] [j] = 1;
+                }
+            }
         }
-        //if are equal to all but the latter and latter - 1 = 0
-        if ((declineArray [0] == declineArray[declineArray.length - 2]) && (((declineArray[declineArray.length - 1]) - 1) == 0)) {
-            return true;
+        //Tree
+        boolean flagGrowUp = false;
+        boolean flagGrowDelete;
+
+        for (int i = 1; i < N + 1; i++) {
+            if (i % 2 == 0) {
+                flagGrowDelete = true;
+            }
+            else {
+                flagGrowUp = true;
+                flagGrowDelete = false;
+            }
+            // ears 1 3 5 ... only grow up
+            for (int a = 0; a < H && flagGrowUp; a++) {
+                for (int j = 0; j < W; j++) {
+                    digitalTree [a] [j] += 1;
+                }
+            }
+            flagGrowUp = false;
+            // ears 2 4 6 ... grow up and delete
+            for (int x = 0; x < 1 && flagGrowDelete; x++) {
+                // grow up
+                for (int a = 0; a < H; a++) {
+                    for (int j = 0; j < W; j++) {
+                        digitalTree [a] [j] += 1;
+                    }
+                }
+                // delete Horizontal if branch 3 5 or 5< age
+                for (int a = 0; a < H; a++) {
+                    for (int j = 0; j < W; j++) {
+                        int ageBranch = digitalTree [a] [j];
+                        if (j == 0 && (ageBranch == 3 || ageBranch > 3)) {
+                            digitalTree[a][j + 1] = 0;
+                        }
+                        if (j != 0 && j != (digitalTree[a].length - 1) && (ageBranch == 3 || ageBranch > 3)) {
+                            digitalTree[a][j - 1] = 0;
+                            digitalTree[a][j + 1] = 0;
+                        }
+                        if (j == (digitalTree[a].length - 1) && (ageBranch == 3 || ageBranch > 3)) {
+                            digitalTree[a][j - 1] = 0;
+                        }
+                    }
+                }
+                // delete Vertical if branch 3 5 or 5< age
+                for (int j = 0; j < W; j ++) {
+                    for (int a = 0; a < H; a ++) {
+                        int ageBranch = digitalTree [a] [j];
+                        if (a == 0 && (ageBranch == 3 || ageBranch > 3)) {
+                            digitalTree[a][j] = 0;
+                            digitalTree[a + 1][j] = 0;
+                        }
+                        if (a != 0 && a != (digitalTree.length - 1) && (ageBranch == 3 || ageBranch > 3)) {
+                            digitalTree[a][j] = 0;
+                            digitalTree[a - 1][j] = 0;
+                            digitalTree[a + 1][j] = 0;
+                        }
+                        if (a == (digitalTree.length - 1) && (ageBranch == 3 || ageBranch > 3)) {
+                            digitalTree[a][j] = 0;
+                            digitalTree[a - 1][j] = 0;
+                        }
+                    }
+                }
+
+            }
         }
-        //if are equal to all but the first
-        return (declineArray[declineArray.length - 1] == declineArray[1]) && ((declineArray[0] - 1) == declineArray[declineArray.length - 1]);
+        //coding
+        String[] exit = new String[tree.length];
+        Arrays.fill(exit, "");
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < W; j++) {
+                if (digitalTree[i][j] == 0) {
+                    exit [i] += ".";
+                }
+                if (digitalTree[i][j]  > 0) {
+                    exit [i] += "+";
+                }
+
+            }
+        }
+        return exit;
     }
 }
