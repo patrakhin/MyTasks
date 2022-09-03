@@ -1,95 +1,68 @@
 import java.util.*;
 public class Level1 {
-    public static String [] TreeOfLife (int H, int W, int N, String [] tree) {
-        int [] [] digitalTree = new int[H][W];
-        //recoding
-        for (int i = 0; i < H; i++) {
-            for (int j = 0; j < W; j++) {
-                char [] recoding = tree [i].toCharArray();
-                if (recoding [j] == '.') {
-                    digitalTree [i] [j] = 0;
-                }
-                if (recoding [j] == '+') {
-                    digitalTree [i] [j] = 1;
-                }
-            }
-        }
-        //Tree
-        boolean flagGrowDelete = false;
-        int countAges = 0;
-        int ageDelete = 3;
-        for (int i = 1; i < N + 1; i++) {
-            countAges += 1;
-            if (countAges % 2 == 0) {
-                flagGrowDelete = true;
-            }
-            // ears 1 3 5 ... only grow up
-            for (int a = 0; a < H ; a++) {
-                for (int j = 0; j < W; j++) {
-                    digitalTree [a] [j] += 1;
-                }
-            }
-            // ears 2 4 6 ... grow up and delete
-            for (int x = 0; x < 1 && flagGrowDelete; x++) {
-                // delete Horizontal
-                for (int a = 0; a < H; a++) {
-                    for (int j = 0; j < W; j++) {
-                        if ((j == W - 1) && (digitalTree[a][j] < ageDelete) && (digitalTree[a][j -1] >= ageDelete)) {
-                            digitalTree[a][j] = 0;
-                        }
-                        if ((j == W - 1) && (digitalTree[a][j] >= ageDelete) && (digitalTree[a][j -1] < ageDelete)) {
-                            digitalTree[a][j - 1] = 0;
-                        }
-                        if ((j > 0) && (j != W - 1) && (digitalTree[a][j] >= ageDelete) && (digitalTree[a][j -1] < ageDelete)) {
-                            digitalTree[a][j - 1] = 0;
-                        }
-                        if ((j > 0) && (j != W - 1) && (digitalTree[a][j] < ageDelete) && (digitalTree[a][j -1] >= ageDelete) && (digitalTree[a][j +  1] < ageDelete)) {
-                            digitalTree[a][j] = 0;
-                        }
-                    }
-                }
-                // delete Vertical
-                for (int j = 0; j < W; j ++) {
-                    for (int a = 0; a < H; a ++) {
-                        if ((a == H - 1) && (digitalTree[a][j] < ageDelete) && (digitalTree[a - 1][j] >= ageDelete)) {
-                            digitalTree[a][j] = 0;
-                        }
-                        if ((a == H - 1) && (digitalTree[a][j] >= ageDelete) && (digitalTree[a - 1][j] < ageDelete)) {
-                            digitalTree[a - 1][j] = 0;
-                        }
-                        if ((a > 0) && (a != H - 1) && (digitalTree[a][j] >= ageDelete) && (digitalTree[a - 1][j] < ageDelete)) {
-                            digitalTree[a - 1][j] = 0;
-                        }
-                        if ((a > 0) && (a != H - 1) && (digitalTree[a][j] < ageDelete) && (digitalTree[a - 1][j] >= ageDelete) && (digitalTree[a + 1][j] < ageDelete)) {
-                            digitalTree[a][j] = 0;
-                        }
-                    }
-                }
-                // delete only old branch
-                for (int j = 0; j < W; j ++) {
-                    for (int a = 0; a < H; a ++) {
-                        if ((digitalTree[a][j] >= ageDelete)) {
-                            digitalTree[a][j] = 0;
-                        }
-                    }
-                }
-            }
-            flagGrowDelete = false;
-        }
-        //coding
-        String[] exit = new String[tree.length];
-        Arrays.fill(exit, "");
-        for (int i = 0; i < H; i++) {
-            for (int j = 0; j < W; j++) {
-                if (digitalTree[i][j] == 0) {
-                    exit [i] += ".";
-                }
-                if (digitalTree[i][j]  > 0) {
-                    exit [i] += "+";
-                }
+    private String [] matrix;
+    public String [] getMatrix() {
+        return matrix;
+    }
 
+    public void MatrixTurn(String Matrix[], int M, int N, int T) {
+        int [] [] startMatrix = new int [M] [N];
+        String [] endMatrix = new String[M];
+        int memory1;
+        int memory2;
+        //recoding to startMatrix
+        for (int k =0; k < M; k ++) {
+            for (int b = 0; b < N; b++) {
+                char [] recodingChar = Matrix[k].toCharArray();
+                startMatrix [k] [b] += Integer.parseInt(String.valueOf(recodingChar [b]));
             }
         }
-        return exit;
+        //search count sub matrix
+        int countSubMatrix = 0;
+        if (M > N) {
+            countSubMatrix = (N/2);
+        }
+        if (M < N) {
+            countSubMatrix = (M/2);
+        }
+        if (M == N) {
+            countSubMatrix = (M/2);
+        }
+        // Matrix spinning if M and N > 2
+        int countShift = 0;
+        for (int t = 0; t < T ; t ++) {
+            for(; countShift < countSubMatrix; countShift++) {
+                memory1 = startMatrix[countShift][countShift];
+                memory2 = startMatrix[(M - 1) - countShift][(N - 1) - countShift];
+                //left vertical
+                for (int i = countShift; i <= (startMatrix.length - 2) - countShift; i++) {
+                    startMatrix[i][countShift] = startMatrix[i + 1] [countShift];
+                }
+                // right vertical
+                for (int i = (startMatrix.length - 1) - countShift; i >= (1) + countShift; i --) {
+                    startMatrix[i][(startMatrix[0].length - 1) - countShift] = startMatrix [i -1] [(startMatrix[0].length - 1) - countShift];
+                }
+                // horizon line up
+                for (int j = (startMatrix[0].length - 1) - countShift; j >= 1 + countShift; j--) {
+                    startMatrix[countShift][j] = startMatrix[countShift][j - 1];
+                }
+                // cell = memory
+                startMatrix[countShift][1 + countShift] = memory1;
+                // horizon line down
+                for (int j = countShift; j < (startMatrix[0].length - 2) - countShift; j++) {
+                    startMatrix[(startMatrix.length - 1) - countShift][j] = startMatrix[(startMatrix.length - 1) - countShift][j + 1];
+                }
+                // cell = memory
+                startMatrix[(startMatrix.length - 1) - countShift][(startMatrix[0].length - 2) - countShift] = memory2;
+            }
+        }
+        //decoding Matrix to string array
+        Arrays.fill(endMatrix, "");
+        for (int i = 0; i < M; i++) {
+            for (int j = 0; j < N; j ++ ) {
+                endMatrix [i] += String.valueOf(startMatrix[i] [j]);
+            }
+        }
+        this.matrix = endMatrix;
     }
 }
