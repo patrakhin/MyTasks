@@ -59,6 +59,7 @@ public class Level1 {
                 endMatrix [i] += String.valueOf(startMatrix[i] [j]);
             }
         }
-        Matrix = endMatrix;
+        Matrix = new String[M];
+        System.arraycopy(endMatrix, 0, Matrix, 0, M);
     }
 }
