@@ -1,11 +1,7 @@
 import java.util.*;
 public class Level1 {
-    private String [] matrix;
-    public String [] getMatrix() {
-        return matrix;
-    }
 
-    public void MatrixTurn(String Matrix[], int M, int N, int T) {
+    public static void MatrixTurn(String Matrix[], int M, int N, int T) {
         int [] [] startMatrix = new int [M] [N];
         String [] endMatrix = new String[M];
         int memory1;
@@ -63,6 +59,6 @@ public class Level1 {
                 endMatrix [i] += String.valueOf(startMatrix[i] [j]);
             }
         }
-        this.matrix = endMatrix;
+        Matrix = endMatrix;
     }
 }
