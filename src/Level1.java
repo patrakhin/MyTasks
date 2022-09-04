@@ -4,8 +4,8 @@ public class Level1 {
     public static void MatrixTurn(String Matrix[], int M, int N, int T) {
         int [] [] startMatrix = new int [M] [N];
         String [] endMatrix = new String[M];
-        int memory1;
-        int memory2;
+        int memory1 = 0;
+        int memory2 = 0;
         //recoding to startMatrix
         for (int k =0; k < M; k ++) {
             for (int b = 0; b < N; b++) {
@@ -59,7 +59,8 @@ public class Level1 {
                 endMatrix [i] += String.valueOf(startMatrix[i] [j]);
             }
         }
-        Matrix = new String[M];
-        System.arraycopy(endMatrix, 0, Matrix, 0, M);
+        for (int i = 0; i < M; i++) {
+            Matrix [i] = endMatrix[i];
+        }
     }
 }
