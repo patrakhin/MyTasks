@@ -24,8 +24,8 @@ class TestMatrixSpin {
     @org.junit.jupiter.api.Test
     void matrixTurn3 () {
         String [] Matrix = new String[] {"1234", "2345", "3456", "4567", "5678"};
-        Level1.MatrixTurn(Matrix, 5, 4, 1);
-        String [] expected = {"2123", "3434", "4545", "5656", "6787"};
+        Level1.MatrixTurn(Matrix, 5, 4, 3);
+        String [] expected = {"3212", "4543", "5634", "6545", "7876"};
         assertArrayEquals(expected, Matrix);
     }
 
@@ -34,6 +34,14 @@ class TestMatrixSpin {
         String [] Matrix = new String[] {"123456", "234567", "345678", "456789"};
         Level1.MatrixTurn(Matrix, 4, 6, 1);
         String [] expected = {"212345", "343456", "456767", "567898"};
+        assertArrayEquals(expected, Matrix);
+    }
+
+    @org.junit.jupiter.api.Test
+    void matrixTurn5 () {
+        String [] Matrix = new String[] {"123456", "234567", "345678", "456789"};
+        Level1.MatrixTurn(Matrix, 4, 6, 2);
+        String [] expected = {"321234", "454345", "567656", "678987"};
         assertArrayEquals(expected, Matrix);
     }
 }
