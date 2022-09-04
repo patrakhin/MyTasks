@@ -25,8 +25,9 @@ public class Level1 {
             countSubMatrix = (M/2);
         }
         // Matrix spinning if M and N > 2
-        int countShift = 0;
+        int countShift;
         for (int t = 0; t < T ; t ++) {
+            countShift = 0;
             for(; countShift < countSubMatrix; countShift++) {
                 memory1 = startMatrix[countShift][countShift];
                 memory2 = startMatrix[(M - 1) - countShift][(N - 1) - countShift];
@@ -50,6 +51,11 @@ public class Level1 {
                 }
                 // cell = memory
                 startMatrix[(startMatrix.length - 1) - countShift][(startMatrix[0].length - 2) - countShift] = memory2;
+            }
+            for (int i = 0; i < M; i++) {
+                for (int j = 0; j < N; j ++ ) {
+                    endMatrix [i] += String.valueOf(startMatrix[i] [j]);
+                }
             }
         }
         //decoding Matrix to string array
