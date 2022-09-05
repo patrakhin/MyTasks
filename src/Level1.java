@@ -1,72 +1,43 @@
 import java.util.*;
 public class Level1 {
-
-    public static void MatrixTurn(String Matrix[], int M, int N, int T) {
-        int [] [] startMatrix = new int [M] [N];
-        String [] endMatrix = new String[M];
-        int memory1 = 0;
-        int memory2 = 0;
-        //recoding to startMatrix
-        for (int k =0; k < M; k ++) {
-            for (int b = 0; b < N; b++) {
-                char [] recodingChar = Matrix[k].toCharArray();
-                startMatrix [k] [b] += Integer.parseInt(String.valueOf(recodingChar [b]));
-            }
+    public static boolean TransformTransform (int A[], int N) {
+        LinkedList <Integer> B = new LinkedList<>();
+        int k;
+        int sum = 0;
+        if ((A.length == 1) && (A [0] % 2 == 0)) {
+            return true;
         }
-        //search count sub matrix
-        int countSubMatrix = 0;
-        if (M > N) {
-            countSubMatrix = (N/2);
+        if (A.length == 1) {
+            return false;
         }
-        if (M < N) {
-            countSubMatrix = (M/2);
-        }
-        if (M == N) {
-            countSubMatrix = (M/2);
-        }
-        // Matrix spinning if M and N > 2
-        int countShift;
-        for (int t = 0; t < T ; t ++) {
-            countShift = 0;
-            for(; countShift < countSubMatrix; countShift++) {
-                memory1 = startMatrix[countShift][countShift];
-                memory2 = startMatrix[(M - 1) - countShift][(N - 1) - countShift];
-                //left vertical
-                for (int i = countShift; i <= (startMatrix.length - 2) - countShift; i++) {
-                    startMatrix[i][countShift] = startMatrix[i + 1] [countShift];
-                }
-                // right vertical
-                for (int i = (startMatrix.length - 1) - countShift; i >= (1) + countShift; i --) {
-                    startMatrix[i][(startMatrix[0].length - 1) - countShift] = startMatrix [i -1] [(startMatrix[0].length - 1) - countShift];
-                }
-                // horizon line up
-                for (int j = (startMatrix[0].length - 1) - countShift; j >= 1 + countShift; j--) {
-                    startMatrix[countShift][j] = startMatrix[countShift][j - 1];
-                }
-                // cell = memory
-                startMatrix[countShift][1 + countShift] = memory1;
-                // horizon line down
-                for (int j = countShift; j < (startMatrix[0].length - 2) - countShift; j++) {
-                    startMatrix[(startMatrix.length - 1) - countShift][j] = startMatrix[(startMatrix.length - 1) - countShift][j + 1];
-                }
-                // cell = memory
-                startMatrix[(startMatrix.length - 1) - countShift][(startMatrix[0].length - 2) - countShift] = memory2;
-            }
-            for (int i = 0; i < M; i++) {
-                for (int j = 0; j < N; j ++ ) {
-                    endMatrix [i] += String.valueOf(startMatrix[i] [j]);
+        //loop Head transform
+        for (int h = 0; h < 2; h++) {
+            for (int i = 0; i < A.length - 1; i++) {
+                for (int j = 0; j < A.length - i - 1; j ++) {
+                    k = A[i] + A[j];
+                    if (k > j) {
+                        B.add(k);
+                    }
+                    if (k < j) {
+                        B.add(j);
+                    }
                 }
             }
-        }
-        //decoding Matrix to string array
-        Arrays.fill(endMatrix, "");
-        for (int i = 0; i < M; i++) {
-            for (int j = 0; j < N; j ++ ) {
-                endMatrix [i] += String.valueOf(startMatrix[i] [j]);
+            A = new int[B.size()];
+            for (int i = 0; i < B.size(); i++) {
+                A [i] = B.get(i);
+            }
+            B = new LinkedList<>();
+            if ((A.length == 1) && (A [0] % 2 == 0)) {
+                return true;
+            }
+            if (A.length == 1) {
+                return false;
             }
         }
-        for (int i = 0; i < M; i++) {
-            Matrix [i] = endMatrix[i];
+        for (int j : A) {
+            sum += j;
         }
+        return sum % 2 == 0;
     }
 }
