@@ -53,6 +53,9 @@ public class Level1 {
             return true;
         }
         //if change
+        if (countChangeIncreasing == N) {
+            return false;
+        }
         return lost == 2;
     }
 }
