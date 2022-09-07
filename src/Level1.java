@@ -13,12 +13,13 @@ public class Level1 {
         Arrays.sort(increasing);
         //sort by decreasing
         System.arraycopy(F, 0, decreasing, 0, F.length);
-        for ( int i = 1; i < decreasing.length; ++i ) {
-            if ( decreasing [i-1] < decreasing [i] )
-            {
-                int tmp = decreasing [i-1];
-                decreasing [i-1] = decreasing [i];
-                decreasing [i] = tmp;
+        for ( int i = 0; i < decreasing.length; ++i ) {
+            for (int j = i+1; j < decreasing.length; ++j) {
+                if (decreasing[j] < decreasing[i]) {
+                    int tmp = decreasing[j];
+                    decreasing[j] = decreasing[i];
+                    decreasing[i] = tmp;
+                }
             }
         }
         //revers
