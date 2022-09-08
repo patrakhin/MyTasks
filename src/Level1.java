@@ -1,109 +1,51 @@
 import java.util.*;
 public class Level1 {
-    public static boolean Football (int F[], int N) {
-        int [] increasing = new int[F.length];
-        int [] decreasing = new int [F.length];
-        int [] revers = new  int [F.length];
-        int [] pieseRevers = new  int [F.length];
-        int countChangeIncreasing = 0;
-        int countChangeDecreasing = 0;
-        int countRevers = 0;
-        int lost = 0;
-        int pointA = 0;
-        int pointB = 0;
-        boolean flagRevers = false;
-        int countPieseRevers = 0;
-
-        //sort by increasing
-        System.arraycopy(F, 0, increasing, 0, F.length);
-        Arrays.sort(increasing);
-        //sort by decreasing
-        System.arraycopy(F, 0, decreasing, 0, F.length);
-        for ( int i = 0; i < decreasing.length; ++i ) {
-            for (int j = i+1; j < decreasing.length; ++j) {
-                if (decreasing[j] > decreasing[i]) {
-                    int tmp = decreasing[j];
-                    decreasing[j] = decreasing[i];
-                    decreasing[i] = tmp;
+    public static String Keymaker(int k) {
+        StringBuilder out = new StringBuilder();
+        int [] startArray = new int[k];
+        boolean flagOneStep = false;
+        boolean flagClose = false;
+        boolean flagCheck = false;
+        int countClose = 0;
+        int countCheck = 0;
+        int closeNumber = 0;
+        int checkNumber = 0;
+        //decoding into array
+        for (int i = 0; i < k; i++) {
+            startArray [i] = 0;
+        }
+        //open and close doors
+        for (int i = 0; i < k; i ++) {
+            countClose += 1;
+            countCheck += 1;
+            //step one
+            for (int j = 0; j < k && !flagOneStep; j++) {
+                startArray[j] = 1;
+                if (j == k - 1) {
+                    flagOneStep = true;
+                }
+            }
+            //step two even
+            for (int a = i; a < k && (i % 2 != 0); a += countClose) {
+                //  then count = 1,
+                startArray [a] = 0;
+            }
+            //step three uneven
+            for (int b = i; b < k && (i % 2 == 0) && i != 0; b += countCheck) {
+                // then count = 2
+                if (startArray [b] == 0) {
+                    startArray [b] = 1;
+                    continue;
+                }
+                if (startArray [b] == 1) {
+                    startArray [b] = 0;
                 }
             }
         }
-        //revers
-        System.arraycopy(F, 0, revers, 0, F.length);
-        for (int i = 0; i < N / 2; i++) {
-            int temp = revers [i];
-            revers [i] = revers[N - 1 - i];
-            revers [N - 1 - i] = temp;
+        // reading array to string
+        for (int i = 0; i < k; i++) {
+            out.append(startArray[i]);
         }
-        // revers two
-        System.arraycopy(F, 0, pieseRevers, 0, F.length);
-        int k = 0;
-        int countLoop = 0;
-        for (; k < N - 1; k ++) {
-
-            if (F[k] > F [k+1] && !flagRevers) {
-                pointA = k;
-                flagRevers = true;
-                countLoop += 1;
-            }
-            if (F[k] < F[k+1] && flagRevers && (pointA != k)) {
-                pointB = k;
-                k = N-1;
-            }
-            if (k+1 == N - 1 && flagRevers && (pointA != k)) {
-                pointB = k + 1;
-                k = N-1;
-            }
-            if (flagRevers) {
-                countLoop += 1;
-            }
-        }
-        //
-        if (pointB - pointA <= 1) {
-            pieseRevers = new int[N];
-        }
-        for (int j = 0; j < countLoop / 2; j++) {
-            int temp = pieseRevers [pointA + j];
-            pieseRevers [pointA + j] = pieseRevers [pointB - j];
-            pieseRevers [pointB - j] = temp;
-        }
-        //
-
-
-        // compare index
-        for (int i = 0; i < F.length; i++) {
-            if (F [i] == increasing [i]) {
-                countChangeIncreasing += 1;
-            }
-            if (F [i] == decreasing [i]) {
-                countChangeDecreasing += 1;
-            }
-            if (F [i] == revers [i]) {
-                countRevers += 1;
-            }
-            if (F [i] != increasing [i]) {
-                lost += 1;
-            }
-            if (increasing [i] == pieseRevers [i]) {
-                countPieseRevers += 1;
-            }
-
-        }
-        // logic
-        //if revers
-        if (countRevers == N) {
-            return true;
-        }
-        if (countPieseRevers == N) {
-            return true;
-        }
-        if (lost == countChangeDecreasing) {
-            return true;
-        }
-        //if change
-        if (countChangeIncreasing == N) {
-            return false;
-        }
-        return lost == 2;
+        return out.toString();
     }
 }
