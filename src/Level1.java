@@ -3,48 +3,32 @@ public class Level1 {
     public static String Keymaker(int k) {
         StringBuilder out = new StringBuilder();
         int [] startArray = new int[k];
-        boolean flagOneStep = false;
-        boolean flagClose = false;
-        boolean flagCheck = false;
-        int countClose = 0;
-        int countCheck = 0;
-        int closeNumber = 0;
-        int checkNumber = 0;
+        int mem = 0;
         //decoding into array
         for (int i = 0; i < k; i++) {
             startArray [i] = 0;
         }
         //open and close doors
-        for (int i = 0; i < k; i ++) {
-            countClose += 1;
-            countCheck += 1;
+        for (int i = 1; i <= k; i ++) {
             //step one
-            for (int j = 0; j < k && !flagOneStep; j++) {
-                startArray[j] = 1;
-                if (j == k - 1) {
-                    flagOneStep = true;
-                }
+            if (i == 1) {
+                Arrays.fill(startArray, 1);
             }
-            //step two even
-            for (int a = i; a < k && (i % 2 != 0); a += countClose) {
-                //  then count = 1,
-                startArray [a] = 0;
-            }
-            //step three uneven
-            for (int b = i; b < k && (i % 2 == 0) && i != 0; b += countCheck) {
+            //step
+            for (int b = i - 1  ; b < startArray.length && i != 1; b += i) {
                 // then count = 2
                 if (startArray [b] == 0) {
                     startArray [b] = 1;
-                    continue;
+                    mem = b;
                 }
-                if (startArray [b] == 1) {
+                if (startArray [b] == 1 && b != mem) {
                     startArray [b] = 0;
                 }
             }
         }
         // reading array to string
-        for (int i = 0; i < k; i++) {
-            out.append(startArray[i]);
+        for (int j : startArray) {
+            out.append(j);
         }
         return out.toString();
     }
