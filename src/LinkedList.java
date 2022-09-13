@@ -5,7 +5,7 @@ public class LinkedList
     public Node tail;
     public int count;
 
-    public LinkedList()
+    public LinkedList ()
     {
         head = null;
         tail = null;
@@ -33,7 +33,6 @@ public class LinkedList
 
     public ArrayList<Node> findAll(int _value) {
         ArrayList<Node> nodes = new ArrayList<Node>();
-        // seek all node
         Node node = this.head;
         while (node != null) {
             if (node.value == _value) {
@@ -57,9 +56,9 @@ public class LinkedList
         return sb.append(']').toString();
     }
 
+
     public boolean remove(int _value)
     {
-        //  delete node at value
         boolean flagLast = false;
         Node currentNode = head;
         Node previousNode = currentNode;
@@ -98,18 +97,21 @@ public class LinkedList
 
     public void removeAll(int _value)
     {
-        //delete all node at value
         Node currentNode = head;
         Node previousNode = currentNode;
-        while (currentNode.next != null) {
-            if (currentNode.value == _value && currentNode == head) {
-                head = currentNode.next;
-            }
+        if (currentNode.next != null && currentNode.value == _value) { //if head
+            head = currentNode.next;
+        }
+        while (currentNode.next != null) { //if not head
             if (currentNode.value == _value && currentNode != head) {
                 previousNode.next = currentNode.next;
+                currentNode = previousNode;
             }
             previousNode = currentNode;
             currentNode = currentNode.next;
+        }
+        if (currentNode.value == _value) {
+            previousNode.next = null;
         }
         Node node = this.head;
         if (node.value == _value) {
@@ -126,15 +128,13 @@ public class LinkedList
 
     public void clear()
     {
-        //clear all list
         this.head = null;
         this.tail = null;
     }
 
-
     public int count()
     {
-        return count; // count item
+        return count;
     }
 
     public void insertAfter(Node _nodeAfter, Node _nodeToInsert)
@@ -142,12 +142,13 @@ public class LinkedList
         boolean flagHead = false;
         boolean flagNull = false;
         boolean flagNew = false;
+
         Node currentNode = head;
         Node previousNode = currentNode.next;
         if (_nodeAfter == head) {
             flagNew = true;
         }
-        // insert after
+
         while (currentNode != _nodeAfter && !flagHead && !flagNull) {
             currentNode = currentNode.next;
             previousNode = currentNode.next;
@@ -157,22 +158,25 @@ public class LinkedList
             _nodeToInsert.next = previousNode;
             currentNode.next = _nodeToInsert;
         }
+
         if (flagHead) {
             _nodeToInsert.next = previousNode;
             currentNode.next = _nodeToInsert;
         }
-        // if_nodeAfter = null
+
+        // _nodeAfter = null
         if (Objects.isNull(_nodeAfter)) {
             currentNode = tail;
             _nodeToInsert.next = null;
             currentNode.next = _nodeToInsert;
             flagNull = true;
         }
-        // add new item the first in list
+        // add new item at first in list
         if (_nodeAfter == head  && !flagNull && !flagHead) {
             _nodeToInsert.next = head;
             head = _nodeToInsert;
         }
+
         Node node = this.head;
         this.count = 0;
         while (node != null) {
@@ -181,7 +185,6 @@ public class LinkedList
         }
     }
 }
-
 class Node
 {
     public int value;
