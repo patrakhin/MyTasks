@@ -1,3 +1,4 @@
+import java.util.*;
 public class LinkedList
 {
     public Node head;
@@ -111,12 +112,16 @@ public class LinkedList
             currentNode = currentNode.next;
         }
         Node node = this.head;
+        if (node.value == _value) {
+            node = null;
+            this.head = null;
+            this.tail = null;
+        }
         this.count = 0;
         while (node != null) {
             count ++;
             node = node.next;
         }
-
     }
 
     public void clear()
