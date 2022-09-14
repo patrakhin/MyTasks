@@ -56,6 +56,7 @@ public class LinkedList
         return sb.append(']').toString();
     }
 
+
     public boolean remove(int _value)
     {
         boolean flagLast = false;
@@ -98,14 +99,19 @@ public class LinkedList
     {
         Node currentNode = head;
         Node previousNode;
+        if (head == null) {
+            return;
+        }
         while (currentNode.next != null) {
             if (currentNode.value == _value && currentNode == head) { //if head
                 head = currentNode.next;
             }
             currentNode = currentNode.next;
         }
+
         currentNode = head;
         previousNode = currentNode;
+
         while (currentNode.next != null) { //if not head
             if (currentNode.value == _value && currentNode != head) {
                 previousNode.next = currentNode.next;
@@ -152,6 +158,7 @@ public class LinkedList
         if (_nodeAfter == head) {
             flagNew = true;
         }
+
         while (currentNode != _nodeAfter && !flagHead && !flagNull) {
             currentNode = currentNode.next;
             previousNode = currentNode.next;
@@ -161,10 +168,12 @@ public class LinkedList
             _nodeToInsert.next = previousNode;
             currentNode.next = _nodeToInsert;
         }
+
         if (flagHead) {
             _nodeToInsert.next = previousNode;
             currentNode.next = _nodeToInsert;
         }
+
         // _nodeAfter = null
         if (Objects.isNull(_nodeAfter)) {
             currentNode = tail;
@@ -177,6 +186,7 @@ public class LinkedList
             _nodeToInsert.next = head;
             head = _nodeToInsert;
         }
+
         Node node = this.head;
         this.count = 0;
         while (node != null) {
