@@ -56,7 +56,6 @@ public class LinkedList
         return sb.append(']').toString();
     }
 
-
     public boolean remove(int _value)
     {
         boolean flagLast = false;
@@ -95,43 +94,34 @@ public class LinkedList
         return true;
     }
 
-    public void removeAll(int _value)
-    {
+    public void removeAll(int _value) {
         Node currentNode = head;
-        Node previousNode;
+        Node previousNode = head;
         if (head == null) {
             return;
         }
-        while (currentNode.next != null) {
-            if (currentNode.value == _value && currentNode == head) { //if head
-                head = currentNode.next;
-            }
-            currentNode = currentNode.next;
+        if (count == 1 && currentNode.value == _value) { //if single
+            head.next = null;
+            head = null;
+            return;
         }
-
-        currentNode = head;
-        previousNode = currentNode;
-
-        while (currentNode.next != null) { //if not head
+        while (previousNode.next != null) {
+            if (currentNode.value == _value && currentNode == head) {
+                head = currentNode.next;  //
+            }
             if (currentNode.value == _value && currentNode != head) {
                 previousNode.next = currentNode.next;
-                currentNode = previousNode;
+                currentNode = currentNode.next;
+                continue;
             }
             previousNode = currentNode;
             currentNode = currentNode.next;
         }
-        if (currentNode.value == _value) {
-            previousNode.next = null;
-        }
+
         Node node = this.head;
-        if (node.value == _value) {
-            node = null;
-            this.head = null;
-            this.tail = null;
-        }
         this.count = 0;
         while (node != null) {
-            count ++;
+            count++;
             node = node.next;
         }
     }
@@ -158,7 +148,6 @@ public class LinkedList
         if (_nodeAfter == head) {
             flagNew = true;
         }
-
         while (currentNode != _nodeAfter && !flagHead && !flagNull) {
             currentNode = currentNode.next;
             previousNode = currentNode.next;
@@ -168,12 +157,10 @@ public class LinkedList
             _nodeToInsert.next = previousNode;
             currentNode.next = _nodeToInsert;
         }
-
         if (flagHead) {
             _nodeToInsert.next = previousNode;
             currentNode.next = _nodeToInsert;
         }
-
         // _nodeAfter = null
         if (Objects.isNull(_nodeAfter)) {
             currentNode = tail;
@@ -186,7 +173,6 @@ public class LinkedList
             _nodeToInsert.next = head;
             head = _nodeToInsert;
         }
-
         Node node = this.head;
         this.count = 0;
         while (node != null) {
