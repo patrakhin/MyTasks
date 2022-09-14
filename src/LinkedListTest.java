@@ -144,4 +144,22 @@ class LinkedListTest {
         String expected = "[128, 128, 128, 128, 128, 128]";
         assertEquals(expected, s_list.toString());
     }
+
+    @org.junit.jupiter.api.Test
+    void addInTail8 () { // lis is empty
+        LinkedList s_list = new LinkedList();
+        s_list.removeAll(12);
+        String expected = "[]";
+        assertEquals(expected, s_list.toString());
+    }
+
+    @org.junit.jupiter.api.Test
+    void addInTail9 () { // lis is one
+        int a = 12;
+        LinkedList s_list = new LinkedList();
+        s_list.addInTail(new Node(a));
+        s_list.removeAll(12);
+        String expected = "[]";
+        assertEquals(expected, s_list.toString());
+    }
 }
