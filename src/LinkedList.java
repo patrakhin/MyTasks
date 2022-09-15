@@ -67,6 +67,10 @@ public class LinkedList {
             head = find(_value).next;
             count--;
         }
+        if (count == 0) { //it is one
+            tail = head;
+            return true;
+        }
         if (find(_value) != null && head != find(_value) && find(_value).next != null) { // not 1st
             flagLast = true;
         }
@@ -79,6 +83,7 @@ public class LinkedList {
             previousNode = currentNode;
             currentNode = currentNode.next;
         }
+
         return true;
     }
 
