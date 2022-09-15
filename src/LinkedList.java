@@ -1,12 +1,10 @@
 import java.util.*;
-public class LinkedList
-{
+public class LinkedList {
     public Node head;
     public Node tail;
     public int count;
 
-    public LinkedList ()
-    {
+    public LinkedList() {
         head = null;
         tail = null;
         count = 0;
@@ -44,7 +42,7 @@ public class LinkedList
     }
 
     @Override
-    public String toString () {
+    public String toString() {
         StringBuilder sb = new StringBuilder("[");
         String sep = "";
         Node temp = this.head;
@@ -56,8 +54,8 @@ public class LinkedList
         return sb.append(']').toString();
     }
 
-    public boolean remove(int _value)
-    {
+
+    public boolean remove(int _value) {
         boolean flagLast = false;
         Node currentNode = head;
         Node previousNode = currentNode;
@@ -66,7 +64,7 @@ public class LinkedList
         }
         if (find(_value) != null && head == find(_value)) { // 1st
             head = find(_value).next;
-            count --;
+            count--;
         }
         if (find(_value) != null && head != find(_value) && find(_value).next != null) { // not 1st
             flagLast = true;
@@ -78,7 +76,7 @@ public class LinkedList
         if (flagLast) {
             previousNode.next = find(_value).next;
             flagLast = false;
-            count --;
+            count--;
         }
         if (find(_value) != null && head != find(_value) && find(_value).next == null) { // is last
             flagLast = true;
@@ -89,7 +87,7 @@ public class LinkedList
         }
         if (flagLast) {
             previousNode.next = null;
-            count --;
+            count--;
         }
         return true;
     }
@@ -118,7 +116,9 @@ public class LinkedList
             currentNode = currentNode.next;
         }
 
+        this.tail = previousNode;
         Node node = this.head;
+
         this.count = 0;
         while (node != null) {
             count++;
@@ -126,19 +126,16 @@ public class LinkedList
         }
     }
 
-    public void clear()
-    {
+    public void clear() {
         this.head = null;
         this.tail = null;
     }
 
-    public int count()
-    {
+    public int count() {
         return count;
     }
 
-    public void insertAfter(Node _nodeAfter, Node _nodeToInsert)
-    {
+    public void insertAfter(Node _nodeAfter, Node _nodeToInsert) {
         boolean flagHead = false;
         boolean flagNull = false;
         boolean flagNew = false;
@@ -169,18 +166,19 @@ public class LinkedList
             flagNull = true;
         }
         // add new item at first in list
-        if (_nodeAfter == head  && !flagNull && !flagHead) {
+        if (_nodeAfter == head && !flagNull && !flagHead) {
             _nodeToInsert.next = head;
             head = _nodeToInsert;
         }
         Node node = this.head;
         this.count = 0;
         while (node != null) {
-            count ++;
+            count++;
             node = node.next;
         }
     }
 }
+
 class Node
 {
     public int value;
@@ -191,3 +189,4 @@ class Node
         next = null;
     }
 }
+
