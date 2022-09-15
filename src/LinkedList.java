@@ -141,6 +141,7 @@ public class LinkedList {
         if (Objects.isNull(_nodeAfter)) {
             head = _nodeToInsert;
             tail = _nodeToInsert;
+            count++;
             return;
         }
         // add new item after first in list - list doesn't empty
