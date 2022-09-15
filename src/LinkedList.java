@@ -94,8 +94,9 @@ public class LinkedList {
             return;
         }
         if (count == 1 && currentNode.value == _value) { //if single
-            head.next = null;
             head = null;
+            tail = null;
+            count --;
             return;
         }
         while (previousNode.next != null) {
