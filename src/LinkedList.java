@@ -3,6 +3,7 @@ public class LinkedList {
     public Node head;
     public Node tail;
     public int count;
+    private Node cur2;
 
     public LinkedList() {
         head = null;
@@ -69,25 +70,14 @@ public class LinkedList {
         if (find(_value) != null && head != find(_value) && find(_value).next != null) { // not 1st
             flagLast = true;
         }
-        while (currentNode.next != find(_value) && flagLast) {
+        while (previousNode.next != null && flagLast) {
+            if (currentNode.value == _value && currentNode != head) {
+                previousNode.next = currentNode.next;
+                count--;
+                return true;
+            }
             previousNode = currentNode;
             currentNode = currentNode.next;
-        }
-        if (flagLast) {
-            previousNode.next = find(_value).next;
-            flagLast = false;
-            count--;
-        }
-        if (find(_value) != null && head != find(_value) && find(_value).next == null) { // is last
-            flagLast = true;
-        }
-        while (currentNode.next != null && flagLast) {
-            previousNode = currentNode;
-            currentNode = currentNode.next;
-        }
-        if (flagLast) {
-            previousNode.next = null;
-            count--;
         }
         return true;
     }
@@ -179,14 +169,14 @@ public class LinkedList {
     }
 }
 
-class Node
-{
-    public int value;
-    public Node next;
-    public Node(int _value)
-    {
-        value = _value;
-        next = null;
+    class Node {
+        public int value;
+        public Node next;
+
+        public Node(int _value) {
+            value = _value;
+            next = null;
+        }
     }
-}
+
 
