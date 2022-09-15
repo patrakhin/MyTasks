@@ -132,45 +132,57 @@ public class LinkedList {
         return count;
     }
 
-    public void insertAfter(Node _nodeAfter, Node _nodeToInsert) {
-        boolean flagHead = false;
-        boolean flagNull = false;
-        boolean flagNew = false;
-
+    public void insertAfter(Node _nodeAfter, Node _nodeToInsert)
+    {
         Node currentNode = head;
-        Node previousNode = currentNode.next;
-        if (_nodeAfter == head) {
-            flagNew = true;
-        }
-        while (currentNode != _nodeAfter && !flagHead && !flagNull) {
-            currentNode = currentNode.next;
-            previousNode = currentNode.next;
-            flagHead = true;
-        }
-        if (!flagHead && !flagNull && !flagNew) {
-            _nodeToInsert.next = previousNode;
-            currentNode.next = _nodeToInsert;
-        }
-        if (flagHead) {
-            _nodeToInsert.next = previousNode;
-            currentNode.next = _nodeToInsert;
-        }
-        // _nodeAfter = null
+        Node previousNode = head;
+        boolean flagInsert = false;
+        // _nodeAfter = null insert first in list
         if (Objects.isNull(_nodeAfter)) {
-            currentNode = tail;
-            _nodeToInsert.next = null;
-            currentNode.next = _nodeToInsert;
-            flagNull = true;
-        }
-        // add new item at first in list
-        if (_nodeAfter == head && !flagNull && !flagHead) {
-            _nodeToInsert.next = head;
             head = _nodeToInsert;
+            tail = _nodeToInsert;
+
+            flagInsert = true;
+        }
+        // add new item after first in list - list doesn't empty
+        if (_nodeAfter == head && count > 1) {
+            _nodeToInsert.next = _nodeAfter.next;
+            _nodeAfter.next= _nodeToInsert;
+            flagInsert = true;
+        }
+        // add new item after first in list - list size = 1
+        if (_nodeAfter == head && count == 1) {
+            _nodeToInsert.next = _nodeAfter.next;
+            _nodeAfter.next= _nodeToInsert;
+            tail = _nodeToInsert;
+            flagInsert = true;
+        }
+        // add new item at last in list - list doesn't empty
+        while (previousNode.next != null && !flagInsert && _nodeAfter.next == null) {
+            if (currentNode == _nodeAfter) {
+                currentNode.next = _nodeToInsert;
+                tail = _nodeToInsert;
+                flagInsert = true;
+                break;
+            }
+            previousNode = currentNode;
+            currentNode = currentNode.next;
+        }
+        // add new item  in list - anyplace
+        while (previousNode.next != null && !flagInsert) {
+            if (currentNode == _nodeAfter) {
+                _nodeToInsert.next = _nodeAfter.next;
+                _nodeAfter.next= _nodeToInsert;
+                tail = _nodeToInsert;
+                break;
+            }
+            previousNode = currentNode;
+            currentNode = currentNode.next;
         }
         Node node = this.head;
         this.count = 0;
         while (node != null) {
-            count++;
+            count ++;
             node = node.next;
         }
     }
