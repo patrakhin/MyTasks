@@ -31,11 +31,11 @@ public class LinkedList2
 
     public Node find(int _value)
     {
-        if (head == null) {
-            return null;
-        }
-        if (head.value == _value) {
-            return head;
+        Node node = this.head;
+        while (node != null) {
+            if (node.value == _value)
+                return node;
+            node = node.next;
         }
         return null;
     }
