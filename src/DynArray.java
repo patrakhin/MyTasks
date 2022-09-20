@@ -91,6 +91,9 @@ public class DynArray<T>
         boolean flagArrayResize = false;
         boolean cutSize = false;
         int currentCapacity = (int) (capacity / 1.5);
+        if (currentCapacity < 16) {
+            currentCapacity = 16;
+        }
         if (index < 0 && index > count - 1) {
             throw new IndexOutOfBoundsException(index);
         }
