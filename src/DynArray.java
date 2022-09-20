@@ -10,7 +10,7 @@ public class DynArray<T>
 
     public DynArray(Class clz)
     {
-        clazz = clz; // нужен для безопасного приведения типов
+        clazz = clz; //
         //new DynArray<Integer>(Integer.class);
         count = 0;
         makeArray(16);
@@ -54,9 +54,8 @@ public class DynArray<T>
     public void insert(T itm, int index)
     {
         if (index < 0 || index > count) {
-            return;
+            throw new IndexOutOfBoundsException(index);
         }
-        boolean flagGrow = false;
         boolean flagDontGrow = false;
         if (index < capacity) {
             copyArray();
