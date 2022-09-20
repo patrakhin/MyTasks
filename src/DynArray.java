@@ -94,19 +94,19 @@ public class DynArray<T>
         if (index < 0 && index > count - 1) {
             throw new IndexOutOfBoundsException(index);
         }
-        if (count - 1 < 16 && index == 0) { //head
+        if ((index <= capacity - 1) && index == 0) { //head
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, index + 1, array, 0, oldArray.length - 1);
             cutSize = true;
         }
-        if (count - 1 < 16 && (index == count) && !cutSize) { // tail
+        if ((index <= capacity - 1) && (index == count) && !cutSize) { // tail
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, 0, array, 0, index - 1);
             cutSize = true;
         }
-        if (count - 1 < 16 && (index < count && index > 0) && !cutSize) { // any place
+        if ((index <= capacity - 1) && (index < count && index > 0) && !cutSize) { // any place
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, 0, array, 0, index);
@@ -131,8 +131,6 @@ public class DynArray<T>
             System.arraycopy(oldArray, 0, array, 0, index);
             System.arraycopy(oldArray, index + 1, array, index, ((count - 1) - (index + 1)));
         }
-
         count --;
     }
-
 }
