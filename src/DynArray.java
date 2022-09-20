@@ -10,8 +10,7 @@ public class DynArray<T>
 
     public DynArray(Class clz)
     {
-        clazz = clz; //
-        //new DynArray<Integer>(Integer.class);
+        clazz = clz;
         count = 0;
         makeArray(16);
     }
@@ -51,7 +50,7 @@ public class DynArray<T>
         count ++;
     }
 
-    public void insert(T itm, int index)
+    public void insert(T itm, int index) throws IndexOutOfBoundsException
     {
         if (index < 0 || index > count) {
             throw new IndexOutOfBoundsException(index);
@@ -87,12 +86,12 @@ public class DynArray<T>
         count ++;
     }
 
-    public void remove(int index)
+    public void remove(int index) throws IndexOutOfBoundsException
     {
         boolean cutSize = false;
         int currentCapacity = (int) (capacity / 1.5);
         if (index < 0 && index > count - 1) {
-            return;
+            throw new IndexOutOfBoundsException(index);
         }
         if (count - 1 < 16 && index == 0) {
             copyArray();
@@ -100,23 +99,24 @@ public class DynArray<T>
             System.arraycopy(oldArray, index + 1, array, 0, oldArray.length - 1);
             cutSize = true;
         }
-        if (count - 1 < 16 && index == count) {
+        if (count - 1 < 16 && (index == count) && !cutSize) {
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, 0, array, 0, index - 1);
             cutSize = true;
         }
-        if (count - 1 < 16 && index < count && index > 0) {
+        if (count - 1 < 16 && (index < count && index > 0) && !cutSize) {
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, 0, array, 0, index);
             System.arraycopy(oldArray, index + 1, array, index, oldArray.length - (index + 1));
         }
-        if (count - 1 <= currentCapacity && !cutSize) {
+        if ((count - 1 <= currentCapacity) && !cutSize) {
             copyArray();
             makeArray(currentCapacity);
             System.arraycopy(oldArray, 0, array, 0, index);
         }
         count --;
     }
+
 }
