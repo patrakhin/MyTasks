@@ -100,24 +100,27 @@ public class DynArray<T>
         if (index < 0 && index > count - 1) {
             throw new IndexOutOfBoundsException(index);
         }
-        if ((index <= capacity - 1) && index == 0 && !cutSize) { //head
+        if ((index == 0) && !cutSize) { //head
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, index + 1, array, 0, oldArray.length - 1);
-            cutSize = true;
+            count --;
+            return;
         }
-        if ((index <= capacity - 1) && (index == count) && !cutSize) { // tail
+        if ((index == count) && !cutSize) { // tail
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, 0, array, 0, index - 1);
-            cutSize = true;
+            count --;
+            return;
         }
-        if ((index <= capacity - 1) && (index < count && index > 0) && !cutSize) { // any place
+        if ((index < count && index > 0) && !cutSize) { // any place
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, 0, array, 0, index);
             System.arraycopy(oldArray, index + 1, array, index, oldArray.length - (index + 1));
-            cutSize = true;
+            count --;
+            return;
         }
         if (cutSize) {
             copyArray();
