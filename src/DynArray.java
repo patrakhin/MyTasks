@@ -88,24 +88,25 @@ public class DynArray<T>
 
     public void remove(int index) throws IndexOutOfBoundsException
     {
+        boolean flagArrayResize = false;
         boolean cutSize = false;
         int currentCapacity = (int) (capacity / 1.5);
         if (index < 0 && index > count - 1) {
             throw new IndexOutOfBoundsException(index);
         }
-        if (count - 1 < 16 && index == 0) {
+        if (count - 1 < 16 && index == 0) { //head
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, index + 1, array, 0, oldArray.length - 1);
             cutSize = true;
         }
-        if (count - 1 < 16 && (index == count) && !cutSize) {
+        if (count - 1 < 16 && (index == count) && !cutSize) { // tail
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, 0, array, 0, index - 1);
             cutSize = true;
         }
-        if (count - 1 < 16 && (index < count && index > 0) && !cutSize) {
+        if (count - 1 < 16 && (index < count && index > 0) && !cutSize) { // any place
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, 0, array, 0, index);
@@ -114,8 +115,23 @@ public class DynArray<T>
         if ((count - 1 <= currentCapacity) && !cutSize) {
             copyArray();
             makeArray(currentCapacity);
-            System.arraycopy(oldArray, 0, array, 0, index);
+            flagArrayResize = true;
         }
+        if (flagArrayResize && index == 0) { //head
+            System.arraycopy(oldArray, (index + 1), array, 0, count - 1);
+            count --;
+            return;
+        }
+        if (flagArrayResize && (index == count - 1)) { // tail
+            System.arraycopy(oldArray, 0, array, 0, (count - 1));
+            count --;
+            return;
+        }
+        if (flagArrayResize && (index < count && index > 0)) { // any place
+            System.arraycopy(oldArray, 0, array, 0, index);
+            System.arraycopy(oldArray, index + 1, array, index, ((count - 1) - (index + 1)));
+        }
+
         count --;
     }
 
