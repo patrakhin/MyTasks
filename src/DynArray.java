@@ -88,31 +88,34 @@ public class DynArray<T>
 
     public void remove(int index) throws IndexOutOfBoundsException
     {
-        boolean flagArrayResize = false;
+        boolean reSize = false;
         boolean cutSize = false;
+        if (index < 0 && index > count - 1) {
+            throw new IndexOutOfBoundsException(index);
+        }
         int currentCapacity = (int) (capacity / 1.5);
         if (currentCapacity < 16) {
             currentCapacity = 16;
         }
-        if (count - 1 == currentCapacity) {
-            cutSize = true;
+        if (count - 1 <= currentCapacity) {
+            reSize = true;
         }
-        if (index < 0 && index > count - 1) {
-            throw new IndexOutOfBoundsException(index);
-        }
-        if ((index == 0) && !cutSize) { //head
+
+        if ((index == 0)) { //head
             copyArray();
             makeArray(capacity);
             System.arraycopy(oldArray, index + 1, array, 0, oldArray.length - 1);
             count --;
-            return;
+            cutSize = true;
+
         }
-        if ((index == count) && !cutSize) { // tail
+        if ((index == (count - 1)) && !cutSize) { // tail
             copyArray();
             makeArray(capacity);
-            System.arraycopy(oldArray, 0, array, 0, index - 1);
+            System.arraycopy(oldArray, 0, array, 0, (index));
             count --;
-            return;
+            cutSize = true;
+
         }
         if ((index < count && index > 0) && !cutSize) { // any place
             copyArray();
@@ -120,27 +123,13 @@ public class DynArray<T>
             System.arraycopy(oldArray, 0, array, 0, index);
             System.arraycopy(oldArray, index + 1, array, index, oldArray.length - (index + 1));
             count --;
-            return;
+
         }
-        if (cutSize) {
+        if (reSize) {
             copyArray();
             makeArray(currentCapacity);
-            flagArrayResize = true;
+            System.arraycopy(oldArray, 0, array, 0, count);
         }
-        if (flagArrayResize && index == 0) { //head
-            System.arraycopy(oldArray, (index + 1), array, 0, count - 1);
-            count --;
-            return;
-        }
-        if (flagArrayResize && (index == count - 1)) { // tail
-            System.arraycopy(oldArray, 0, array, 0, (count - 1));
-            count --;
-            return;
-        }
-        if (flagArrayResize && (index < count && index > 0)) { // any place
-            System.arraycopy(oldArray, 0, array, 0, index);
-            System.arraycopy(oldArray, index + 1, array, index, ((count - index) - 1));
-        }
-        count --;
+
     }
 }
