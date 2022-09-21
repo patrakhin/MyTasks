@@ -30,14 +30,14 @@ public class DynArray<T>
         return null;
     }
     public T[] copyArray () {
-        oldArray = (T[]) Array.newInstance(this.clazz, capacity);
-        System.arraycopy(array, 0, oldArray, 0, array.length);
+        oldArray = this.array;
+        //System.arraycopy(array, 0, oldArray, 0, array.length);
         return oldArray;
     }
 
     public void append(T itm)
     {
-        boolean flagEmpty = count < capacity;
+        boolean flagEmpty = count + 1 <= capacity;
         if (flagEmpty) {
             array [count] = itm;
             count ++;
@@ -97,7 +97,7 @@ public class DynArray<T>
         if (currentCapacity < 16) {
             currentCapacity = 16;
         }
-        if ((count - 1 <= currentCapacity) && capacity > 16) {
+        if ((count - 1 <= currentCapacity) && capacity > 16 && (count - 1 < capacity/2)) {
             reSize = true;
         }
 
@@ -129,7 +129,7 @@ public class DynArray<T>
             copyArray();
             makeArray(currentCapacity);
             System.arraycopy(oldArray, 0, array, 0, count);
+            this.capacity = currentCapacity;
         }
-
     }
 }
