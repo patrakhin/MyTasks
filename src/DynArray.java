@@ -90,7 +90,7 @@ public class DynArray<T>
     {
         boolean reSize = false;
         boolean cutSize = false;
-        if (index < 0 && index > count - 1) {
+        if (index < 0 || index > (count - 1)) {
             throw new IndexOutOfBoundsException(index);
         }
         int currentCapacity = (int) (capacity / 1.5);
