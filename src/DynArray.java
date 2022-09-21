@@ -97,7 +97,7 @@ public class DynArray<T>
         if (currentCapacity < 16) {
             currentCapacity = 16;
         }
-        if (count - 1 <= currentCapacity) {
+        if ((count - 1 <= currentCapacity) && capacity > 16) {
             reSize = true;
         }
 
