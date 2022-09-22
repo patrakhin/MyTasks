@@ -1,24 +1,25 @@
 import java.util.*;
 public class Stack<T>
 {
-    public class Node
-    {
-        public T value;
-        public Node next;
-        public Node(T  valueIn, Node next)
-        {
-            this.value = valueIn;
-            this.next = next;
-        }
-        public Node()
-        {
-        }
-    }
-    private Node head;
+    public Node head;
+    public Node tail;
+    public int count;
+    private Node cur2;
 
     public Stack()
     {
-        super();
+        head = null;
+        tail = null;
+        count = 0;
+    }
+
+    public void addInTail(Node item) {
+        if (this.head == null)
+            this.head = item;
+        else
+            this.tail.next = item;
+        this.tail = item;
+        this.count += 1;
     }
 
     public int size()
@@ -28,36 +29,53 @@ public class Stack<T>
             head = head.next;
             size ++;
         }
-
         return size;
     }
 
     public T pop()
     {
-        if (head != null) {
-            T result = head.value;
-            head = head.next;
-            return result;
+        Node currentNode = head;
+        Node previousNode = currentNode;
+        if (currentNode == null) {
+            return null;// if stack is empty
         }
-
-        return null;
+        while (currentNode.next != null) {
+            previousNode = currentNode;
+            currentNode = currentNode.next;
+        }
+        T temp = (T)tail.value;
+        count --;
+        if (count == 0) {
+            head = null;
+            tail = null;
+            return temp;
+        }
+        previousNode.next = null;
+        tail = previousNode;
+        return temp;
     }
 
     public void push(T val)
     {
-        Node newNode =  new Node(val, head);
-        head = newNode;
-
+        addInTail(new Node<>(val));
     }
 
     public T peek()
     {
-        if (head != null) {
-            T result = head.value;
+        if (tail != null) {
+            T result = (T) tail.value;
             return result;
         }
-
-        return null;
+        return null; // if stack is empty
     }
 }
-
+class Node<T>
+{
+    public T value;
+    public Node next;
+    public Node(T  valueIn)
+    {
+        value = valueIn;
+        next = null;
+    }
+}
