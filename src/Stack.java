@@ -1,10 +1,10 @@
 import java.util.*;
+
 public class Stack<T>
 {
     public Node head;
     public Node tail;
     public int count;
-    private Node cur2;
 
     public Stack()
     {
@@ -12,14 +12,21 @@ public class Stack<T>
         tail = null;
         count = 0;
     }
+    public void addInTail(Node _item)
+    {
+        if (head == null) {
+            this.head = _item;
+            this.head.next = null;
+            this.head.prev = null;
+            this.tail = _item;
+        } else {
+            this.head.prev = _item;
+            _item.next = head;
+            this.head = _item;
+            //_item.next = tail;
+        }
+        count ++;
 
-    public void addInTail(Node item) {
-        if (this.head == null)
-            this.head = item;
-        else
-            this.tail.next = item;
-        this.tail = item;
-        this.count += 1;
     }
 
     public int size()
@@ -34,25 +41,26 @@ public class Stack<T>
 
     public T pop()
     {
-        Node currentNode = head;
-        Node previousNode = currentNode;
-        if (currentNode == null) {
-            return null;// if stack is empty
+        Node current = head;
+        //if list is empty - return null
+
+        //if value into head and list have more value
+        if (count > 1) {
+            T temp = (T)head.value;
+            count --;
+            current.next.prev = null;
+            head = current.next;
+            return temp;
         }
-        while (currentNode.next != null) {
-            previousNode = currentNode;
-            currentNode = currentNode.next;
-        }
-        T temp = (T)tail.value;
-        count --;
-        if (count == 0) {
+        //if value into head and list size 1
+        if (count == 1) {
+            T temp = (T)head.value;
+            count --;
             head = null;
             tail = null;
             return temp;
         }
-        previousNode.next = null;
-        tail = previousNode;
-        return temp;
+        return null;
     }
 
     public void push(T val)
@@ -62,20 +70,23 @@ public class Stack<T>
 
     public T peek()
     {
-        if (tail != null) {
-            T result = (T) tail.value;
-            return result;
+        if (head != null) {
+            return (T) head.value;
         }
         return null; // if stack is empty
     }
 }
+
 class Node<T>
 {
     public T value;
     public Node next;
-    public Node(T  valueIn)
+    public Node prev;
+
+    public Node(T val)
     {
-        value = valueIn;
+        value = val;
         next = null;
+        prev = null;
     }
 }
