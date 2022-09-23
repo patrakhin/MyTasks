@@ -1,5 +1,3 @@
-import java.util.*;
-
 public class Stack<T>
 {
     public Node head;
@@ -12,7 +10,7 @@ public class Stack<T>
         tail = null;
         count = 0;
     }
-    public void addInTail(Node _item)
+    public void addInHead(Node _item)
     {
         if (head == null) {
             this.head = _item;
@@ -32,8 +30,9 @@ public class Stack<T>
     public int size()
     {
         int size = 0;
-        while (head != null) {
-            head = head.next;
+        Node current = head;
+        while (current != null) {
+            current = current.next;
             size ++;
         }
         return size;
@@ -65,7 +64,7 @@ public class Stack<T>
 
     public void push(T val)
     {
-        addInTail(new Node<>(val));
+        addInHead(new Node<>(val));
     }
 
     public T peek()
