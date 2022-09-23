@@ -45,6 +45,20 @@ class StackTest<T> {
     }
 
     @org.junit.jupiter.api.Test
+    void push_1() {
+        Stack stack = new Stack<>();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        int actual = stack.size();
+        int expected = 3;
+        assertEquals(expected, actual);
+        T act = (T) stack.head.value;
+        int exp= 3;
+        assertEquals(exp, act);
+    }
+
+    @org.junit.jupiter.api.Test
     void peek() {
         Stack stack = new Stack<>();
         stack.push(1);
