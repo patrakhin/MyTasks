@@ -7,13 +7,10 @@ public class BracketBalance {
             char buffer = brackets.charAt(i);
             if (buffer == '(') {
                 stack.push(buffer);
-                continue;
             }
             if (buffer == ')' && stack.peek() == '(') {
                 stack.pop();
-                continue;
             }
-            break;
         }
         return stack.isEmpty();
     }
