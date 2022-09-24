@@ -6,7 +6,7 @@ public class Calculate {
         Stack<Integer> stack2 = new Stack<>();
         int val1 = 0;
         int val2 = 0;
-        int result;
+        int result = 0;
         for (int i = 0; i < sol.length(); i++) {
             String temp = String.valueOf(sol.charAt(i));
             if (temp.equals(" ")) {
@@ -28,18 +28,17 @@ public class Calculate {
             }
             if (buffer.contains("+")) {
                 result = val1 + val2;
-                stack2.push(result);
             }
             if (buffer.contains("-")) {
                 result = val1 - val2;
-                stack2.push(result);
             }
             if (buffer.contains("*")) {
                 result = val1 * val2;
-                stack2.push(result);
             }
             if (buffer.contains("/")) {
                 result = val1 / val2;
+            }
+            if (!Character.isDigit(buffer.charAt(0))) {
                 stack2.push(result);
             }
         }
