@@ -1,28 +1,44 @@
 import java.util.*;
 public class Queue2 <T> {
-    public static Queue2 stackNew = new Queue2();
+    public Stack_2 stack1;
+    public Stack_2 stack2;
+    public int count;
+
+    public Queue2 () {
+        stack1 = new Stack_2<>();
+        stack2 = new Stack_2<>();
+    }
+    public void enqueue (T val) { //push(enqueue) into stack1
+        this.stack1.push(val);
+        count ++;
+    }
+    public T dequeue () {
+        T temp;
+        int sizeStack1 = stack1.size();
+        for (int i = 0; i < sizeStack1; i++) {
+            stack2.push(stack1.pop());
+        }
+        temp = (T) stack2.pop();
+        count --;
+        return temp;
+    }
+    public int size () {
+        return count;
+    }
+}
+
+class Stack_2<T>
+{
     public Node head;
     public Node tail;
     public int count;
-    public  T dequeueStack2 () {
-        boolean flagEmpty = false;
-        int stackOld = size();
-        if (stackNew.size() == 0) {
-            flagEmpty = true;
-        }
-        for (int i = 0; i < stackOld && flagEmpty; i++) {
-            stackNew.enqueue(dequeue());
-        }
-        return (T) stackNew.dequeue();
-    }
-    public Queue2()
+
+    public Stack_2()
     {
         head = null;
         tail = null;
         count = 0;
-        // activation inside storage queue
     }
-
     public void addInHead(Node _item)
     {
         if (head == null) {
@@ -34,37 +50,10 @@ public class Queue2 <T> {
             this.head.prev = _item;
             _item.next = head;
             this.head = _item;
+            //_item.next = tail;
         }
         count ++;
-    }
-    public void enqueue(T item)
-    {
-        addInHead(new Node<>(item));
-        // insert to tail
-    }
 
-    private T dequeue()
-    {
-        //if list is empty - return null
-
-        //if value into tail (ever delete tail!!!) and list have more value
-        if (count > 1) {
-            T temp = (T)tail.value;
-            count --;
-            tail.prev.next = null;
-            tail = tail.prev;
-            return temp;
-        }
-        //if value is one and list size 1
-        if (count == 1) {
-            T temp = (T)head.value;
-            count --;
-            head = null;
-            tail = null;
-            return temp;
-        }
-        // out head queue
-        return null; // null if queue is empty
     }
 
     public int size()
@@ -75,20 +64,57 @@ public class Queue2 <T> {
             current = current.next;
             size ++;
         }
-        return size;// size queue
+        return size;
     }
 
-    public class Node<T>
+    public T pop()
     {
-        public T value;
-        public Node next;
-        public Node prev;
+        Node current = head;
+        //if list is empty - return null
 
-        public Node(T val)
-        {
-            value = val;
-            next = null;
-            prev = null;
+        //if value into head and list have more value
+        if (count > 1) {
+            T temp = (T)head.value;
+            count --;
+            current.next.prev = null;
+            head = current.next;
+            return temp;
         }
+        //if value into head and list size 1
+        if (count == 1) {
+            T temp = (T)head.value;
+            count --;
+            head = null;
+            tail = null;
+            return temp;
+        }
+        return null;
+    }
+
+    public void push(T val)
+    {
+        addInHead(new Node<>(val));
+    }
+
+    public T peek()
+    {
+        if (head != null) {
+            return (T) head.value;
+        }
+        return null; // if stack is empty
+    }
+}
+
+class Node<T>
+{
+    public T value;
+    public Node next;
+    public Node prev;
+
+    public Node(T val)
+    {
+        value = val;
+        next = null;
+        prev = null;
     }
 }
