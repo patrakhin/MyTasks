@@ -15,7 +15,8 @@ public class Queue2 <T> {
     public T dequeue () {
         T temp;
         int sizeStack1 = stack1.size();
-        for (int i = 0; i < sizeStack1; i++) {
+        int sizeStack2 = stack2.size();
+        for (int i = 0; i < sizeStack1 && sizeStack2 == 0; i++) {
             stack2.push(stack1.pop());
         }
         temp = (T) stack2.pop();
