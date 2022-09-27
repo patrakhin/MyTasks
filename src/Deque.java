@@ -3,20 +3,21 @@ import java.util.*;
 
 public class Deque<T>
 {
-    public Stack onePart;
+    public LinkedList2 onePart;
     public DynArray secondPart;
     public int count;
 
     public Deque()
     {
-        onePart = new Stack<>();
+        onePart = new LinkedList2();
         secondPart = new DynArray<>(Integer.class);
         // activation inside storage
     }
 
     public void addFront(T item)
     {
-        onePart.push(item);
+        Node node = new Node<>(item);
+        onePart.addInTail(node);
         secondPart.append(item);
         count ++;
 
@@ -25,8 +26,9 @@ public class Deque<T>
 
     public void addTail(T item)
     {
-        onePart.push(item);
-        secondPart.append(item);
+        Node node = new Node<>(item);
+        onePart.addInHead(node);
+        secondPart.insert(item, 0);
         count ++;
         // add to tail
     }
@@ -37,7 +39,8 @@ public class Deque<T>
             return null;
         }
         T temp;
-        temp = (T) onePart.pop();
+        temp = (T) secondPart.getItem(count - 1);
+        onePart.remove((Integer) temp);
         secondPart.remove(count - 1);
         count --;
         // deleting out head
@@ -50,7 +53,8 @@ public class Deque<T>
             return null;
         }
         T temp2;
-        temp2 = (T) onePart.popTail();
+        temp2 = (T) secondPart.getItem(0);
+        onePart.remove((Integer) temp2);
         secondPart.remove(0);
         count --;
         // deleting out tail
@@ -60,97 +64,6 @@ public class Deque<T>
     public int size()
     {
         return count;
-    }
-}
-
-class Stack<T>
-{
-    public Node head;
-    public Node tail;
-    public int count;
-
-    public Stack()
-    {
-        head = null;
-        tail = null;
-        count = 0;
-    }
-    public void addInHead(Node _item)
-    {
-        if (head == null) {
-            this.head = _item;
-            this.head.next = null;
-            this.head.prev = null;
-            this.tail = _item;
-        } else {
-            this.head.prev = _item;
-            _item.next = head;
-            this.head = _item;
-            //_item.next = tail;
-        }
-        count ++;
-
-    }
-
-    public T popTail() { //my insert
-        if (count == 0) {
-            return null;
-        }
-        if (count == 1) {
-            T temp = (T) tail.value;
-            head = null;
-            tail = null;
-            count --;
-            return temp;
-        }
-        T temp = (T) tail.value;
-        tail.prev.next = null;
-        tail = tail.prev;
-        count --;
-        return temp;
-    }
-
-    public T pop()
-    {
-        Node current = head;
-        //if list is empty - return null
-
-        //if value into head and list have more value
-        if (count > 1) {
-            T temp = (T)head.value;
-            count --;
-            current.next.prev = null;
-            head = current.next;
-            return temp;
-        }
-        //if value into head and list size 1
-        if (count == 1) {
-            T temp = (T)head.value;
-            count --;
-            head = null;
-            tail = null;
-            return temp;
-        }
-        return null;
-    }
-
-    public void push(T val)
-    {
-        addInHead(new Node<>(val));
-    }
-}
-
-class Node<T>
-{
-    public T value;
-    public Node next;
-    public Node prev;
-
-    public Node(T val)
-    {
-        value = val;
-        next = null;
-        prev = null;
     }
 }
 
@@ -164,7 +77,8 @@ class DynArray<T>
 
     public DynArray(Class clz)
     {
-        clazz = clz;
+        clazz = clz; // нужен для безопасного приведения типов
+        // new DynArray<Integer>(Integer.class);
         count = 0;
         makeArray(16);
     }
@@ -172,9 +86,18 @@ class DynArray<T>
     public void makeArray(int new_capacity)
     {
         array = (T[]) Array.newInstance(this.clazz, new_capacity);
+        // array = (T[]) Array.newInstance(this.clazz, new_capacity);
         this.capacity = new_capacity;
     }
 
+    public T getItem(int index)
+    {
+        if (index == 0 || index <= array.length - 1) {
+            T t = array[index];
+            return t;
+        }
+        return null;
+    }
     public T[] copyArray () {
         oldArray = this.array;
         //System.arraycopy(array, 0, oldArray, 0, array.length);
@@ -193,6 +116,42 @@ class DynArray<T>
         makeArray(capacity * 2);
         System.arraycopy(oldArray, 0, array, 0, oldArray.length);
         array [count] = itm;
+        count ++;
+    }
+
+    public void insert(T itm, int index) throws IndexOutOfBoundsException
+    {
+        if (index < 0 || index > count) {
+            throw new IndexOutOfBoundsException(index);
+        }
+        boolean flagDontGrow = false;
+        if (index < capacity) {
+            copyArray();
+            makeArray(capacity);
+        }
+        if (index == 0) { // insert head
+            array [index] = itm;
+            System.arraycopy(oldArray, 0, array, index + 1, oldArray.length - 1);
+            flagDontGrow = true;
+        }
+        if (index == capacity -  1 && !flagDontGrow) { // insert tail
+            System.arraycopy(oldArray, 0, array, 0, oldArray.length - 1);
+            array [index] = itm;
+            flagDontGrow = true;
+        }
+        if ((index > 0 && index < capacity) && !flagDontGrow) { // insert any place
+            System.arraycopy(oldArray, 0, array, 0, index);
+            array [index] = itm;
+            System.arraycopy(oldArray, index , array, index + 1, oldArray.length - 1 - index);
+        }
+
+        if (index >= capacity ) {
+            copyArray();
+            makeArray(capacity * 2);
+            System.arraycopy(oldArray, 0, array, 0, index);
+            array [index] = itm;
+            System.arraycopy(oldArray, index, array, index + 1, oldArray.length - index);
+        }
         count ++;
     }
 
@@ -243,3 +202,199 @@ class DynArray<T>
         }
     }
 }
+
+
+class LinkedList2 {
+    public Node head;
+    public Node tail;
+    public int count;
+
+    public LinkedList2() {
+        head = null;
+        tail = null;
+        count = 0;
+
+    }
+
+    public void addInTail(Node _item) {
+        if (head == null) {
+            this.head = _item;
+            this.head.next = null;
+            this.head.prev = null;
+            count++;
+        } else {
+            this.tail.next = _item;
+            _item.prev = tail;
+            count++;
+        }
+        this.tail = _item;
+    }
+
+    public void addInHead(Node _item) {
+        if (head == null) {
+            this.head = _item;
+            this.head.next = null;
+            this.head.prev = null;
+            this.tail = _item;
+        } else {
+            this.head.prev = _item;
+            _item.next = head;
+            this.head = _item;
+            //_item.next = tail;
+        }
+        count++;
+
+    }
+
+
+    public boolean remove(int _value) {
+        Node current = head;
+        Node previous = head;
+        //if list is empty
+        if (current == null) {
+            return false;
+        }
+        //if value into head and list have more value
+        if ((int) current.value == _value && count > 1) {
+            current.next.prev = null;
+            head = current.next;
+            count--;
+            return true;
+        }
+        //if value into head and list size 1
+        if ((int) current.value == _value && count == 1) {
+            head = null;
+            tail = null;
+            count--;
+            return true;
+        }
+        //if value into tail
+        if ((int) tail.value == _value) { // it is tail!
+            tail.prev.next = null;
+            tail = tail.prev;
+            count--;
+            return true;
+        }
+        // if value into the middle
+        while (previous.next != null) { // delete in middle
+            if ((int) current.value == _value) {
+                current.prev.next = current.next;
+                current.next.prev = current.prev;
+                count--;
+                return true;
+            }
+            previous = current;
+            current = current.next;
+        }
+        return false;
+    }
+
+    public void removeAll(int _value) {
+        Node current = head;
+        Node previousNode = head;
+        if (head == null) { //if list empty
+            return;
+        }
+        if (count == 1 && (int) current.value == _value) { //if single
+            head = null;
+            tail = null;
+            count--;
+            return;
+        }
+        while (previousNode.next != null) {
+            if ((int) current.value == _value && current == head) { // it is head
+                current.next.prev = null;
+                head = current.next;
+                count--;
+                current = head;
+            }
+            if ((int) tail.value == _value) { // it is tail!
+                tail.prev.next = null;
+                tail = tail.prev;
+                count--;
+                continue;
+            }
+            if ((int) current.value == _value && current != head) { // any place
+                current.prev.next = current.next;
+                current.next.prev = current.prev;
+                count--;
+            }
+            previousNode = current;
+            current = current.next;
+        }
+    }
+
+    public void clear() {
+        this.head = null;
+        this.tail = null;
+        this.count = 0;
+    }
+
+    public int count() {
+        return count;
+    }
+
+    public void insertAfter(Node _nodeAfter, Node _nodeToInsert) {
+        Node currentNode = head;
+        Node previousNode = head;
+        boolean flagInsert = false;
+        // _nodeAfter = null insert first in list
+        if (Objects.isNull(_nodeAfter)) {
+            head = _nodeToInsert;
+            tail = _nodeToInsert;
+            count++;
+            return;
+        }
+        // add new item after first in list - list size = 1
+        if (_nodeAfter == head && count == 1) {
+            _nodeAfter.next = _nodeToInsert;
+            _nodeToInsert.prev = _nodeAfter;
+            tail = _nodeToInsert;
+            count++;
+            flagInsert = true;
+        }
+        // add new item after first in list - list size > 1
+        if (_nodeAfter == head && count > 1 && !flagInsert) {
+            _nodeToInsert.next = _nodeAfter.next;
+            _nodeAfter.next = _nodeToInsert;
+            _nodeToInsert.prev = _nodeAfter;
+            _nodeAfter.next.next.prev = _nodeToInsert;
+            count++;
+            flagInsert = true;
+        }
+        // add new item at last in list - list doesn't empty
+        if (_nodeAfter == tail && !flagInsert) {
+            _nodeAfter.next = _nodeToInsert;
+            _nodeToInsert.prev = _nodeAfter;
+            tail = _nodeToInsert;
+            count++;
+            flagInsert = true;
+        }
+        // add new item  in list - anyplace
+        while (previousNode.next != null && !flagInsert) {
+            if (currentNode == _nodeAfter) {
+                _nodeToInsert.next = _nodeAfter.next;
+                _nodeAfter.next = _nodeToInsert;
+                _nodeToInsert.prev = _nodeAfter;
+                _nodeAfter.next.next.prev = _nodeToInsert;
+                count++;
+                break;
+            }
+            previousNode = currentNode;
+            currentNode = currentNode.next;
+        }
+    }
+}
+
+class Node<T> {
+    public T value;
+    public Node next;
+    public Node prev;
+
+    public Node(T _value) {
+        value = _value;
+        next = null;
+        prev = null;
+    }
+}
+
