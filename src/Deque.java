@@ -20,7 +20,6 @@ public class Deque<T>
         onePart.addInTail(node);
         secondPart.append(item);
         count ++;
-
         // add to head
     }
 
@@ -71,6 +70,7 @@ class DynArray<T>
 {
     public T [] array;
     public int count;
+    public int countInsert;
     public int capacity;
     Class clazz;
     public T [] oldArray;
@@ -121,36 +121,28 @@ class DynArray<T>
 
     public void insert(T itm, int index) throws IndexOutOfBoundsException
     {
+        countInsert ++;
+
         if (index < 0 || index > count) {
             throw new IndexOutOfBoundsException(index);
         }
-        boolean flagDontGrow = false;
-        if (index < capacity) {
+        if (countInsert < capacity) {
             copyArray();
             makeArray(capacity);
         }
+        if (countInsert >= capacity) {
+            copyArray();
+            makeArray(capacity * 2);
+        }
+
         if (index == 0) { // insert head
             array [index] = itm;
             System.arraycopy(oldArray, 0, array, index + 1, oldArray.length - 1);
-            flagDontGrow = true;
         }
-        if (index == capacity -  1 && !flagDontGrow) { // insert tail
-            System.arraycopy(oldArray, 0, array, 0, oldArray.length - 1);
-            array [index] = itm;
-            flagDontGrow = true;
-        }
-        if ((index > 0 && index < capacity) && !flagDontGrow) { // insert any place
+        if (index > 0) { // insert any place
             System.arraycopy(oldArray, 0, array, 0, index);
             array [index] = itm;
             System.arraycopy(oldArray, index , array, index + 1, oldArray.length - 1 - index);
-        }
-
-        if (index >= capacity ) {
-            copyArray();
-            makeArray(capacity * 2);
-            System.arraycopy(oldArray, 0, array, 0, index);
-            array [index] = itm;
-            System.arraycopy(oldArray, index, array, index + 1, oldArray.length - index);
         }
         count ++;
     }
