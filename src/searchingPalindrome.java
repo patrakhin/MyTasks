@@ -6,11 +6,10 @@ public class searchingPalindrome {
             deque.addFront((int) string.charAt(i));
         }
         int middle = deque.size() / 2;
-        for ( ; middle > 0; ) {
+        for ( ; middle > 0; middle --) {
             if (!deque.removeFront().equals(deque.removeTail())) {
                 return false;
             }
-            middle --;
         }
         return true;
     }
