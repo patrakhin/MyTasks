@@ -5,8 +5,7 @@ public class searchingPalindrome {
         for (int i = 0; i < string.length(); i++) {
             deque.addFront((int) string.charAt(i));
         }
-        int middle = deque.size() / 2;
-        for ( ; middle > 0; middle --) {
+        for (int i = 0; (deque.size() / 2) > 0; i++ ) {
             if (!deque.removeFront().equals(deque.removeTail())) {
                 return false;
             }
@@ -14,9 +13,7 @@ public class searchingPalindrome {
         return true;
     }
     public static void main(String[] args) {
-        String string = new String("REDIVIDER"); //peregorodka
+        String string = "REDIVIDER"; //peregorodka
         System.out.println(searching(string));
     }
 }
-
-
