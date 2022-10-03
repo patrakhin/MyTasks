@@ -31,6 +31,7 @@ public class OrderedList<T>
         int end = 100;
         if (itsString) {
             end = v1.toString().compareTo(v2.toString());
+            //itsString = false;
             return end;
         }
         if (v1 == null && v2 != null) {
@@ -136,7 +137,7 @@ public class OrderedList<T>
         T valueObject = null;
         boolean valueInteger = false;
         String valueString = value.toString();
-        valueString.trim();
+        valueString = valueString.trim();
         for (int i = 0; i < valueString.length(); i++) {
             if (valueString.charAt(i) == '-') {
                 continue;
@@ -144,10 +145,11 @@ public class OrderedList<T>
             if (Character.isDigit(valueString.charAt(i))) {
                 valueObject = value;
                 valueInteger = true;
-                break;
+                continue;
             }
-            else {
-                valueObject = value;
+            if (!Character.isDigit(valueString.charAt(i))){
+                valueObject = (T) valueString;
+                valueInteger = false;
                 break;
             }
         }
@@ -155,7 +157,7 @@ public class OrderedList<T>
         Node currentNode = head;
         Node previousNode = head;
         Node nodeTwo = new Node<>(valueObject);
-        Node nodeString = new Node<>(value.toString().trim());
+        Node nodeString = new Node<>(valueObject);
         if (count == 0 && valueInteger) {
             addInHead(nodeTwo);
             return;
