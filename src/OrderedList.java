@@ -208,8 +208,9 @@ public class OrderedList<T>
     public Node<T> find(T val)
     {
         Node node = this.head;
+        Node nodeFour = new Node<>(val);
         while (node != null) {
-            if (node.value == val)
+            if (compare( (T) node.value, (T) nodeFour.value) == 0)
                 return node;
             node = node.next;
         }
@@ -218,29 +219,30 @@ public class OrderedList<T>
 
     public void delete(T val)
     {
-        Node valInt = (Node) val;
         Node current = head;
         Node previous = head;
+        Node nodeThree = new Node<>(val);
+
         //if list is empty
         if (current == null) {
             return;
         }
         //if value into head and list have more value
-        if (current.value == valInt.value && count > 1) {
+        if (compare((T) current.value, (T) nodeThree.value) == 0 && count > 1) {
             current.next.prev = null;
             head = current.next;
             count --;
             return;
         }
         //if value into head and list size 1
-        if (current.value == valInt.value && count == 1) {
+        if (compare((T) current.value, (T) nodeThree.value) == 0 && count == 1) {
             head = null;
             tail = null;
             count --;
             return;
         }
         //if value into tail
-        if (tail.value == valInt.value) { // it is tail!
+        if (compare((T) tail.value, (T) nodeThree.value) == 0  ) { // it is tail!
             tail.prev.next = null;
             tail = tail.prev;
             count --;
@@ -248,7 +250,7 @@ public class OrderedList<T>
         }
         // if value into the middle
         while (previous.next != null) { // delete in middle
-            if (current.value == valInt.value) {
+            if (compare((T) current.value, (T) nodeThree.value) == 0)  {
                 current.prev.next = current.next;
                 current.next.prev = current.prev;
                 count --;
