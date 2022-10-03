@@ -18,6 +18,7 @@ public class OrderedList<T>
     public Node<T> head, tail;
     private boolean _ascending;
     public int count;
+    private boolean itsString;
 
     public OrderedList(boolean asc)
     {
@@ -28,6 +29,10 @@ public class OrderedList<T>
 
     public int compare(T v1, T v2) {
         int end = 100;
+        if (itsString) {
+            end = v1.toString().compareTo(v2.toString());
+            return end;
+        }
         if (v1 == null && v2 != null) {
             end = -1;
             return end;
@@ -128,11 +133,36 @@ public class OrderedList<T>
 
     public void add(T value)
     {
+        T valueObject = null;
+        boolean valueInteger = false;
+        String valueString = value.toString();
+        valueString.trim();
+        for (int i = 0; i < valueString.length(); i++) {
+            if (valueString.charAt(i) == '-') {
+                continue;
+            }
+            if (Character.isDigit(valueString.charAt(i))) {
+                valueObject = value;
+                valueInteger = true;
+                break;
+            }
+            else {
+                valueObject = value;
+                break;
+            }
+        }
+
         Node currentNode = head;
         Node previousNode = head;
-        Node nodeTwo = new Node<>(value);
-        if (count == 0) {
+        Node nodeTwo = new Node<>(valueObject);
+        Node nodeString = new Node<>(value.toString().trim());
+        if (count == 0 && valueInteger) {
             addInHead(nodeTwo);
+            return;
+        }
+        if (count == 0) {
+            addInHead(nodeString);
+            itsString = true;
             return;
         }
 
