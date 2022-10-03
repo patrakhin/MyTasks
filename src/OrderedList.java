@@ -18,7 +18,6 @@ public class OrderedList<T>
     public Node<T> head, tail;
     private boolean _ascending;
     public int count;
-    public T memory;
 
     public OrderedList(boolean asc)
     {
@@ -133,7 +132,39 @@ public class OrderedList<T>
         Node previousNode = head;
         Node nodeTwo = new Node<>(value);
         if (count == 0) {
-            insertAfter(null, nodeTwo);
+            addInHead(nodeTwo);
+            return;
+        }
+
+        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == -1 && _ascending)) { //v1 < v2 and ascending
+            //add the after v1
+            insertAfter(currentNode, nodeTwo);
+            return;
+        }
+        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 1 && _ascending)) { //v1 > v2 and ascending
+            //add the before v1
+            addInHead(nodeTwo);
+            return;
+        }
+        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 0 && _ascending)) { //v1 = v2 and ascending
+            //add the before v1
+            addInHead(nodeTwo);
+            return;
+        }
+
+        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == -1 && !_ascending)) { //v1 < v2 and descending
+            //add the before v1
+            addInHead(nodeTwo);
+            return;
+        }
+        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 1 && !_ascending)) { //v1 > v2 and descending
+            //add the after v1
+            insertAfter(currentNode, nodeTwo);
+            return;
+        }
+        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 0 && !_ascending)) { //v1 = v2 and descending
+            //add the before v1
+            insertAfter(currentNode, nodeTwo);
             return;
         }
 
@@ -148,6 +179,10 @@ public class OrderedList<T>
             }
             if (compare( (T) currentNode.value, (T) nodeTwo.value) == 0) {
                 insertAfter(currentNode, nodeTwo);
+                return;
+            }
+            if (compare( (T) currentNode.value, (T) nodeTwo.value) == 1) {
+                addInHead(nodeTwo);
                 return;
             }
             previousNode = currentNode;
@@ -175,31 +210,6 @@ public class OrderedList<T>
             currentNode = currentNode.next;
         }
 
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == -1 && _ascending)) { //v1 < v2 and ascending
-            //add the after v1
-            insertAfter(currentNode, nodeTwo);
-        }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 1 && _ascending)) { //v1 > v2 and ascending
-            //add the before v1
-            addInHead(nodeTwo);
-        }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 0 && _ascending)) { //v1 = v2 and ascending
-            //add the before v1
-            addInHead(nodeTwo);
-        }
-
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == -1 && !_ascending)) { //v1 < v2 and descending
-            //add the before v1
-            addInHead(nodeTwo);
-        }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 1 && !_ascending)) { //v1 > v2 and descending
-            //add the after v1
-            insertAfter(currentNode, nodeTwo);
-        }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 0 && !_ascending)) { //v1 = v2 and descending
-            //add the before v1
-            insertAfter(currentNode, nodeTwo);
-        }
 
         // auto insert  value
         // in need place
