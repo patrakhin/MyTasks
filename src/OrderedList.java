@@ -3,6 +3,8 @@ import java.util.*;
 class Node<T>
 {
     public T value;
+    public String valueString;
+    public int valueInt;
     public Node<T> next, prev;
 
     public Node(T _value)
@@ -31,7 +33,6 @@ public class OrderedList<T>
         int end = 100;
         if (itsString) {
             end = v1.toString().compareTo(v2.toString());
-            //itsString = false;
             return end;
         }
         if (v1 == null && v2 != null) {
@@ -160,11 +161,13 @@ public class OrderedList<T>
         Node nodeTwo = new Node<>(valueObject);
         if (valueInteger) {
             buff = Integer.parseInt(valueString);
-            nodeTwo = new Node<>(buff);
+            nodeTwo = new Node<Integer>(buff);
         }
 
         Node nodeString = new Node<>(valueObject);
-
+        if (!valueInteger) {
+            nodeString = new Node<String>((String) valueObject);
+        }
         if (count == 0 && valueInteger) {
             addInHead(nodeTwo);
             return;
