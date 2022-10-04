@@ -131,13 +131,14 @@ public class OrderedList<T>
         }
     }
     // end my insert
-
     public void add(T value)
     {
+
         T valueObject = null;
         boolean valueInteger = false;
         String valueString = value.toString();
         valueString = valueString.trim();
+
         for (int i = 0; i < valueString.length(); i++) {
             if (valueString.charAt(i) == '-') {
                 continue;
@@ -261,9 +262,30 @@ public class OrderedList<T>
 
     public void delete(T val)
     {
+        T valueObject = null;
+        boolean valueInteger = false;
+        String valueString = val.toString();
+        valueString = valueString.trim();
+
+        for (int i = 0; i < valueString.length(); i++) {
+            if (valueString.charAt(i) == '-') {
+                continue;
+            }
+            if (Character.isDigit(valueString.charAt(i))) {
+                valueObject = val;
+                valueInteger = true;
+                continue;
+            }
+            if (!Character.isDigit(valueString.charAt(i))){
+                valueObject = (T) valueString;
+                valueInteger = false;
+                break;
+            }
+        }
+
         Node current = head;
         Node previous = head;
-        Node nodeThree = new Node<>(val);
+        Node nodeThree = new Node<>(valueObject);
 
         //if list is empty
         if (current == null) {
@@ -292,7 +314,7 @@ public class OrderedList<T>
         }
         // if value into the middle
         while (previous.next != null) { // delete in middle
-            if (compare((T) current.value, (T) nodeThree.value) == 0)  {
+            if (compare((T) previous.value, (T) nodeThree.value) == 0)  {
                 current.prev.next = current.next;
                 current.next.prev = current.prev;
                 count --;
