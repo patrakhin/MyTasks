@@ -135,9 +135,9 @@ public class OrderedList<T>
     {
 
         T valueObject = null;
+        int buff;
         boolean valueInteger = false;
-        String valueString = value.toString();
-        valueString = valueString.trim();
+        String valueString = value.toString().trim();
 
         for (int i = 0; i < valueString.length(); i++) {
             if (valueString.charAt(i) == '-') {
@@ -148,7 +148,7 @@ public class OrderedList<T>
                 valueInteger = true;
                 continue;
             }
-            if (!Character.isDigit(valueString.charAt(i))){
+            if (!Character.isDigit(valueString.charAt(i))) {
                 valueObject = (T) valueString;
                 valueInteger = false;
                 break;
@@ -157,8 +157,14 @@ public class OrderedList<T>
 
         Node currentNode = head;
         Node previousNode = head;
-        Node nodeTwo = new Node<>(valueObject);
+        Node nodeTwo = null;
+        if (valueInteger) {
+            buff = Integer.parseInt((String) value);
+            nodeTwo = new Node<>(buff);
+        }
+
         Node nodeString = new Node<>(valueObject);
+
         if (count == 0 && valueInteger) {
             addInHead(nodeTwo);
             return;
@@ -169,52 +175,52 @@ public class OrderedList<T>
             return;
         }
 
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == -1 && _ascending)) { //v1 < v2 and ascending
+        if (count == 1 && (compare((T) currentNode.value, (T) nodeTwo.value) <= -1 && _ascending)) { //v1 < v2 and ascending
             //add the after v1
             insertAfter(currentNode, nodeTwo);
             return;
         }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 1 && _ascending)) { //v1 > v2 and ascending
+        if (count == 1 && (compare((T) currentNode.value, (T) nodeTwo.value) >= 1 && _ascending)) { //v1 > v2 and ascending
             //add the before v1
             addInHead(nodeTwo);
             return;
         }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 0 && _ascending)) { //v1 = v2 and ascending
+        if (count == 1 && (compare((T) currentNode.value, (T) nodeTwo.value) == 0 && _ascending)) { //v1 = v2 and ascending
             //add the before v1
             addInHead(nodeTwo);
             return;
         }
 
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == -1 && !_ascending)) { //v1 < v2 and descending
+        if (count == 1 && (compare((T) currentNode.value, (T) nodeTwo.value) <= -1 && !_ascending)) { //v1 < v2 and descending
             //add the before v1
             addInHead(nodeTwo);
             return;
         }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 1 && !_ascending)) { //v1 > v2 and descending
+        if (count == 1 && (compare((T) currentNode.value, (T) nodeTwo.value) >= 1 && !_ascending)) { //v1 > v2 and descending
             //add the after v1
             insertAfter(currentNode, nodeTwo);
             return;
         }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 0 && !_ascending)) { //v1 = v2 and descending
+        if (count == 1 && (compare((T) currentNode.value, (T) nodeTwo.value) == 0 && !_ascending)) { //v1 = v2 and descending
             //add the before v1
             insertAfter(currentNode, nodeTwo);
             return;
         }
 
         while (previousNode.next != null && _ascending) {
-            if (compare( (T) previousNode.value, (T) nodeTwo.value) == -1 && compare( (T) currentNode.value, (T) nodeTwo.value) == 1) {
+            if (compare((T) previousNode.value, (T) nodeTwo.value) <= -1 && compare((T) currentNode.value, (T) nodeTwo.value) == 1) {
                 insertAfter(previousNode, nodeTwo);
                 return;
             }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == -1 && currentNode.next == null) {
+            if (compare((T) currentNode.value, (T) nodeTwo.value) <= -1 && currentNode.next == null) {
                 insertAfter(currentNode, nodeTwo);
                 return;
             }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == 0) {
+            if (compare((T) currentNode.value, (T) nodeTwo.value) == 0) {
                 insertAfter(currentNode, nodeTwo);
                 return;
             }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == 1) {
+            if (compare((T) currentNode.value, (T) nodeTwo.value) >= 1) {
                 addInHead(nodeTwo);
                 return;
             }
@@ -223,19 +229,19 @@ public class OrderedList<T>
         }
 
         while (previousNode.next != null && !_ascending) {
-            if (compare( (T) previousNode.value, (T) nodeTwo.value) == 1 && compare( (T) currentNode.value, (T) nodeTwo.value) == -1) {
+            if (compare((T) previousNode.value, (T) nodeTwo.value) >= 1 && compare((T) currentNode.value, (T) nodeTwo.value) <= -1) {
                 insertAfter(previousNode, nodeTwo);
                 return;
             }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == 1 && currentNode.next == null) {
+            if (compare((T) currentNode.value, (T) nodeTwo.value) >= 1 && currentNode.next == null) {
                 insertAfter(currentNode, nodeTwo);
                 return;
             }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == 0) {
+            if (compare((T) currentNode.value, (T) nodeTwo.value) == 0) {
                 insertAfter(currentNode, nodeTwo);
                 return;
             }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == -1) {
+            if (compare((T) currentNode.value, (T) nodeTwo.value) <= -1) {
                 addInHead(nodeTwo);
                 return;
             }
@@ -263,7 +269,6 @@ public class OrderedList<T>
     public void delete(T val)
     {
         T valueObject = null;
-        boolean valueInteger = false;
         String valueString = val.toString();
         valueString = valueString.trim();
 
@@ -273,12 +278,10 @@ public class OrderedList<T>
             }
             if (Character.isDigit(valueString.charAt(i))) {
                 valueObject = val;
-                valueInteger = true;
                 continue;
             }
             if (!Character.isDigit(valueString.charAt(i))){
                 valueObject = (T) valueString;
-                valueInteger = false;
                 break;
             }
         }
