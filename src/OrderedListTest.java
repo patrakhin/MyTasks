@@ -79,25 +79,24 @@ class OrderedListTest<T> {
     @org.junit.jupiter.api.Test
     void add4() { //string
         OrderedList orderedList = new OrderedList<T>(true);
-        ArrayList<Node<T>> listNode = orderedList.getAll();
-        String stringStart = "abba";
-        for (int j = 0; j < 100; j++) {
+        String stringStart = " abba ";
+        for (int j = 0; j < 25; j++) {
             for (char i = 'a'; i < 'z'; i++) {
                 char[] ca = stringStart.toCharArray();
-                ca[0] = i;
+                ca[1] = i;
                 stringStart = new String(ca);
                 orderedList.add(stringStart);
             }
         }
-        for (int j = 0; j < 100; j++) {
+        for (int j = 0; j < 25; j++) {
             for (char i = 'a'; i < 'y'; i++) {
                 char[] ca = stringStart.toCharArray();
-                ca[0] = i;
+                ca[1] = i;
                 stringStart = new String(ca);
                 orderedList.delete(stringStart);
             }
         }
-        for (int j = 0; j < 100; j++) {
+        for (int j = 0; j < 25; j++) {
             for (char i = 'a'; i < 'z'; i++) {
                 char[] ca = stringStart.toCharArray();
                 ca[3] = i;
@@ -105,11 +104,23 @@ class OrderedListTest<T> {
                 orderedList.add(stringStart);
             }
         }
-        listNode = orderedList.getAll();
-        for (int i = 0; i < listNode.size(); i++) {
-            System.out.println( i + "  " + listNode.get(i).value);
+        ArrayList<Node<T>> listNode = orderedList.getAll();
+        for (int i = 0; i < listNode.size(); i ++) {
+            assertEquals(orderedList.getAll().get(i),(listNode.get(i)));
         }
-        assertEquals(2600, orderedList.count());
+        assertEquals(listNode.size(), orderedList.count());
+        assertEquals(1250, orderedList.count());
+    }
+
+    @org.junit.jupiter.api.Test
+    void add5() { //string
+        OrderedList orderedList = new OrderedList<T>(true);
+        orderedList.add("I am catching error");
+        ArrayList<Node<T>> listNode = orderedList.getAll();
+        for (int i = 0; i < listNode.size(); i++) {
+            System.out.println(listNode.get(i).value);
+        }
+        assertEquals(1250, orderedList.count());
     }
 
     @org.junit.jupiter.api.Test
