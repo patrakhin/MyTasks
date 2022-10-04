@@ -157,9 +157,9 @@ public class OrderedList<T>
 
         Node currentNode = head;
         Node previousNode = head;
-        Node nodeTwo = null;
+        Node nodeTwo = new Node<>(valueObject);
         if (valueInteger) {
-            buff = Integer.parseInt((String) value);
+            buff = Integer.parseInt(valueString);
             nodeTwo = new Node<>(buff);
         }
 
@@ -293,7 +293,7 @@ public class OrderedList<T>
         Node previous = head;
         Node nodeThree = new Node<>(valueObject);
         if (flagIntefer) {
-            buff = Integer.parseInt((String) val);
+            buff = Integer.parseInt(valueString);
             nodeThree = new Node<>(buff);
         }
 
