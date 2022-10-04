@@ -1,352 +1,178 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-class Node<T>
-{
-    public T value;
-    public Node<T> next, prev;
+import static org.junit.jupiter.api.Assertions.*;
 
-    public Node(T _value)
-    {
-        value = _value;
-        next = null;
-        prev = null;
-    }
-}
+class OrderedListTest<T> {
 
-public class OrderedList<T>
-{
-    public Node<T> head, tail;
-    private boolean _ascending;
-    public int count;
-    private boolean itsString;
-
-    public OrderedList(boolean asc)
-    {
-        head = null;
-        tail = null;
-        _ascending = asc;
+    @org.junit.jupiter.api.Test
+    void compare() {
+        OrderedList orderedList = new OrderedList<T>(true);
+        assertEquals(-1,orderedList.compare(2, 3));
+        assertEquals(1,orderedList.compare(5000, -580));
+        assertEquals(0,orderedList.compare(5000, 5000));
+        assertEquals(-1,orderedList.compare(null, -580));
+        assertEquals( 1,orderedList.compare(580, null));
+        assertEquals( 0,orderedList.compare(null, null));
     }
 
-    public int compare(T v1, T v2) {
-        int end = 100;
-        if (itsString) {
-            end = v1.toString().compareTo(v2.toString());
-            //itsString = false;
-            return end;
+    @org.junit.jupiter.api.Test
+    void add() {
+        OrderedList orderedList = new OrderedList<T>(false); //descending
+        for (int i = -1000; i < 1001; i ++) {
+            orderedList.add(i);
         }
-        if (v1 == null && v2 != null) {
-            end = -1;
-            return end;
+        ArrayList<Node<T>> listNode = orderedList.getAll();
+        for (int i = 0; i < listNode.size(); i++) {
+            System.out.println(listNode.get(i).value);
         }
-        if (v2 == null && v1 != null) {
-            end = 1;
-            return end;
-        }
-        if (v1 == null && v2 == null) {
-            end = 0;
-            return end;
-        }
-        if ((int) v1 < (int) v2) {
-            end = -1;
-        }
-        if ((int) v1 > (int) v2) {
-            end = 1;
-        }
-        if ((int) v1 == (int) v2) {
-            end = 0;
-        }
-        return end;
-        // -1 if v1 < v2
-        // 0 if v1 == v2
-        // +1 if v1 > v2
-    }
-
-    //this is my insert
-    public void addInHead(Node _item)
-    {
-        if (head == null) {
-            this.head = _item;
-            this.head.next = null;
-            this.head.prev = null;
-            this.tail = _item;
-        } else {
-            this.head.prev = _item;
-            _item.next = head;
-            this.head = _item;
-            //_item.next = tail;
-        }
-        count ++;
+        assertEquals(2001, orderedList.count());
 
     }
 
-    public void insertAfter(Node _nodeAfter, Node _nodeToInsert)
-    {
-        Node currentNode = head;
-        Node previousNode = head;
-        boolean flagInsert = false;
-        // _nodeAfter = null insert first in list
-        if (Objects.isNull(_nodeAfter)) {
-            head = _nodeToInsert;
-            tail = _nodeToInsert;
-            count ++;
-            return;
+    @org.junit.jupiter.api.Test
+    void add1() {
+        OrderedList orderedList = new OrderedList<T>(true); //ascending
+        for (int i = -1000; i < 1001; i ++) {
+            orderedList.add(i);
         }
-        // add new item after first in list - list size = 1
-        if (_nodeAfter == head && count == 1) {
-            _nodeAfter.next = _nodeToInsert;
-            _nodeToInsert.prev = _nodeAfter;
-            tail = _nodeToInsert;
-            count ++;
-            flagInsert = true;
+        ArrayList<Node<T>> listNode = orderedList.getAll();
+        for (int i = 0; i < listNode.size(); i++) {
+            System.out.println(listNode.get(i).value);
         }
-        // add new item after first in list - list size > 1
-        if (_nodeAfter == head && count > 1 && !flagInsert) {
-            _nodeToInsert.next = _nodeAfter.next;
-            _nodeAfter.next = _nodeToInsert;
-            _nodeToInsert.prev = _nodeAfter;
-            _nodeAfter.next.next.prev = _nodeToInsert;
-            count ++;
-            flagInsert = true;
-        }
-        // add new item at last in list - list doesn't empty
-        if (_nodeAfter == tail && !flagInsert) {
-            _nodeAfter.next = _nodeToInsert;
-            _nodeToInsert.prev = _nodeAfter;
-            tail = _nodeToInsert;
-            count ++;
-            flagInsert = true;
-        }
-        // add new item  in list - anyplace
-        while (previousNode.next != null && !flagInsert) {
-            if (currentNode == _nodeAfter) {
-                _nodeToInsert.next = _nodeAfter.next;
-                _nodeAfter.next = _nodeToInsert;
-                _nodeToInsert.prev = _nodeAfter;
-                _nodeAfter.next.next.prev = _nodeToInsert;
-                count ++;
-                break;
-            }
-            previousNode = currentNode;
-            currentNode = currentNode.next;
-        }
-    }
-    // end my insert
-    public void add(T value)
-    {
+        assertEquals(2001, orderedList.count());
 
-        T valueObject = null;
-        boolean valueInteger = false;
-        String valueString = value.toString();
-        valueString = valueString.trim();
-
-        for (int i = 0; i < valueString.length(); i++) {
-            if (valueString.charAt(i) == '-') {
-                continue;
-            }
-            if (Character.isDigit(valueString.charAt(i))) {
-                valueObject = value;
-                valueInteger = true;
-                continue;
-            }
-            if (!Character.isDigit(valueString.charAt(i))){
-                valueObject = (T) valueString;
-                valueInteger = false;
-                break;
-            }
-        }
-
-        Node currentNode = head;
-        Node previousNode = head;
-        Node nodeTwo = new Node<>(valueObject);
-        Node nodeString = new Node<>(valueObject);
-        if (count == 0 && valueInteger) {
-            addInHead(nodeTwo);
-            return;
-        }
-        if (count == 0) {
-            addInHead(nodeString);
-            itsString = true;
-            return;
-        }
-
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == -1 && _ascending)) { //v1 < v2 and ascending
-            //add the after v1
-            insertAfter(currentNode, nodeTwo);
-            return;
-        }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 1 && _ascending)) { //v1 > v2 and ascending
-            //add the before v1
-            addInHead(nodeTwo);
-            return;
-        }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 0 && _ascending)) { //v1 = v2 and ascending
-            //add the before v1
-            addInHead(nodeTwo);
-            return;
-        }
-
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == -1 && !_ascending)) { //v1 < v2 and descending
-            //add the before v1
-            addInHead(nodeTwo);
-            return;
-        }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 1 && !_ascending)) { //v1 > v2 and descending
-            //add the after v1
-            insertAfter(currentNode, nodeTwo);
-            return;
-        }
-        if (count == 1 && (compare( (T) currentNode.value, (T) nodeTwo.value) == 0 && !_ascending)) { //v1 = v2 and descending
-            //add the before v1
-            insertAfter(currentNode, nodeTwo);
-            return;
-        }
-
-        while (previousNode.next != null && _ascending) {
-            if (compare( (T) previousNode.value, (T) nodeTwo.value) == -1 && compare( (T) currentNode.value, (T) nodeTwo.value) == 1) {
-                insertAfter(previousNode, nodeTwo);
-                return;
-            }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == -1 && currentNode.next == null) {
-                insertAfter(currentNode, nodeTwo);
-                return;
-            }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == 0) {
-                insertAfter(currentNode, nodeTwo);
-                return;
-            }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == 1) {
-                addInHead(nodeTwo);
-                return;
-            }
-            previousNode = currentNode;
-            currentNode = currentNode.next;
-        }
-
-        while (previousNode.next != null && !_ascending) {
-            if (compare( (T) previousNode.value, (T) nodeTwo.value) == 1 && compare( (T) currentNode.value, (T) nodeTwo.value) == -1) {
-                insertAfter(previousNode, nodeTwo);
-                return;
-            }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == 1 && currentNode.next == null) {
-                insertAfter(currentNode, nodeTwo);
-                return;
-            }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == 0) {
-                insertAfter(currentNode, nodeTwo);
-                return;
-            }
-            if (compare( (T) currentNode.value, (T) nodeTwo.value) == -1) {
-                addInHead(nodeTwo);
-                return;
-            }
-            previousNode = currentNode;
-            currentNode = currentNode.next;
-        }
-
-
-        // auto insert  value
-        // in need place
     }
 
-    public Node<T> find(T val)
-    {
-        Node node = this.head;
-        Node nodeFour = new Node<>(val);
-        while (node != null) {
-            if (compare( (T) node.value, (T) nodeFour.value) == 0)
-                return node;
-            node = node.next;
+
+    @org.junit.jupiter.api.Test
+    void add2() {
+        OrderedList orderedList = new OrderedList<T>(true); //ascending
+        for (int i = -1000; i < 1001; i ++) {
+            orderedList.add(i);
         }
-        return null; //
+        for (int i = -1000; i < 1001; i ++) {
+            orderedList.add(i);
+        }
+        ArrayList<Node<T>> listNode = orderedList.getAll();
+        for (int i = 0; i < listNode.size(); i++) {
+            System.out.println(listNode.get(i).value);
+        }
+        assertEquals(4002, orderedList.count());
+
     }
 
-    public void delete(T val)
-    {
-        T valueObject = null;
-        boolean valueInteger = false;
-        String valueString = val.toString();
-        valueString = valueString.trim();
-
-        for (int i = 0; i < valueString.length(); i++) {
-            if (valueString.charAt(i) == '-') {
-                continue;
-            }
-            if (Character.isDigit(valueString.charAt(i))) {
-                valueObject = val;
-                valueInteger = true;
-                continue;
-            }
-            if (!Character.isDigit(valueString.charAt(i))){
-                valueObject = (T) valueString;
-                valueInteger = false;
-                break;
-            }
+    @org.junit.jupiter.api.Test
+    void add3() { //add string
+        OrderedList orderedList = new OrderedList<T>(false); //ascending
+        String stringStart = "aaaa";
+        String stringFinish = "aaab";
+        orderedList.add(stringStart);
+        orderedList.add(stringFinish);
+        ArrayList<Node<T>> listNode = orderedList.getAll();
+        for (int i = 0; i < listNode.size(); i++) {
+            System.out.println(listNode.get(i).value);
         }
-
-        Node current = head;
-        Node previous = head;
-        Node nodeThree = new Node<>(valueObject);
-
-        //if list is empty
-        if (current == null) {
-            return;
-        }
-        //if value into head and list have more value
-        if (compare((T) current.value, (T) nodeThree.value) == 0 && count > 1) {
-            current.next.prev = null;
-            head = current.next;
-            count --;
-            return;
-        }
-        //if value into head and list size 1
-        if (compare((T) current.value, (T) nodeThree.value) == 0 && count == 1) {
-            head = null;
-            tail = null;
-            count --;
-            return;
-        }
-        //if value into tail
-        if (compare((T) tail.value, (T) nodeThree.value) == 0  ) { // it is tail!
-            tail.prev.next = null;
-            tail = tail.prev;
-            count --;
-            return;
-        }
-        // if value into the middle
-        while (previous.next != null) { // delete in middle
-            if (compare((T) previous.value, (T) nodeThree.value) == 0)  {
-                current.prev.next = current.next;
-                current.next.prev = current.prev;
-                count --;
-                return;
-            }
-            previous = current;
-            current = current.next;
-        }
+        assertEquals(2, orderedList.count());
     }
 
-    public void clear(boolean asc)
-    {
-        head = null;
-        tail = null;
-        _ascending = asc;
-        this.count = 0;
-    }
-
-    public int count()
-    {
-        return count;
-    }
-
-    ArrayList<Node<T>> getAll()
-    {
-        ArrayList<Node<T>> r = new ArrayList<Node<T>>();
-        Node<T> node = head;
-        while(node != null)
-        {
-            r.add(node);
-            node = node.next;
+    @org.junit.jupiter.api.Test
+    void add4() { //string
+        OrderedList orderedList = new OrderedList<T>(true);
+        ArrayList<String> controlList = new ArrayList<String>();
+        String stringStart = " abba ";
+        for (char i = 'a'; i < 'z'; i++) {
+            char[] ca = stringStart.toCharArray();
+            ca[1] = i;
+            stringStart = new String(ca);
+            orderedList.add(stringStart);
+            controlList.add(stringStart.trim());
         }
-        return r;
+        for (char i = 'a'; i < 'y'; i++) {
+            char[] ca = stringStart.toCharArray();
+            ca[1] = i;
+            stringStart = new String(ca);
+            orderedList.delete(stringStart);
+            controlList.remove(stringStart.trim());
+        }
+        for (char i = 'a'; i < 'z'; i++) {
+            char[] ca = stringStart.toCharArray();
+            ca[3] = i;
+            stringStart = new String(ca);
+            orderedList.add(stringStart);
+            controlList.add(stringStart.trim());
+        }
+
+        for (int i = 0; i < controlList.size(); i++) {
+            T val = (T) controlList.get(i);
+            assertEquals(orderedList.find(val).value,  controlList.get(i));
+        }
+        assertEquals(orderedList.getAll().size(), controlList.size());
+    }
+
+
+    @org.junit.jupiter.api.Test
+    void find2() {
+        OrderedList orderedList = new OrderedList<T>(false);
+        int a = 4;
+        orderedList.add(1);
+        orderedList.add(a);
+        orderedList.add(6);
+        orderedList.add(8);
+        orderedList.add(2);
+        orderedList.add(3);
+        orderedList.add(7);
+        orderedList.add(5);
+        assertEquals(orderedList.getAll().get(4),orderedList.find(a));
+        assertEquals(8, orderedList.count());
+    }
+
+    @org.junit.jupiter.api.Test
+    void delete1() {
+        OrderedList orderedList = new OrderedList<T>(true);
+        for (int i = 0; i < 10000; i++) {
+            orderedList.add(i);
+        }
+        for (int j = 0; j < 5000; j++) {
+            orderedList.delete(j);
+        }
+        assertEquals(5000, orderedList.count());
+        assertEquals(5000, orderedList.getAll().size());
+    }
+
+    @org.junit.jupiter.api.Test
+    void clear() {
+        OrderedList orderedList = new OrderedList<T>(true);
+        for (int i = 0; i < 10000; i++) {
+            orderedList.add(i);
+        }
+        orderedList.clear(true);
+        assertEquals(0, orderedList.count());
+        assertEquals(0, orderedList.getAll().size());
+    }
+
+    @org.junit.jupiter.api.Test
+    void count() {
+        OrderedList orderedList = new OrderedList<T>(true);
+        for (int i = 0; i < 10000; i++) {
+            orderedList.add(i);
+        }
+        assertEquals(10000, orderedList.count());
+        assertEquals(10000, orderedList.getAll().size());
+    }
+
+    @org.junit.jupiter.api.Test
+    void getAll() {
+        OrderedList orderedList = new OrderedList<T>(true);
+        for (int i = 0; i < 10000; i++) {
+            orderedList.add(i);
+        }
+        assertEquals(10000, orderedList.count());
+        assertEquals(10000, orderedList.getAll().size());
+        for (int j = 0; j < 5000; j++) {
+            orderedList.delete(j);
+        }
+        assertEquals(5000, orderedList.count());
+        assertEquals(5000, orderedList.getAll().size());
     }
 }
