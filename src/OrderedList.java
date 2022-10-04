@@ -272,7 +272,7 @@ public class OrderedList<T>
     public void delete(T val)
     {
         int buff;
-        boolean flagIntefer = false;
+        boolean flagInteger = false;
         T valueObject = null;
         String valueString = val.toString();
         valueString = valueString.trim();
@@ -283,7 +283,7 @@ public class OrderedList<T>
             }
             if (Character.isDigit(valueString.charAt(i))) {
                 valueObject = val;
-                flagIntefer = true;
+                flagInteger = true;
                 continue;
             }
             if (!Character.isDigit(valueString.charAt(i))){
@@ -295,9 +295,12 @@ public class OrderedList<T>
         Node current = head;
         Node previous = head;
         Node nodeThree = new Node<>(valueObject);
-        if (flagIntefer) {
+        if (flagInteger) {
             buff = Integer.parseInt(valueString);
-            nodeThree = new Node<>(buff);
+            nodeThree = new Node<Integer>(buff);
+        }
+        if (!flagInteger) {
+            nodeThree = new Node<String>(valueString);
         }
 
         //if list is empty
