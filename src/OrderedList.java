@@ -33,25 +33,15 @@ public class OrderedList<T>
             end = v1.toString().compareTo(v2.toString());
             return end;
         }
-        if (v1 == null && v2 != null) {
-            end = -1;
-            return end;
-        }
-        if (v2 == null && v1 != null) {
-            end = 1;
-            return end;
-        }
-        if (v1 == null && v2 == null) {
-            end = 0;
-            return end;
-        }
-        if ((int) v1 < (int) v2) {
+        int vV1 = Integer.parseInt((String) v1);
+        int vV2 = Integer.parseInt((String) v2);
+        if (vV1 < vV2) {
             end = -1;
         }
-        if ((int) v1 > (int) v2) {
+        if (vV1 > vV2) {
             end = 1;
         }
-        if ((int) v1 == (int) v2) {
+        if (vV1 == vV2) {
             end = 0;
         }
         return end;
@@ -131,48 +121,29 @@ public class OrderedList<T>
     // end my insert
     public void add(T value)
     {
-        int buff;
-        boolean valueInteger = false;
+
         String valueString = value.toString().trim();
-        StringBuilder valueStringTwo = new StringBuilder();
         for (int i = 0; i < valueString.length(); i++) {
             if (valueString.charAt(i) == '-') {
                 continue;
             }
             if (Character.isDigit(valueString.charAt(i))) {
-                valueInteger = true;
+                itsString = false;
             }
             if (!Character.isDigit(valueString.charAt(i))) {
-                valueInteger = false;
+                itsString = true;
                 break;
             }
         }
-        for (int i = 0; i < valueString.length() && !valueInteger; i++) {
-            char [] r = valueString.toCharArray();
-            valueStringTwo.append(r[i]);
-        }
-
-
         Node currentNode = head;
         Node previousNode = head;
-        Node nodeTwo = null;
-        if (valueInteger) {
-            buff = Integer.parseInt(valueString);
-            nodeTwo = new Node<Integer>(buff);
-        }
-        if (!valueInteger) {
-            nodeTwo = new Node<StringBuilder>(valueStringTwo);
-        }
+        Node nodeTwo = new Node<String>(valueString);
 
-        if (count == 0 && valueInteger) {
-            addInHead(nodeTwo);
-            return;
-        }
         if (count == 0) {
             addInHead(nodeTwo);
-            itsString = true;
             return;
         }
+
 
         if (count == 1 && (compare((T) currentNode.value, (T) nodeTwo.value) <= -1 && _ascending)) { //v1 < v2 and ascending
             //add the after v1
@@ -267,37 +238,23 @@ public class OrderedList<T>
 
     public void delete(T val)
     {
-        int buff;
-        boolean valueIntegerDel = false;
         String valueString = val.toString().trim();
-        StringBuilder valueStringTwo = new StringBuilder();
         for (int i = 0; i < valueString.length(); i++) {
             if (valueString.charAt(i) == '-') {
                 continue;
             }
             if (Character.isDigit(valueString.charAt(i))) {
-                valueIntegerDel = true;
+                itsString = false;
             }
             if (!Character.isDigit(valueString.charAt(i))) {
-                valueIntegerDel = false;
+                itsString = true;
                 break;
             }
-        }
-        for (int i = 0; i < valueString.length() && !valueIntegerDel; i++) {
-            char [] r = valueString.toCharArray();
-            valueStringTwo.append(r[i]);
         }
 
         Node current = head;
         Node previous = head;
-        Node nodeThree = null;
-        if (valueIntegerDel) {
-            buff = Integer.parseInt(valueString);
-            nodeThree = new Node<Integer>(buff);
-        }
-        if (!valueIntegerDel) {
-            nodeThree = new Node<StringBuilder>(valueStringTwo);
-        }
+        Node nodeThree = new Node<String>(valueString);
 
         //if list is empty
         if (current == null) {
@@ -353,7 +310,6 @@ public class OrderedList<T>
     ArrayList<Node<T>> getAll()
     {
         ArrayList<Node<T>> r = new ArrayList<Node<T>>();
-
         Node<T> node = head;
         while(node != null)
         {
