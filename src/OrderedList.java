@@ -19,6 +19,7 @@ public class OrderedList<T>
     private boolean _ascending;
     public int count;
     private boolean itsString;
+    private boolean itsInteger;
 
     public OrderedList(boolean asc)
     {
@@ -29,12 +30,20 @@ public class OrderedList<T>
 
     public int compare(T v1, T v2) {
         int end = 100;
+        int vV1 = 100;
+        int vV2 = 100;
         if (itsString) {
             end = v1.toString().compareTo(v2.toString());
             return end;
         }
-        int vV1 = Integer.parseInt((String) v1);
-        int vV2 = Integer.parseInt((String) v2);
+        if (!itsInteger) {
+            vV1 = Integer.parseInt((String) v1);
+            vV2 = Integer.parseInt((String) v2);
+        }
+        if (itsInteger) {
+            vV1 = (int) v1;
+            vV2 = (int) v2;
+        }
         if (vV1 < vV2) {
             end = -1;
         }
@@ -121,9 +130,15 @@ public class OrderedList<T>
     // end my insert
     public void add(T value)
     {
-
+        Node nodeTwo = null;
+        if (value instanceof Integer) {
+            itsInteger = true;
+        }
+        if (value instanceof String) {
+            itsInteger = false;
+        }
         String valueString = value.toString().trim();
-        for (int i = 0; i < valueString.length(); i++) {
+        for (int i = 0; i < valueString.length() && !itsInteger; i++) {
             if (valueString.charAt(i) == '-') {
                 continue;
             }
@@ -137,7 +152,12 @@ public class OrderedList<T>
         }
         Node currentNode = head;
         Node previousNode = head;
-        Node nodeTwo = new Node<String>(valueString);
+        if (!itsInteger) {
+            nodeTwo = new Node<String>(valueString);
+        }
+        if (itsInteger) {
+            nodeTwo = new Node<Integer>((Integer) value);
+        }
 
         if (count == 0) {
             addInHead(nodeTwo);
@@ -238,8 +258,16 @@ public class OrderedList<T>
 
     public void delete(T val)
     {
+        Node nodeThree = null;
+
+        if (val instanceof Integer) {
+            itsInteger = true;
+        }
+        if (val instanceof String) {
+            itsInteger = false;
+        }
         String valueString = val.toString().trim();
-        for (int i = 0; i < valueString.length(); i++) {
+        for (int i = 0; i < valueString.length() && !itsInteger; i++) {
             if (valueString.charAt(i) == '-') {
                 continue;
             }
@@ -251,10 +279,18 @@ public class OrderedList<T>
                 break;
             }
         }
+        Node currentNode = head;
+        Node previousNode = head;
+        if (!itsInteger) {
+            nodeThree = new Node<String>(valueString);
+        }
+        if (itsInteger) {
+            nodeThree = new Node<Integer>((Integer) val);
+        }
 
         Node current = head;
         Node previous = head;
-        Node nodeThree = new Node<String>(valueString);
+
 
         //if list is empty
         if (current == null) {
