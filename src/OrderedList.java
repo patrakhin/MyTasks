@@ -3,8 +3,6 @@ import java.util.*;
 class Node<T>
 {
     public T value;
-    public String valueString;
-    public int valueInt;
     public Node<T> next, prev;
 
     public Node(T _value)
@@ -74,7 +72,6 @@ public class OrderedList<T>
             this.head.prev = _item;
             _item.next = head;
             this.head = _item;
-            //_item.next = tail;
         }
         count ++;
 
@@ -134,46 +131,45 @@ public class OrderedList<T>
     // end my insert
     public void add(T value)
     {
-
-        T valueObject = null;
         int buff;
         boolean valueInteger = false;
         String valueString = value.toString().trim();
-
+        StringBuilder valueStringTwo = new StringBuilder();
         for (int i = 0; i < valueString.length(); i++) {
             if (valueString.charAt(i) == '-') {
                 continue;
             }
             if (Character.isDigit(valueString.charAt(i))) {
-                valueObject = value;
                 valueInteger = true;
-                continue;
             }
             if (!Character.isDigit(valueString.charAt(i))) {
-                valueObject = (T) valueString;
                 valueInteger = false;
                 break;
             }
         }
+        for (int i = 0; i < valueString.length() && !valueInteger; i++) {
+            char [] r = valueString.toCharArray();
+            valueStringTwo.append(r[i]);
+        }
+
 
         Node currentNode = head;
         Node previousNode = head;
-        Node nodeTwo = new Node<>(valueObject);
+        Node nodeTwo = null;
         if (valueInteger) {
             buff = Integer.parseInt(valueString);
             nodeTwo = new Node<Integer>(buff);
         }
-
-        Node nodeString = new Node<>(valueObject);
         if (!valueInteger) {
-            nodeString = new Node<String>((String) valueObject);
+            nodeTwo = new Node<StringBuilder>(valueStringTwo);
         }
+
         if (count == 0 && valueInteger) {
             addInHead(nodeTwo);
             return;
         }
         if (count == 0) {
-            addInHead(nodeString);
+            addInHead(nodeTwo);
             itsString = true;
             return;
         }
@@ -272,35 +268,35 @@ public class OrderedList<T>
     public void delete(T val)
     {
         int buff;
-        boolean flagInteger = false;
-        T valueObject = null;
-        String valueString = val.toString();
-        valueString = valueString.trim();
-
+        boolean valueIntegerDel = false;
+        String valueString = val.toString().trim();
+        StringBuilder valueStringTwo = new StringBuilder();
         for (int i = 0; i < valueString.length(); i++) {
             if (valueString.charAt(i) == '-') {
                 continue;
             }
             if (Character.isDigit(valueString.charAt(i))) {
-                valueObject = val;
-                flagInteger = true;
-                continue;
+                valueIntegerDel = true;
             }
-            if (!Character.isDigit(valueString.charAt(i))){
-                valueObject = (T) valueString;
+            if (!Character.isDigit(valueString.charAt(i))) {
+                valueIntegerDel = false;
                 break;
             }
+        }
+        for (int i = 0; i < valueString.length() && !valueIntegerDel; i++) {
+            char [] r = valueString.toCharArray();
+            valueStringTwo.append(r[i]);
         }
 
         Node current = head;
         Node previous = head;
-        Node nodeThree = new Node<>(valueObject);
-        if (flagInteger) {
+        Node nodeThree = null;
+        if (valueIntegerDel) {
             buff = Integer.parseInt(valueString);
             nodeThree = new Node<Integer>(buff);
         }
-        if (!flagInteger) {
-            nodeThree = new Node<String>(valueString);
+        if (!valueIntegerDel) {
+            nodeThree = new Node<StringBuilder>(valueStringTwo);
         }
 
         //if list is empty
@@ -357,6 +353,7 @@ public class OrderedList<T>
     ArrayList<Node<T>> getAll()
     {
         ArrayList<Node<T>> r = new ArrayList<Node<T>>();
+
         Node<T> node = head;
         while(node != null)
         {
@@ -365,4 +362,5 @@ public class OrderedList<T>
         }
         return r;
     }
+
 }
