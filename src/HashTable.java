@@ -23,7 +23,7 @@ public class HashTable
             char j = valueString.charAt(i);
             sumCode = sumCode + j;
         }
-        return (((sumCode) % 3) % size);
+        return (((sumCode) % step) % size);
     }
 
     public int seekSlot(String value)
@@ -34,15 +34,15 @@ public class HashTable
             return -1;
         }
         int placePut = 0;
-        for (; placePut < (size * step); indexSlot +=3, placePut++ ) {
-            if (indexSlot > 16) {
-                indexSlot = indexSlot - 17;
+        for (; placePut < (size * step); indexSlot +=step, placePut++ ) {
+            if (indexSlot > (size - 1)) {
+                indexSlot = indexSlot - size;
             }
             if (slots [indexSlot] == null) {
                 return indexSlot;  // seek empty slot
             }
-            if (indexSlot == 16) {
-                indexSlot = 2;
+            if (indexSlot == (size - 1)) {
+                indexSlot = (step - 1);
             }
         }
         return -1;
@@ -67,16 +67,19 @@ public class HashTable
     {
         String clearString = value.trim();
         int indexSlot = hashFun(clearString);
+        if (indexSlot > (size - 1)) {
+            return -1;
+        }
         int placePut = 0;
-        for (; placePut < (size * step); indexSlot +=3, placePut++ ) {
-            if (indexSlot > 16) {
-                indexSlot = indexSlot - 17;
+        for (; placePut < (size * step); indexSlot +=step, placePut++ ) {
+            if (indexSlot > (size - 1)) {
+                indexSlot = indexSlot - size;
             }
             if (Objects.equals(slots[indexSlot], clearString)) {
                 return indexSlot;  // seek empty slot
             }
-            if (indexSlot == 16) {
-                indexSlot = 2;
+            if (indexSlot == (size - 1)) {
+                indexSlot = (step - 1);
             }
         }
         return -1;
