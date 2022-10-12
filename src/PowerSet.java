@@ -1,25 +1,25 @@
 import java.util.*;
 public class PowerSet
 {
-    public  List <String> list;
+    private final List <String> listPowerSet;
     private int count;
     public PowerSet()
     {
-        list =  new ArrayList <String>();
+        listPowerSet =  new ArrayList<>();
         count = 0;
     }
 
     public int size()
     {
-        return list.size();
+        return listPowerSet.size();
     }
 
     //it's my insert
     public int seekIndex (String value)
     {
         String clearString = value.trim();
-        for (int i = 0; i < list.size(); i++) {
-            if (Objects.equals(clearString, list.get(i))) {
+        for (int i = 0; i < listPowerSet.size(); i++) {
+            if (Objects.equals(clearString, listPowerSet.get(i))) {
                 return 1;
             }
         }
@@ -29,18 +29,18 @@ public class PowerSet
     public void put(String value)
     {
         String clearString = value.trim();
-        if (list.isEmpty()) {
-            list.add(clearString);
+        if (listPowerSet.isEmpty()) {
+            listPowerSet.add(clearString);
             count ++;
             return;
         }
         int indexEmptySlot = seekIndex(clearString);
         if (indexEmptySlot == -1) {
             count ++;
-            list.add(clearString);
+            listPowerSet.add(clearString);
         }
         if (indexEmptySlot > -1) {
-            list.add(indexEmptySlot, clearString);
+            listPowerSet.add(indexEmptySlot, clearString);
         }
         // always work
     }
@@ -59,7 +59,7 @@ public class PowerSet
         String clearString = value.trim();
         int indexEmptySlot = seekIndex(clearString);
         if (indexEmptySlot > -1) {
-            list.remove(clearString);
+            listPowerSet.remove(clearString);
             return true;
         }
         // return true if value deleted
@@ -70,13 +70,16 @@ public class PowerSet
     public PowerSet intersection(PowerSet set2)
     {
         PowerSet listIntersection = new PowerSet();
+        if (listPowerSet.size() == 0) {
+            return set2;
+        }
         for (int i = 0; i < set2.size(); i++) {
-            String stringForPut = set2.list.get(i);
-            for (int j = 0; j < list.size(); j++) {
-                String stringList = list.get(j);
+            String stringForPut = set2.listPowerSet.get(i);
+            for (int j = 0; j < listPowerSet.size(); j++) {
+                String stringList = listPowerSet.get(j);
                 if (Objects.equals(stringForPut, stringList)) {
-                    listIntersection.list.add(stringList);
-                    list.remove(j);
+                    listIntersection.listPowerSet.add(stringList);
+                    listPowerSet.remove(j);
                 }
             }
         }
@@ -89,21 +92,21 @@ public class PowerSet
         PowerSet listUnion = new PowerSet();
         boolean flagPut = false;
         for (int i = 0; i < set2.size(); i++) {
-            String stringForPut = set2.list.get(i);
-            for (int j = 0; j < list.size(); j++) {
-                String stringList = list.get(j);
+            String stringForPut = set2.listPowerSet.get(i);
+            for (int j = 0; j < listPowerSet.size(); j++) {
+                String stringList = listPowerSet.get(j);
                 if (Objects.equals(stringForPut, stringList)) {
-                    listUnion.list.add(stringList);
-                    list.remove(j);
+                    listUnion.listPowerSet.add(stringList);
+                    listPowerSet.remove(j);
                     flagPut = true;
                 }
             }
             if (!flagPut) {
-                listUnion.list.add(stringForPut);
+                listUnion.listPowerSet.add(stringForPut);
             }
             flagPut = false;
         }
-        listUnion.list.addAll(list);
+        listUnion.listPowerSet.addAll(listPowerSet);
         return listUnion; // return empty  Power Set but not null!!!!
     }
     // difference the powerSet and set2
@@ -111,15 +114,15 @@ public class PowerSet
     {
         PowerSet listIDifference = new PowerSet();
         for (int i = 0; i < set2.size(); i++) {
-            String stringForPut = set2.list.get(i);
-            for (int j = 0; j < list.size(); j++) {
-                String stringList = list.get(j);
+            String stringForPut = set2.listPowerSet.get(i);
+            for (int j = 0; j < listPowerSet.size(); j++) {
+                String stringList = listPowerSet.get(j);
                 if (Objects.equals(stringForPut, stringList)) {
-                    list.remove(j);
+                    listPowerSet.remove(j);
                 }
             }
         }
-        listIDifference.list.addAll(list);
+        listIDifference.listPowerSet.addAll(listPowerSet);
         return listIDifference; // return empty  Power Set but not null!!!!
     }
 
@@ -128,11 +131,11 @@ public class PowerSet
         boolean flagPut = false;
         int countSub = set2.size();
         for (int i = 0; i < set2.size(); i++) {
-            String stringForPut = set2.list.get(i);
-            for (int j = 0; j < list.size(); j++) {
-                String stringList = list.get(j);
+            String stringForPut = set2.listPowerSet.get(i);
+            for (int j = 0; j < listPowerSet.size(); j++) {
+                String stringList = listPowerSet.get(j);
                 if (Objects.equals(stringForPut, stringList)) {
-                    list.remove(j);
+                    listPowerSet.remove(j);
                     countSub --;
                     flagPut = true;
                 }
@@ -142,7 +145,7 @@ public class PowerSet
             }
             flagPut = false;
         }
-        return (!list.isEmpty() && countSub == 0) || (list.isEmpty() && countSub == 0);
+        return (!listPowerSet.isEmpty() && countSub == 0) || (listPowerSet.isEmpty() && countSub == 0);
         // return true, if set2 is
         // subSet this pSet,
         // else false
