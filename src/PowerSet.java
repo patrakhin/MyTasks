@@ -1,11 +1,11 @@
 import java.util.*;
 public class PowerSet
 {
-    public  List list;
+    public  List <String> list;
     private int count;
     public PowerSet()
     {
-        list =  new ArrayList <>();
+        list =  new ArrayList <String>();
         count = 0;
     }
 
@@ -71,9 +71,9 @@ public class PowerSet
     {
         PowerSet listIntersection = new PowerSet();
         for (int i = 0; i < set2.size(); i++) {
-            String stringForPut = (String) set2.list.get(i);
+            String stringForPut = set2.list.get(i);
             for (int j = 0; j < list.size(); j++) {
-                String stringList = (String) list.get(j);
+                String stringList = list.get(j);
                 if (Objects.equals(stringForPut, stringList)) {
                     listIntersection.list.add(stringList);
                     list.remove(j);
@@ -89,9 +89,9 @@ public class PowerSet
         PowerSet listUnion = new PowerSet();
         boolean flagPut = false;
         for (int i = 0; i < set2.size(); i++) {
-            String stringForPut = (String) set2.list.get(i);
+            String stringForPut = set2.list.get(i);
             for (int j = 0; j < list.size(); j++) {
-                String stringList = (String) list.get(j);
+                String stringList = list.get(j);
                 if (Objects.equals(stringForPut, stringList)) {
                     listUnion.list.add(stringList);
                     list.remove(j);
@@ -111,9 +111,9 @@ public class PowerSet
     {
         PowerSet listIDifference = new PowerSet();
         for (int i = 0; i < set2.size(); i++) {
-            String stringForPut = (String) set2.list.get(i);
+            String stringForPut = set2.list.get(i);
             for (int j = 0; j < list.size(); j++) {
-                String stringList = (String) list.get(j);
+                String stringList = list.get(j);
                 if (Objects.equals(stringForPut, stringList)) {
                     list.remove(j);
                 }
@@ -128,9 +128,9 @@ public class PowerSet
         boolean flagPut = false;
         int countSub = set2.size();
         for (int i = 0; i < set2.size(); i++) {
-            String stringForPut = (String) set2.list.get(i);
+            String stringForPut = set2.list.get(i);
             for (int j = 0; j < list.size(); j++) {
-                String stringList = (String) list.get(j);
+                String stringList = list.get(j);
                 if (Objects.equals(stringForPut, stringList)) {
                     list.remove(j);
                     countSub --;
