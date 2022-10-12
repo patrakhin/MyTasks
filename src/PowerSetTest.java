@@ -55,6 +55,10 @@ class PowerSetTest {
         PowerSet pw3 = powerSet.intersection(powerSet1);
         long endTime = System.currentTimeMillis (); // get the time finish
         //System.out.println ("Время выполнения программы:" + (endTime-startTime) / 1000 + "с"  );
+        assertFalse(pw3.get("14999"));
+        assertFalse(pw3.get("20000"));
+        assertTrue(pw3.get("15000"));
+        assertTrue(pw3.get("19999"));
         assertEquals(2,((endTime-startTime) / 1000));
         assertEquals(5000, pw3.size());
     }
@@ -62,18 +66,19 @@ class PowerSetTest {
     @org.junit.jupiter.api.Test
     void intersection2() { //pSet is empty
         PowerSet powerSet = new PowerSet();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 20000; i++) {
             powerSet.put(String.valueOf(i));
         }
         PowerSet powerSet1 = new PowerSet();
-        for (int i = 21; i < 35; i++) {
+        for (int i = 21000; i < 35000; i++) {
             powerSet1.put(String.valueOf(i));
         }
         long startTime = System.currentTimeMillis (); // get the time start
         PowerSet pw3 = powerSet.intersection(powerSet1);
         long endTime = System.currentTimeMillis (); // get the time finish
         //System.out.println ("Время выполнения программы:" + (endTime-startTime) / 1000 + "с"  );
-        System.out.println(pw3);
+        assertFalse(pw3.get("19999"));
+        assertFalse(pw3.get("21000"));
         assertEquals(2,((endTime-startTime) / 1000));
         assertEquals(0, pw3.size());
     }
