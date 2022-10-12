@@ -70,8 +70,8 @@ public class PowerSet
     public PowerSet intersection(PowerSet set2)
     {
         PowerSet listIntersection = new PowerSet();
-        if (listPowerSet.size() == 0) {
-            return set2;
+        if (listPowerSet.isEmpty()) {
+            return listIntersection;
         }
         for (int i = 0; i < set2.size(); i++) {
             String stringForPut = set2.listPowerSet.get(i);
