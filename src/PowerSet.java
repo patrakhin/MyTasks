@@ -71,7 +71,8 @@ public class PowerSet
     {
         PowerSet listIntersection = new PowerSet();
         if (listPowerSet.isEmpty()) {
-            return listIntersection;
+            set2 = new PowerSet();
+            return set2;
         }
         for (int i = 0; i < set2.size(); i++) {
             String stringForPut = set2.listPowerSet.get(i);
@@ -83,8 +84,9 @@ public class PowerSet
                 }
             }
         }
+        set2 = listIntersection;
         // intersection the powerSet and set2
-        return listIntersection; // return empty  Power Set but not null!!!!
+        return set2; // return empty  Power Set but not null!!!!
     }
 
     public PowerSet union(PowerSet set2)
@@ -107,7 +109,8 @@ public class PowerSet
             flagPut = false;
         }
         listUnion.listPowerSet.addAll(listPowerSet);
-        return listUnion; // return empty  Power Set but not null!!!!
+        set2 = listUnion;
+        return set2; // return empty  Power Set but not null!!!!
     }
     // difference the powerSet and set2
     public PowerSet difference(PowerSet set2)
@@ -123,7 +126,8 @@ public class PowerSet
             }
         }
         listIDifference.listPowerSet.addAll(listPowerSet);
-        return listIDifference; // return empty  Power Set but not null!!!!
+        set2 = listIDifference;
+        return set2; // return empty  Power Set but not null!!!!
     }
 
     public boolean isSubset(PowerSet set2)
