@@ -4,10 +4,11 @@ public class PowerSet
     public String [] slots;
     public int count;
     public boolean flagNull = false;
+    public int sizze = 20000;
 
     public PowerSet()
     {
-        slots = new String[20000];
+        slots = new String[sizze];
         for(int i=0; i<20000; i++) slots[i] = null;
         this.count = 0;
     }
@@ -79,10 +80,22 @@ public class PowerSet
 
     public boolean remove(String value)
     {
+        boolean flagRemove = false;
+        PowerSet powerRemove = new PowerSet();
+        powerRemove.sizze = count - 1;
         String clearString = value.trim();
         int indexEmptySlot = seekSlot(clearString);
         if (indexEmptySlot > - 1 && !flagNull) {
             slots[indexEmptySlot] = null;
+            flagRemove = true;
+        }
+        for (int j = 0; j < count && flagRemove; j ++) {
+            if (slots[j] == null) {
+                continue;
+            }
+            powerRemove.put(slots[j]);
+        }
+        if (flagRemove) {
             count--;
             return true;
         }
