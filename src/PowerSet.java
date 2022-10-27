@@ -1,67 +1,22 @@
 import java.util.*;
 public class PowerSet
 {
-    public String [] slots;
-    public int count;
-    public boolean flagNull = false;
-    public int sizze = 20000;
-
+    public List <String> storage;
     public PowerSet()
     {
-        slots = new String[sizze];
-        for(int i=0; i<20000; i++) slots[i] = null;
-        this.count = 0;
+        storage = new ArrayList<>();
     }
 
     public int size()
     {
-        return count;
+        return storage.size();
     }
 
-    //it's my insert
-    public int hashFun(String value)
-    {
-        String valueString = value.trim();
-        int sumCode = 0;
-        for (int i = 0; i < valueString.length(); i++) {
-            char j = valueString.charAt(i);
-            sumCode = sumCode + j;
-        }
-        return (((sumCode) % 3) % 20000);
-    }
-
-    public int seekSlot(String value)
-    {
-        flagNull = false;
-        String clearString = value.trim();
-        int indexSlot = hashFun(clearString);
-        int placePut = 0;
-        for (; placePut < (20000 * 3); indexSlot +=3, placePut++ ) {
-            if (indexSlot > (20000 - 1)) {
-                indexSlot = indexSlot - 20000;
-            }
-            if (slots [indexSlot] == null) {
-                flagNull = true;
-                return indexSlot;  // seek empty slot
-            }
-            if (Objects.equals(slots[indexSlot], clearString)) {
-                return indexSlot;  // its equals
-            }
-            if (indexSlot == (20000 - 1)) {
-                indexSlot = (3 - 1);
-            }
-        }
-        return -1; //all full
-    }
-    // end  insert
     public void put(String value)
     {
         String clearString = value.trim();
-        int slotPut = seekSlot(clearString);
-        if (flagNull) {
-            slots[slotPut] = clearString;
-            flagNull = false;
-            count ++;
+        if (!storage.contains(clearString)) {
+            storage.add(clearString);
         }
         // always work
     }
@@ -69,34 +24,16 @@ public class PowerSet
     public boolean get(String value)
     {
         String clearString = value.trim();
-        int indexEmptySlot = seekSlot(clearString);
-        if (indexEmptySlot > -1 && !flagNull) {
-            return true;
-        }
-        return false;
+        return storage.contains(clearString);
         // return true if value is into PowerSet,
         // else false
     }
 
     public boolean remove(String value)
     {
-        boolean flagRemove = false;
-        PowerSet powerRemove = new PowerSet();
-        powerRemove.sizze = count - 1;
         String clearString = value.trim();
-        int indexEmptySlot = seekSlot(clearString);
-        if (indexEmptySlot > - 1 && !flagNull) {
-            slots[indexEmptySlot] = null;
-            flagRemove = true;
-        }
-        for (int j = 0; j < count && flagRemove; j ++) {
-            if (slots[j] == null) {
-                continue;
-            }
-            powerRemove.put(slots[j]);
-        }
-        if (flagRemove) {
-            count--;
+        if (storage.contains(clearString)) {
+            storage.remove(clearString);
             return true;
         }
         // return true if value deleted
@@ -107,19 +44,13 @@ public class PowerSet
     public PowerSet intersection(PowerSet set2)
     {
         PowerSet listIntersection = new PowerSet();
-        if (count == 0) {
+        if (storage.isEmpty() || set2.size() == 0) {
             return listIntersection;
         }
-        for (int i = 0; i < set2.size(); i++) {
-            if (set2.slots[i] == null) {
-                continue;
-            }
-            String stringForPut = set2.slots[i];
-            for (int j = 0; j < size(); j++) {
-                String stringSeek = slots[j];
-                if (Objects.equals(stringSeek, stringForPut)) {
-                    listIntersection.put(stringForPut);
-                }
+        for (int i = 0; i < set2.size(); i ++) {
+            String buff = set2.storage.get(i);
+            if (storage.contains(buff)) {
+                listIntersection.storage.add(buff);
             }
         }
         // intersection the powerSet and set2
@@ -129,21 +60,19 @@ public class PowerSet
     public PowerSet union(PowerSet set2)
     {
         PowerSet listUnion = new PowerSet();
-        if (count == 0) {
+        if (storage.isEmpty()) {
             return set2;
         }
-        if (set2.count == 0) {
-            listUnion.slots = slots;
-            listUnion.count = count;
+        if (set2.size() == 0) {
+            listUnion.storage.addAll(storage);
             return listUnion;
         }
-        listUnion.slots = slots;
-        listUnion.count = count;
-        for (int i = 0; i< 20000; i++) {
-            if (set2.slots[i] == null) {
-                continue;
+        listUnion.storage.addAll(storage);
+        for (int i = 0; i < set2.size(); i ++) {
+            String buff = set2.storage.get(i);
+            if (!storage.contains(buff)) {
+                listUnion.storage.add(buff);
             }
-            listUnion.put(set2.slots[i]);
         }
         return listUnion; // return empty  Power Set but not null!!!!
     }
@@ -151,65 +80,41 @@ public class PowerSet
     public PowerSet difference(PowerSet set2)
     {
         PowerSet listIDifference = new PowerSet();
-        if (count == 0) {
+        if (!storage.isEmpty() && set2.size() == 0) {
+            listIDifference.storage.addAll(storage);
+            return listIDifference;
+        }
+        if (storage.isEmpty() && set2.size() != 0) {
+            listIDifference.storage.addAll(storage);
             return listIDifference;
         }
         for (int i = 0; i < set2.size(); i++) {
-            if (set2.slots[i] == null) {
-                continue;
-            }
-            String stringForPut = set2.slots[i];
-            for (int j = 0; j < size(); j++) {
-                String stringList = slots[j];
-                if (slots[j] == null) {
-                    continue;
-                }
-                if (Objects.equals(stringForPut, stringList)) {
-                    slots[j] = null;
-                    count --;
-                }
-            }
+            String buff = set2.storage.get(i);
+            storage.remove(buff);
         }
-        for (int k = 0; k < count; k++) {
-            if (slots[k] == null) {
-                continue;
-            }
-            listIDifference.put(slots[k]);
-        }
+        listIDifference.storage.addAll(storage);
         return listIDifference; // return empty  Power Set but not null!!!!
     }
 
     public boolean isSubset(PowerSet set2)
     {
-        if (count == 0 || set2.count == 0) {
+        if (set2.size() == 0 && !storage.isEmpty()) {
             return true;
         }
-
-        int countSub = 0;
-        int sizeA = count;
-        int sizeB = set2.count;
+        int countHit = 0;
         for (int i = 0; i < set2.size(); i++) {
-            if (set2.slots[i] == null) {
-                continue;
-            }
-            String stringForPut = set2.slots[i];
-            for (int j = 0; j < size(); j++) {
-                if (slots[j] == null) {
-                    continue;
-                }
-                String stringList = slots[j];
-                if (Objects.equals(stringForPut, stringList)) {
-                    countSub ++;
-                }
+            String buff = set2.storage.get(i);
+            if (storage.contains(buff)) {
+                countHit ++;
             }
         }
-        if (sizeA > sizeB && countSub == sizeB) {
+        if (countHit == set2.size() && countHit < storage.size()) {
             return true;
         }
-        if (sizeA < sizeB && countSub == sizeA) {
+        if (countHit == set2.size() && countHit == storage.size()) {
             return true;
         }
-        return sizeA == sizeB && countSub == sizeA;
+        return false;
         // return true, if set2 is
         // subSet this pSet,
         // else false
