@@ -80,15 +80,20 @@ public class PowerSet
     public PowerSet difference(PowerSet set2)
     {
         PowerSet listIDifference = new PowerSet();
-        if (set2.size() == 0) {
+
+        if (!storage.isEmpty() && set2.size() == 0) {
             listIDifference.storage.addAll(storage);
             return listIDifference;
         }
-        for (int i = 0; i < set2.size(); i++) {
-            String buff = set2.storage.get(i);
-            storage.remove(buff);
+        if (storage.isEmpty() && set2.size() > 0) {
+            listIDifference.storage.addAll(storage);
+            return listIDifference;
         }
         listIDifference.storage.addAll(storage);
+        for (int i = 0; i < set2.size(); i++) {
+            String buff = set2.storage.get(i);
+            listIDifference.remove(buff);
+        }
         return listIDifference; // return empty  Power Set but not null!!!!
     }
 
