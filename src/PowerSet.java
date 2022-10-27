@@ -80,11 +80,7 @@ public class PowerSet
     public PowerSet difference(PowerSet set2)
     {
         PowerSet listIDifference = new PowerSet();
-        if (!storage.isEmpty() && set2.size() == 0) {
-            listIDifference.storage.addAll(storage);
-            return listIDifference;
-        }
-        if (storage.isEmpty() && set2.size() != 0) {
+        if (set2.size() == 0) {
             listIDifference.storage.addAll(storage);
             return listIDifference;
         }
