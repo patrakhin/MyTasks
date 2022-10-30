@@ -40,13 +40,8 @@ public class BloomFilter
         // add string to filter
         int buff1 = hash1(str1.trim());
         int buff2 = hash2(str1.trim());
-        for (int i = 0 ; i < tableResult.length; i++) {
-            int resultBuff = 0;
-            if (i == buff1 || i == buff2) {
-                resultBuff = 1;
-            }
-            tableResult [i] = resultBuff;
-        }
+        tableResult [buff1] = 1;
+        tableResult [buff2] = 1;
     }
 
     public boolean isValue(String str1)
