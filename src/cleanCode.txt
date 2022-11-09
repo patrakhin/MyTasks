@@ -1,0 +1,36 @@
+buff1 - resultOfCalculationFirstHashFunction
+// 1 it's result of calculation hash function number 1 (Bloom's filter) результат вычисления первой хэш-функции 1
+
+code  - integerFromDecodingCharacter
+// 2 it's result of translation character to integer (Bloom's filter)  результат перевода символа в число
+
+countHit - counterOfElementsMatch
+// 3 it's counter of elements match (PowerSet) счетчик совпадения элементов множеств
+
+storage - arrayOfElementsSet
+// 4 it's array of elements set (PowerSet)  массив элементов множества
+
+sumCode - sumOfValuesGetFromDecodingCharacter
+// 5 it's sum of integer value get from translating characters to integers (Map) сумма целочисленных значений полученная из перевода символов в число
+
+placePut  - indexForPlaceKey
+// 6 it's index of slot for key's place индекс ячейки для размещения ключа
+
+vV1 - numberForDetermineTypeOfGeneric
+// 7 this number is used to determine if the generic is a number or a string (OrderedList)
+это число помогающее определить является ли дженерик числом или строкой
+
+temp - temporaryStorageOfValues
+// 8 this buffer into inside has temporary value (Queue) это дженерик-буфер в который размещается временное значение
+
+_value - valueIncomingToFunc
+// 9 it's value incoming to function (LinkedList) переменная подаваемая на вход функции
+
+increasing  - sortedOfIncreasing
+// 10 it's array integer sorted of increasing (Coaching the Russian national football team) массив целых чисел отсортированных по возрастанию
+
+allWay  - totalCoveredDistance
+// 11 Total covered distance (Motorcycle trip) Общее пройденное расстояние
+
+diff - twoStringDifference
+// 12 two-line difference (Reinhart and Mr Anderson) разница длин двух строк
