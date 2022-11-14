@@ -1,0 +1,97 @@
+
+7.1
+// The Three of life
+boolean flagGrowDelete  - boolean isTimeToDie;
+
+// Harry Potter goes to the Hogvards first class
+boolean flagEquals  - boolean isEqual;
+
+// Is making the national redactor "Lapot"
+static boolean flagUndo - isUndo;
+boolean flagCorrect - isCorrect;
+
+// Automation of sales reporting
+boolean breakEr - isSpace;
+boolean flagFull - isFull;
+
+// Mr Robot and Evil corporation
+boolean flagTime - isTimeOut;
+
+7.2
+// Mr Robot and Evil corporation
+boolean found  - isFound;
+
+// Optimization of drone traffic
+boolean flag  - isSuccess; // skidded through the traffic light
+
+//Competitor of the Google
+boolean flag - isDone; // Calculating the position of the last space
+
+7.3
+I used any alphabet letters.
+
+//Chewbacca
+for (int h = 0; h < 2; h++) { // h replaced by finalTransformation
+            for (int i = 0; i <= A.length - 1; i++) {
+                int k = 0;
+                for (int j = 0; j <= A.length - i - 1; j ++) { // j replaced by diapason
+                    k = i + j;
+                    max = A [j];
+                    for (int f = j; f <= k; f++) { // f replaced by subDiapason
+                        if (A[f] > max) {
+                            max = A [f];
+                        }
+                    }
+                    B.add(max);
+                }
+            }
+            A = new int[B.size()];
+            for (int i = 0; i < B.size(); i++) {
+                A [i] = B.get(i);
+            }
+            B = new LinkedList<>();
+            if ((A.length == 1) && (A [0] % 2 == 0)) {
+                return true;
+            }
+            if (A.length == 1) {
+                return false;
+            }
+        }
+
+7.4
+// Matrix turn
+int [] [] startMatrix - sourceMatrix;
+String [] endMatrix - finalMatrix;
+
+// Mission impossible
+String s2 - stringBefore;
+String aftercode  - stringAfter;
+
+7.5
+До этого курса в моем коде выразительные имена переменных отсутствовали, а если и пытался индивидуализировать, то очень "криво".
+
+//Рейнхарт и мистер Андерсон
+String buff = ""  - String bufferForExchange ="";
+
+//Mr Robot and Evil corporation
+int buff = 0  - int bufferForExchange = 0;
+
+//unlocking phone
+//Before
+for (int j = i+1; j < N; j++) {
+                stringConverted.append(hits[i + 1]);
+                bufferConvertedNumber = Integer.parseInt(String.valueOf(stringConverted)); // converted a string with a pair of numbers into a number
+                arrayConvertedNumber.add(bufferConvertedNumber); // add sequential numbers to the array
+                stringConverted = new StringBuilder();
+                if (stringConverted.toString().equals(""))
+                    break;
+            }
+
+// After
+for (int j = i+1; j < N; j++) {
+                stringConverted.append(hits[i + 1]);
+                arrayConvertedNumber.add(Integer.parseInt(String.valueOf(stringConverted))); //  got rid of time variable
+                stringConverted = new StringBuilder();
+                if (stringConverted.toString().equals(""))
+                    break;
+            }
