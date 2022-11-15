@@ -1,0 +1,18 @@
+/*
+// MotorcycleTrip
+1) public static int odometer () {} -  public static int getCoveredWay () {};
+2) int [] oksana - int [] speedAndWayStorage;
+3) int allWay  - int coveredWay;
+4) int buffer - int bufferForSort;
+// The Mad Max
+5) int buffer - int bufferForSort;
+6) int min - int indexValueMin; // into loop for ascending order
+7) int mid - int middleOfArray;
+// The Salary table recovered
+8) int [] newIds - int [] idEmployeesSorted;
+9) HashMap <Integer, Integer> myHashMap - HashMap <Integer, Integer> idEmployeesAndSalary;
+10) int [] newZarplata - int []SalaryRecovered;
+//Phone unlock
+11) int [] ASD  - int [] phoneKeypadDigital;
+12) ArrayList<Integer> arrayConvertedNumber - ArrayList<Integer> pairOfNumberTurn
+*/
