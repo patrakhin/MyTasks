@@ -1,0 +1,58 @@
+3.1
+// Mission impossible
+public class CodedMessages {}
+
+// Toner save
+public class TonerSave {}
+
+// Reinhart and Mr Anderson
+public class DifferenceBigInteger {}
+
+// Election results
+public class ElectionResults {}
+
+// Signals UFOs
+public class NumberSystem {}
+
+// Tanks rush
+public class FinderLocationOnMap {}
+
+// Shopaholics
+public class MaximumDiscount {}
+
+3.2
+// Mission impossible
+public class CodedMessages {
+    public static String getCodeMessage (String s, boolean encode) {}
+}
+
+// Toner save
+public class TonerSave {
+    public static int accountingUsageToner (String Line) {}
+}
+
+// Reinhart and Mr Anderson
+public class DifferenceBigInteger {
+    public static String getDifference (String s1, String s2) {}
+}
+
+// Election results
+public class ElectionResults {
+    public static String countingOfVoters (int N, int [] Votes) {}
+}
+
+// Signals UFOs
+public class NumberSystem {
+    public static int [] transToDecimalSystem (int N, int [] data, boolean octal) {}
+}
+
+// Tanks rush
+public class FinderLocationOnMap {
+    public static boolean seekMapPlace (int H1, int W1, String S1, int H2, int W2, String S2) {}
+}
+
+// Shopaholics
+public class MaximumDiscount {
+    public static int estimateMaxDiscount (int N, int [] price) {
+    }
+}
