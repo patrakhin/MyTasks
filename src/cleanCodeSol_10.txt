@@ -1,0 +1,61 @@
+1.
+// Keymaker
+// получаю на выходе строку - изменившееся состояние дверей, глагл - изменить состояние.
+public static String Keymaker(int k) {} -  public static String alterTheStateDoors (int k) {}
+
+2.
+// Training of the Russian national football team
+// получаю на выходе логический тип данных - поэтому использую префикс is
+public static boolean Football (int F[], int N) {} - public static boolean isGoodResultChange (int F[], int N) {}
+
+3.
+// White walkers
+// получаю на выходе логический тип данных - поэтому использую префикс is и составляю имя функции однозначно отвечающей на вопрос - все ходоки пойманы?
+public static boolean white_walkers (String village) {}  -  public static boolean isAllWalkersCaught (String village) {}
+
+4.
+// The Chewbacca and gravity wells
+// получаю на выходе логический тип данных - поэтому использую префикс is и составляю имя функции однозначно отвечающей на вопрос - найденный ключ четный?
+public static boolean TransformTransform (int A[], int N) {} - public static boolean isFoundKeyEven (int A[], int N) {}
+
+5.
+// The Matrix turn
+// т.к. метод void - имя класса не присоединяю к названию метода, метод выполняет вращение матрицы,
+//соответственно -  только "глагол" т.к. это метод класса, имя класса присоединится rotation.Matrix();
+public static void MatrixTurn(String Matrix[], int M, int N, int T) {} - public static void rotation (String Matrix[], int M, int N, int T) {}
+
+6.
+// Three of life
+// т.к. метод не изменяет начального массива строк, а выдает массив с новым состоянием - именую функцию "позднее состояние дерева"
+public static String [] TreeOfLife (int H, int W, int N, String [] tree) {} - public static String [] statusLaterTree (int H, int W, int N, String [] tree) {}
+
+7.
+// Sherlock Holmes and the mechanical box
+// получаю на выходе логический тип данных - поэтому использую префикс is и составляю имя функции однозначно отвечающей на вопрос - строка валидна?
+public static boolean SherlockValidString (String s) {} - public static boolean isStringValid (String s) {}
+
+8.
+// Harry Potter going to first class
+// получаю на выходе строку - магическое слово, использую глагол - take.
+public static String BiggerGreater(String input) {} - public static String takeMagikWord (String input) {}
+
+9.
+// Automation of sales reporting
+// получаю на выходе массив строк - сгруппированная сводка по продажам, применяю глагол - группировка
+public static String [] ShopOLAP(int N, String [] items) {} -  public static String [] groupingSalesSummary(int N, String [] items) {}
+
+10.
+// Mr Robot and Evil corporation
+// получаю на выходе логический тип данных - поэтому использую префикс is
+//и составляю имя функции однозначно отвечающей на вопрос - массив отсортирован по возрастанию?
+public static boolean MisterRobot(int N, int [] data) {} - public static boolean isArraySortAscending(int N, int [] data) {}
+
+11.
+// Shopaholics
+// в имени класса отсутствовал глагол is, добавил к имени класса глагол - есть, и имя однозначно отвечает на вопрос - место на карте найдено?
+public static boolean seekMapPlace (int H1, int W1, String S1, int H2, int W2, String S2) {} - public static boolean isSeekMapPlace (int H1, int W1, String S1, int H2, int W2, String S2) {}
+
+12.
+// Unmanned traffic
+// получаю на выходе время (в еденицах) затраченное на дорогу - указываю в имени переменной что расчитываются единицы времени
+public static int Unmanned (int L, int N, int [][] track) {} - public static int calcTimeUnitsSpent (int L, int N, int [][] track) {} -
