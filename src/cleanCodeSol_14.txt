@@ -1,0 +1,100 @@
+package cleancodenew;
+
+public class AnalysisArray { //переименовал название класса исходя из общей сути задачи
+    public static final int LIMIT_ON_THE_MAX_NUM = 4;
+    public static final int LIMIT_TIME_MSEC = 1000;
+    public static boolean getAscendingOrder(int maxNumberIntoArray, int [] inputArray) { //переименовал метод исходя из целей задачи, наименование входных данных
+        boolean isReadyInTime = true; // переименовал булеву переменную - отвечет на вопрос это сделано вовремя?
+        boolean isMaxNumber = false; //переименовал булеву переменную  - отвечает на вопрос это максимальное число?
+        for(int x : inputArray){
+            if(x == maxNumberIntoArray){
+                isMaxNumber = true;
+                break;
+            }
+        }
+        if (!isMaxNumber || maxNumberIntoArray <= LIMIT_ON_THE_MAX_NUM) { // заменяю магическое число на константу  LIMIT_ON_THE_MAX_NUM
+            return false;
+        }
+        // объявляю и инициализирую массив перед первым обращением к нему
+        int [] usualWaySort = new int[inputArray.length]; // переименовал массив (отсортирован обычным способом)
+        System.arraycopy(inputArray, 0, usualWaySort, 0, inputArray.length);
+
+        int buffForExchange; // объявляю  переменную перед первым обращением к ней
+        for (int i = 0; i < usualWaySort.length; i ++) {
+            for (int j = i + 1; j < usualWaySort.length; j ++) {
+                if (usualWaySort [i] > usualWaySort [j]) {
+                    buffForExchange = usualWaySort [i];
+                    usualWaySort [i] = usualWaySort [j];
+                    usualWaySort [j] = buffForExchange;
+                }
+            }
+        }
+        buffForExchange = -1; // завершил работу с буфером для сортировки по возрастанию, присвоил значение -1
+
+        if (maxNumberIntoArray != usualWaySort [usualWaySort.length - 1]) {
+            return false;
+        }
+
+        int []  sortInGivenWay = new int[inputArray.length]; // объявляю и инициализирую массив перед первым обращением к нему
+        System.arraycopy(usualWaySort, 0, sortInGivenWay, 0, inputArray.length);
+
+        int countHit =0; // объявляю  и инициализирую переменную перед первым обращением к ней
+        long startTime = System.currentTimeMillis();
+        for (int k = 0; k < sortInGivenWay.length; k++) {
+            for (int i = 0; i < sortInGivenWay.length; i++) {
+                for (int j = i + 1; j < (j + 1) && (j+1) < sortInGivenWay.length; j++) {
+                    if (sortInGivenWay[i] > sortInGivenWay[j]) {
+                        buffForExchange = sortInGivenWay[i];
+                        sortInGivenWay[i] = sortInGivenWay[j];
+                        sortInGivenWay[j] = sortInGivenWay[j + 1];
+                        sortInGivenWay[j + 1] = buffForExchange;
+                    }
+                    if (sortInGivenWay[i] < sortInGivenWay[j]) {
+                        break;
+                    }
+                }
+            }
+            for (int a = 0; a < sortInGivenWay.length; a++) {
+                if (sortInGivenWay [a] == usualWaySort [a]) {
+                    countHit += 1;
+                }
+            }
+            if (countHit == sortInGivenWay.length) {
+                break;
+            }
+
+            long endTime = System.currentTimeMillis();
+            if (endTime-startTime > LIMIT_TIME_MSEC) { //магическое число заменяю на константу LIMIT_TIME_MSEC
+                isReadyInTime = false;
+                break;
+            }
+            if (k == sortInGivenWay.length - 1 && countHit != sortInGivenWay.length) {
+                return false;
+            }
+        }
+        countHit = -1; // завершил работу с переменной, присвоил значение -1
+        return isReadyInTime;
+    }
+
+}
+ //
+
+public class FirstNumOfFactorial { // переименовал класс исходя из общей сути задачи
+    public static int getFirstNumber(int nonNegativeIntegers) { // переименовал медот исходя из цели задачи, переименовал входные данные
+
+        if (nonNegativeIntegers > 0) {
+            int factorial = nonNegativeIntegers;
+            for (int i = 1; i < nonNegativeIntegers; i++) {
+                factorial *= i;
+            }
+            char [] fromResultFactorial = String.valueOf(factorial).toCharArray(); // переименовал массив
+            factorial = -1;// закончил работать с переменной - указал недопустимое значение
+            String buffForBuild = ""; // переименовал переменную - буфер для создания строки
+            for (int x = 0; x < (fromResultFactorial.length - (fromResultFactorial.length - 1)); x++) {
+                buffForBuild = String.valueOf(fromResultFactorial[x]);
+            }
+            return Integer.parseInt(buffForBuild);
+        }
+        return 1;
+    }
+}
