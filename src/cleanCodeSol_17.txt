@@ -1,0 +1,186 @@
+Пример 1.
+Использую вместо массива - более безопасную структуру данных, очередь в задаче "Поездка на мотоцикле".
+Т.к. считывание данных происходит последовательно.
+Так же выполняю проверку массива на четность, т.к. в цикле происходит получение данных из очереди дважды.
+Перевожу массив в очередь внтутри функции, т.к. по условию входные данные - массив.
+
+public class CoveredWay {
+    public int getCoveredWay(int [] inputData) {
+        if (inputData.length % 2 != 0) throw new AssertionError("Size's array is not even!");
+        Queue<Integer> queue = new LinkedList<>();
+        for (int j : inputData) {
+            queue.offer(j);
+        }
+
+        int coveredWay = 0;
+        int spentTime;
+        int currentSpeed;
+        int prevTime = 0;
+        for (int i = 0; i < queue.size(); i++) {
+            currentSpeed = queue.remove();
+            spentTime = queue.remove();
+            coveredWay += currentSpeed * (spentTime - prevTime);
+            prevTime = spentTime;
+        }
+        spentTime = -1;
+        currentSpeed = -1;
+        prevTime = -1;
+        return coveredWay;
+    }
+}
+
+Пример 2.
+Использую вместо массива - более безопасную структуру данных, список в задаче "Безумный Макс".
+Проверяю массив на нечетность - т.к. по условию, входящий массив всегда нечетный.
+
+public class InitialImpulse {
+    public  int[] getSortedArray(int lengthArray, int [] inputData) {
+        if (inputData.length % 2 == 0) throw new AssertionError("Size's array is even!");
+        List<Integer> transInputData = new ArrayList<>();
+        for (int j: inputData) {
+            transInputData.add(j);
+        }
+        Collections.sort(transInputData);
+        int middleArray = (lengthArray - 1)/2;
+        List<Integer> firstPat = new ArrayList<>();
+        for (int k = 0; k < middleArray; k++) {
+            firstPat.add(transInputData.get(k));
+        }
+        List<Integer> secondPat = new ArrayList<>();
+        for (int j = lengthArray - 1; j >= middleArray; j--) {
+            secondPat.add(transInputData.get(j));
+        }
+        firstPat.addAll(secondPat);
+        int [] outputData = new int[firstPat.size()];
+        for (int i = 0; i < firstPat.size(); i++) {
+            outputData[i] = firstPat.get(i);
+        }
+        return outputData;
+    }
+}
+
+
+Пример 3.
+Использую вместо массива - более безопасную структуру данных, список в задаче "Восстановление таблицы зарплат".
+Проверяю массивы на соответствие заданной длине.
+
+public class RestoredSalaryTable {
+    public static int[] getRecoveredTable(int N, int [] ids, int [] salary) {
+        if (N != ids.length && N != salary.length) throw new AssertionError("Size's array is even!");
+        List<Integer> idsSortedByIncrease = new ArrayList<>();
+        for (int i: ids) {
+            idsSortedByIncrease.add(i);
+        }
+        Collections.sort(idsSortedByIncrease);
+        List<Integer> salarySortByIncrease = new ArrayList<>();
+        for (int j: salary) {
+            salarySortByIncrease.add(j);
+        }
+        Collections.sort(salarySortByIncrease);
+        HashMap<Integer, Integer> unionTableIdsAndSal = new HashMap<>();
+        for (int k = 0; k < N; k++) {
+            unionTableIdsAndSal.put(idsSortedByIncrease.get(k), salarySortByIncrease.get(k));
+        }
+        int [] recoveredSalaryTable = new int[salary.length];
+        for(int i = 0; i < N; i++) {
+            recoveredSalaryTable[i] = unionTableIdsAndSal.get(ids[i]);
+        }
+        return recoveredSalaryTable;
+    }
+}
+
+Пример 4.
+Использую вместо массива - более безопасную структуру данных,динамический массив в задаче "Разблокировка мобильных телефонов".
+
+public class UnlockPhone {
+
+    static final String STRING_FOR_BREAK = "";
+    static final double HORIZON_OR_FILE_DIST = 1.0;
+    static final double DIAGONAL_DISTANCE = 1.414215;
+    static final int [] VAL_PARIS_PHONE_KEY = {61, 16, 52, 25, 43, 34, 19, 91, 28, 82, 37, 73, 65, 56, 54, 45, 12, 21, 23, 32, 98, 89, 78, 87};
+    static final int [] VAL_PARIS_DIAGONAL = new  int[] {62, 26, 51, 15, 42, 24, 35, 53, 29, 92, 18, 81, 38, 83, 27, 72};
+    static final int NUMBER_OF_DECIMAL = 100000;
+    static final char THIS_SYMBOL_FOR_MISS = '0';
+
+    public static String getSeriesOfNumbLock(int lengthInputArray, int [] inputSeries) {
+        ArrayList<Integer> arrayConvertedNumber = new ArrayList<>();
+        StringBuilder stringConverted = new StringBuilder();
+        int bufferConvertedNumber = 0;
+        for (int i = 0; i < lengthInputArray; i++) {
+            stringConverted.append(inputSeries[i]);
+            for (int j = i+1; j < lengthInputArray; j++) {
+                stringConverted.append(inputSeries[i + 1]);
+                bufferConvertedNumber = Integer.parseInt(String.valueOf(stringConverted));
+                arrayConvertedNumber.add(bufferConvertedNumber);
+                stringConverted = new StringBuilder();
+                if (stringConverted.toString().equals(STRING_FOR_BREAK))
+                    break;
+            }
+        }
+        HashMap <Integer, Double> rowMap = new HashMap<>();
+        for (int rowNumber : VAL_PARIS_PHONE_KEY) {
+            rowMap.put(rowNumber, HORIZON_OR_FILE_DIST);
+        }
+        HashMap <Integer, Double> diagonalMap = new HashMap<>();
+        for (int diagonalNumber : VAL_PARIS_DIAGONAL) {
+            diagonalMap.put(diagonalNumber, DIAGONAL_DISTANCE);
+        }
+        ArrayList<Double>  resultRow = new ArrayList<>();
+        for (Integer item : arrayConvertedNumber) {
+            if (rowMap.containsKey(item)) {
+                resultRow.add(rowMap.get(item));
+            }
+        }
+        ArrayList<Double> resultDiagonal = new ArrayList<>();
+        for (Integer integer : arrayConvertedNumber) {
+            if (diagonalMap.containsKey(integer)) {
+                resultDiagonal.add(diagonalMap.get(integer));
+            }
+        }
+        double sumRow = 0.0;
+        for (Double value : resultRow) {
+            sumRow = sumRow + value;
+        }
+        double sumDiagonal = 0.0;
+        for (Double aDouble : resultDiagonal) {
+            sumDiagonal = sumDiagonal + aDouble;
+        }
+        double allSum = sumRow + sumDiagonal;
+        sumRow = - 100000.0;
+        sumDiagonal = - 100000.0;
+        int accurateValue = (int)(allSum * NUMBER_OF_DECIMAL);
+        String cutValue = String.valueOf(accurateValue);
+        char [] conversionValue = cutValue.toCharArray();
+        StringBuilder bufferValue = new StringBuilder();
+        for (char c : conversionValue) {
+            if (c != THIS_SYMBOL_FOR_MISS) {
+                bufferValue.append(c);
+            }
+        }
+        return String.valueOf(bufferValue);
+    }
+}
+
+Пример 5.
+Использую вместо массива - более безопасную структуру данных, стек в задаче "Баланс скобок".
+
+public class BracketBalance {
+    public static boolean checkBrackets (String brackets) {
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < brackets.length(); i++) {
+            char buffer = brackets.charAt(i);
+            if (buffer == '(') {
+                stack.push(buffer);
+            }
+            if (buffer == ')' && stack.peek() == '(') {
+                stack.pop();
+            }
+        }
+        return stack.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(BracketBalance.checkBrackets("(()((())()))"));
+    }
+}
+
