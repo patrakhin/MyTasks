@@ -1,0 +1,106 @@
+Решение
+3.1.
+//Проверить подходящую пару чисел
+boolean isPeasantsWereFound = ((thisPeasantOne + thisPeasantTwo) == SUM_NUM_FOR_DETECT);
+//Проверить что найдено три ходока
+boolean isEnoughToTrap = (walkersBetweenPeasant == THAT_ENOUGH_TO_TRAP);
+ // Проверить что ходоков не достаточно для выявления
+boolean isWalkersFew = (walkersBetweenPeasant != THAT_ENOUGH_TO_TRAP);
+//Проверить,  что условия для выявления ходоков выполнены Вариант 1
+boolean isWalkersCaught = (caughtWalkers != 0 && walkersBeforePeasant == 0 && walkersNotYetCaught == 0 && walkersHiding == 0 && walkersBetweenPeasant == 0);
+   if (isWalkersCaught) {
+       return true;
+   }
+//Проверить, что условия для выявления ходоков не выполнены Вариант 1
+boolean isWalkersFled = (caughtWalkers != 0 && walkersHiding != 0 && walkersBeforePeasant == 0 && walkersNotYetCaught == 0 && walkersBetweenPeasant == 0);
+    if (isWalkersFled) {
+        return false;
+    }
+//Проверить, что условия для выявления ходоков выполнены Вариант2
+boolean isWalkersDetected = (caughtWalkers != 0 && walkersBeforePeasant != 0 && walkersHiding != 0 && walkersNotYetCaught == 0 && walkersBetweenPeasant == 0);
+    if (isWalkersDetected) {
+        return true;
+    }
+//Проверить, что условия для выявления ходоков не выполнены Вариант2
+if (walkersBeforePeasant != 0 && walkersNotYetCaught == 0 && walkersHiding == 0 && walkersBetweenPeasant == 0) {
+        return false;
+    }
+
+
+
+3.2.
+//before
+public class ZarplataSotrudniki {
+    public static int [] SynchronizingTables(int N, int [] ids, int [] salary) {
+        //копируем в новый массив и упорядочиваем список сотрудников
+        int [] newIds = new int[ids.length];
+        for (int i = 0; i < N; i++) {
+            newIds [i] = ids [i];
+        }
+        int buffer;
+        for (int j = 0; j < N; j ++) {
+            int min = j;
+            for (int i  = j + 1; i < N; i ++) {
+                if (newIds[min] > newIds[i]) {
+                    min = i;
+                }
+            }
+            buffer = newIds [j];
+            newIds [j] = newIds [min];
+            newIds [min] = buffer;
+        }
+        //копируем в новый массив и упорядочииваем список зарплат
+        int [] newSalary = new int[salary.length];
+        for (int i = 0; i < N; i++) {
+            newSalary [i] = salary [i];
+        }
+        int bufferTwo;
+        for (int j = 0; j < N; j ++) {
+            int min = j;
+            for (int i  = j + 1; i < N; i ++) {
+                if (newSalary[min] > newSalary[i]) {
+                    min = i;
+                }
+            }
+            bufferTwo = newSalary [j];
+            newSalary [j] = newSalary [min];
+            newSalary [min] = bufferTwo;
+        }
+        //заносим в карту упорядочненн сотрудников и зарплаты
+        HashMap <Integer, Integer> myHashMap = new HashMap<Integer, Integer>();
+        for (int i = 0; i < N; i++) {
+            myHashMap.put(newIds[i],newSalary[i]);
+        }
+        //выгрузим в массив зарплату согласно списка сотрудников (который нам дан по  даче)
+        int [] newZarplata = new int[newSalary.length];
+        for (int j = 0; j < N; j++) {
+            newZarplata [j] = myHashMap.get(ids[j]);
+        }
+        return newZarplata;
+    }
+
+// after
+public class RestoredSalaryTable {
+    public static int[] getRecoveredTable(int N, int [] ids, int [] salary) {
+        if (N != ids.length && N != salary.length) throw new AssertionError("Size's array is even!");
+        List<Integer> idsSortedByIncrease = new ArrayList<>();
+        for (int i: ids) {
+            idsSortedByIncrease.add(i);
+        }
+        Collections.sort(idsSortedByIncrease);
+        List<Integer> salarySortByIncrease = new ArrayList<>();
+        for (int j: salary) {
+            salarySortByIncrease.add(j);
+        }
+        Collections.sort(salarySortByIncrease);
+        HashMap<Integer, Integer> unionTableIdsAndSal = new HashMap<>();
+        for (int k = 0; k < N; k++) {
+            unionTableIdsAndSal.put(idsSortedByIncrease.get(k), salarySortByIncrease.get(k));
+        }
+        int [] recoveredSalaryTable = new int[salary.length];
+        for(int i = 0; i < N; i++) {
+            recoveredSalaryTable[i] = unionTableIdsAndSal.get(ids[i]);
+        }
+        return recoveredSalaryTable;
+    }
+}
