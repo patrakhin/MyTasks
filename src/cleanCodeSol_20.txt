@@ -1,0 +1,210 @@
+Решение
+//Согласно ТЗ: крестьяне - это пара чисел, сумма которых достаточна для выявления Ходоков - символ '=' (тип комментария - информативный)
+//тип комментария - Бормотание. Он не уместен, удаляем.
+
+//Проверить подходящую пару чисел (тип комментария - пояснение)  тип комментария - Шум, новой информации не предоставляет. Удаляем
+boolean isPeasantsWereFound = ((thisPeasantOne + thisPeasantTwo) == SUM_NUM_FOR_DETECT);
+
+//Проверить что найдено три ходока (тип комментария - пояснение)  тип комментария - Шум, новой информации не предоставляет. Удаляем
+boolean isEnoughToTrap = (walkersBetweenPeasant == THAT_ENOUGH_TO_TRAP);
+
+ // Проверить что ходоков не достаточно для выявления (тип комментария - пояснение) тип комментария - Шум, новой информации не предоставляет. Удаляем
+boolean isWalkersFew = (walkersBetweenPeasant != THAT_ENOUGH_TO_TRAP);
+
+
+//Прядок проверки логических выражений не менять. Спровоцируется ошибка. (тип комментария - предупреждение о последствиях)
+//Тип комментария обязательный. Оставляем
+
+//TODO - на данный момент, код работает в таком изложени, оптимизированная версия появится в версии 1.1. (тип комментария - TODO)
+//Тип комментария обязательный. Оставляем
+
+//Проверить,  что условия для выявления ходоков выполнены Вариант 1 (тип комментария - информативный)
+//Тип комментария - Шум, новой информации не предоставляет. Удаляем
+boolean isWalkersCaught = (caughtWalkers != 0 && walkersBeforePeasant == 0 && walkersNotYetCaught == 0 && walkersHiding == 0 && walkersBetweenPeasant == 0);
+   if (isWalkersCaught) {
+       return true;
+   }
+
+//Проверить, что условия для выявления ходоков не выполнены Вариант 1 (тип комментария - информативный)
+//Тип комментария - Шум, новой информации не предоставляет. Удаляем
+boolean isWalkersFled = (caughtWalkers != 0 && walkersHiding != 0 && walkersBeforePeasant == 0 && walkersNotYetCaught == 0 && walkersBetweenPeasant == 0);
+    if (isWalkersFled) {
+        return false;
+    }
+
+//Проверить, что условия для выявления ходоков выполнены Вариант2 (тип комментария - информативный)
+//Тип комментария - Шум, новой информации не предоставляет. Удаляем
+boolean isWalkersDetected = (caughtWalkers != 0 && walkersBeforePeasant != 0 && walkersHiding != 0 && walkersNotYetCaught == 0 && walkersBetweenPeasant == 0);
+    if (isWalkersDetected) {
+        return true;
+    }
+
+//Проверить, что условия для выявления ходоков не выполнены Вариант2 (тип комментария - информативный)
+//Тип комментария - Шум, новой информации не предоставляет. Удаляем
+if (walkersBeforePeasant != 0 && walkersNotYetCaught == 0 && walkersHiding == 0 && walkersBetweenPeasant == 0) {
+        return false;
+    }
+
+
+
+//before
+public class ZarplataSotrudniki {
+    public static int [] SynchronizingTables(int N, int [] ids, int [] salary) {
+        //копируем в новый массив и упорядочиваем список сотрудников - Бормотание, Шум, Избыточный комментарий. Удалить.
+        int [] newIds = new int[ids.length];
+        for (int i = 0; i < N; i++) {
+            newIds [i] = ids [i];
+        }
+        int buffer;
+        for (int j = 0; j < N; j ++) {
+            int min = j;
+            for (int i  = j + 1; i < N; i ++) {
+                if (newIds[min] > newIds[i]) {
+                    min = i;
+                }
+            }
+            buffer = newIds [j];
+            newIds [j] = newIds [min];
+            newIds [min] = buffer;
+        }
+        //копируем в новый массив и упорядочииваем список зарплат - Бормотание, Шум, Избыточный комментарий. Удалить.
+        int [] newSalary = new int[salary.length];
+        for (int i = 0; i < N; i++) {
+            newSalary [i] = salary [i];
+        }
+        int bufferTwo;
+        for (int j = 0; j < N; j ++) {
+            int min = j;
+            for (int i  = j + 1; i < N; i ++) {
+                if (newSalary[min] > newSalary[i]) {
+                    min = i;
+                }
+            }
+            bufferTwo = newSalary [j];
+            newSalary [j] = newSalary [min];
+            newSalary [min] = bufferTwo;
+        }
+        //заносим в карту упорядочненн сотрудников и зарплаты - Бормотание, Шум, Избыточный комментарий. Удалить.
+        HashMap <Integer, Integer> myHashMap = new HashMap<Integer, Integer>();
+        for (int i = 0; i < N; i++) {
+            myHashMap.put(newIds[i],newSalary[i]);
+        }
+        //выгрузим в массив зарплату согласно списка сотрудников (который нам дан по  даче) - Бормотание, Шум, Избыточный комментарий. Удалить.
+        int [] newZarplata = new int[newSalary.length];
+        for (int j = 0; j < N; j++) {
+            newZarplata [j] = myHashMap.get(ids[j]);
+        }
+        return newZarplata;
+    }
+
+// after
+//Считаю, что код не нуждается в комментариях, имена переменных информативны.
+//Структура кода в разрезе курса "Ясный код" собюдена.
+public class RestoredSalaryTable {
+    public static int[] getRecoveredTable(int N, int [] ids, int [] salary) {
+        if (N != ids.length && N != salary.length) throw new AssertionError("Size's array is even!");
+        List<Integer> idsSortedByIncrease = new ArrayList<>();
+        for (int i: ids) {
+            idsSortedByIncrease.add(i);
+        }
+        Collections.sort(idsSortedByIncrease);
+        List<Integer> salarySortByIncrease = new ArrayList<>();
+        for (int j: salary) {
+            salarySortByIncrease.add(j);
+        }
+        Collections.sort(salarySortByIncrease);
+        HashMap<Integer, Integer> unionTableIdsAndSal = new HashMap<>();
+        for (int k = 0; k < N; k++) {
+            unionTableIdsAndSal.put(idsSortedByIncrease.get(k), salarySortByIncrease.get(k));
+        }
+        int [] recoveredSalaryTable = new int[salary.length];
+        for(int i = 0; i < N; i++) {
+            recoveredSalaryTable[i] = unionTableIdsAndSal.get(ids[i]);
+        }
+        return recoveredSalaryTable;
+    }
+}
+
+//before
+public class madMAx {
+    public static int [] MadMax(int N, int [] Tele) {
+        //упорядочиваем массив по возрастанию - тип комментария Шум. Удалить
+        int buffer;
+        for (int j = 0; j < N; j ++) {
+            int min = j;
+            for (int i  = j + 1; i < N; i ++) {
+                if (Tele[min] > Tele[i]) {
+                    min = i;
+                }
+            }
+            buffer = Tele [j];
+            Tele [j] = Tele [min];
+            Tele [min] = buffer;
+        }
+        //ищем середину массива - тип комментария Шум. Удалить
+        int mid = ((Tele.length - 1)) / 2;
+        // упорядочиваем массив по убыванию с середины - тип комментария Шум. Удалить
+        int buffermid;
+        for (int j = mid; j < N; j ++) {
+            int max = j;
+            for (int i  = j + 1; i < N; i ++) {
+                if (Tele[max] < Tele[i]) {
+                    max = i;
+                }
+            }
+            buffermid = Tele [j];
+            Tele [j] = Tele [max];
+            Tele [max] = buffermid;
+        }
+
+        for (int i = 0; i < N; i++){
+            System.out.println(Tele[i]);
+        }
+      return Tele;
+    }
+    public static void main(String[] args) {
+        int N = 13;
+        int [] Tele = new int [] {1, 3, 5, 6, 2, 4, 7, 8, 9, 11, 10, 13, 12};
+        MadMax(N,Tele);
+    }
+}
+//Приведенный выше код требует постоянного отвлечения на чтения комментариев, переменные не информативны, общий стиль "Ясного кода" не соблюдается.
+
+
+
+//after
+public class InitialImpulse {
+    public  int[] getSortedArray(int lengthArray, int [] inputData) {
+        if (inputData.length % 2 == 0) throw new AssertionError("Size's array is even!");
+        List<Integer> transInputData = new ArrayList<>();
+        for (int j: inputData) {
+            transInputData.add(j);
+        }
+        Collections.sort(transInputData);
+        int middleArray = (lengthArray - 1)/2;
+        List<Integer> firstPat = new ArrayList<>();
+        for (int k = 0; k < middleArray; k++) {
+            firstPat.add(transInputData.get(k));
+        }
+        List<Integer> secondPat = new ArrayList<>();
+        for (int j = lengthArray - 1; j >= middleArray; j--) {
+            secondPat.add(transInputData.get(j));
+        }
+        firstPat.addAll(secondPat);
+        int [] outputData = new int[firstPat.size()];
+        for (int i = 0; i < firstPat.size(); i++) {
+            outputData[i] = firstPat.get(i);
+        }
+        return outputData;
+    }
+}
+
+//Данный код  - результат рефакторинга кода, выполненного 08.12.22. При прочтении данного кода (19.12.22) были понятны имена методов и переменных.
+//Не отвлекался на вспоминание для чего нужна та или иная переменная, не отвлекался на чтение ненужных комментариев.
+//Просто - читал код, было все понятно.
+//Вывод: правильно подобранные имена классов, методов и переменных, своевременная инициализация переменных и соответствование требованиям "Ясного кода"
+//не позволяет "забыть" почему переменная поименована так, не тратится время на поиск точки инициализации переменной. Код - просто читается.
+//При необходимости прокомментировать код - пользуемся разделом "Правильные комментарии", если комментарии не соответствуют разделу - код подлежит переработке.
+
+//Позиционные маркеры не применял - не успел подхватить "дурную" привычку.
+//Закомментированный код не оставлял в рабочем коде
